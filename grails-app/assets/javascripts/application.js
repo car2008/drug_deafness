@@ -1,0 +1,10 @@
+//= require modernizr.min.js
+//= require jquery.min.js
+//= require bootstrap.min.js
+//= require waves.js
+//= require jquery.slimscroll.js
+//= require jquery.scrollTo.min.js
+//= require jquery.core.js
+//= require jquery.app.js
+//= require custom.js
+//= require_self

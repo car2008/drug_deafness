@@ -1,0 +1,22 @@
+{
+  "plugins": {
+    "guess-types": {
+      
+    },
+    "outline": {
+      
+    },
+    "node": {
+      
+    },
+    "jshint": {
+      
+    },
+    "highlight": {
+      
+    }
+  },
+  "libs": [
+    
+  ]
+}

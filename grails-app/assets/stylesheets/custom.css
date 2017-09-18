@@ -1,0 +1,18 @@
+body {
+	background-color: #fff;
+}
+
+.account-box {
+	border-radius: 2px;
+}
+
+.form-control {
+	border-radius: 3px;
+}
+
+.logged-in-user {
+	padding: 7px 20px;
+    font-weight: bold;
+    white-space: nowrap;
+    line-height: 34px;
+}

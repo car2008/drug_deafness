@@ -1,0 +1,35 @@
+{
+  "total": "2",
+  "rows": [
+    {
+      "id":"1",
+      "name":"Obesity",
+      "alternateName":"空",
+      "symbol":"空",
+      "alternateSymbol":"空",
+      "is_reported":true,
+      "definition":"Obesity is a medical condition in which excess body fat has accumulated to the extent that it may have a negative effect on health. People are generally considered obese when their body mass index (BMI), a measurement obtained by dividing a person's weight by the square of the person's height, is over 30 kg/m2, with the range 25–30 kg/m2 defined as overweight. Some East Asian countries use lower values. Obesity increases the likelihood of various diseases and conditions, particularly cardiovascular diseases, type 2 diabetes, obstructive sleep apnea, certain types of cancer, osteoarthritis and depression.",
+      "chineseName":"肥胖症",
+      "chineseDefinition":"肥胖是指一定程度的明显超重与脂肪层过厚，是体内脂肪，尤其是甘油三酯积聚过多而导致的一种状态。由于食物摄入过多或机体代谢的改变而导致体内脂肪积聚过多造成体重过度增长并引起人体病理、生理改变或潜伏。评定标准1.肥胖度肥胖度=（实际体重-标准体重）÷标准体重×±100%肥胖度在±10%之内，称之为正常适中。肥胖度超过10%，称之为超重。肥胖度超过20%-30%，称之为轻度肥胖。肥胖度超过30%-50%，称之为中度肥胖。肥胖度超过50%，以上，称之为重度肥胖。肥胖度小于-10%，称之为偏瘦。肥胖度小于-20%以上，称之为消瘦。2.肥胖的判定目前常用的体重指数（body mass index）简称BMI，又译为体质指数。它是一种计算身高比体重（weight for height）的指数。具体计算方法是以体重（千克，kg）除以身高（米，m）的平方，即BMI=体重/身高/身高（kg/m2）。研究表明，大多数个体的体重指数与身体脂肪的百分含量有明显的相关性，能较好地反映机体的肥胖程度。  以体重指数对肥胖程度的分析，国际上通常用世界卫生组织（WHO）制定的体重指数界限值，即体重指数在25.0~29.9为超重，大于等于30为肥胖。国际生命科学学会中国办事处组织了由多学科专家组成的“中国肥胖问题工作组”，对我国21个省市、地区人群体重指数（BMI）、腰围、血压、血糖、血脂等24万人的相关数据进行汇总分析，并据此提出了中国人的BMI标准，BMI值“24”为中国成人超重的界限，BMI“28”为肥胖的界限；男性腰围≥85厘米，女性腰围≥80厘米为腹部脂肪蓄积的界限。",
+      "catagrory":"遗传性疾病",
+      "subCatagrory":"根据一级分类加载生成",
+      "xref":"数据库外联标示符",
+      "reference":"其他"
+    },
+    {
+      "id":"2",
+      "name":"第二",
+      "alternateName":"3",
+      "symbol":"4",
+      "alternateSymbol":"5",
+      "is_reported":"6",
+      "definition":"7",
+      "chineseName":"8",
+      "chineseDefinition":"9",
+      "catagrory":"10",
+      "subCatagrory":"11",
+      "xref":"12",
+      "reference":"13"
+    }
+  ]
+}
