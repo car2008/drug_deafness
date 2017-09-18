@@ -118,16 +118,16 @@ class BootStrap {
         def admin = new User(
             username: 'bioinfo@capitalbiotech.com',
             password: '123456',
-            name: 'CBT Bioinformatics'
+            name: 'admin'
         ).save(flush: true)
         UserRole.create(admin, userRole, true)
         UserRole.create(admin, staffRole, true)
         UserRole.create(admin, adminRole, true)
         
         def user1 = new User(
-            username: 'leiwang@capitalbiotech.com',
+            username: 'jundong@capitalbiotech.com',
             password: '123456',
-            name: 'Wang Lei'
+            name: 'user'
         ).save(flush: true)
         UserRole.create(user1, userRole, true)
 		UserRole.create(user1, staffRole, true)
