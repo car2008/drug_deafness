@@ -19,11 +19,8 @@
 	    <link rel="stylesheet" href="${resource(dir:'css/', file:'sweetalert.css')}">   
 	    <script src="${resource(dir:'js/', file:'sweetalert.min.js')}"></script>
 		<title>
-			<g:layoutTitle /> - <g:message code="drug_deafness.name" />
+			<g:message code="drug_deafness.name" />
 		</title>
-		
-		<g:layoutHead />
-		<r:layoutResources />
 	</head>
 	
 	<body>
@@ -60,9 +57,9 @@
 	            <div class="col-md-2">
 	                <nav class="">
 	                    <ul class="nav">
-	                        <li><a href="../index.html">信息录入</a></li>
-	                        <li><a href="#">结果录入</a></li>
-	                        <li><a href="../pdf.html">导出pdf报告</a></li>
+	                        <li><g:link url="[action:'index',controller:'information']">信息录入</g:link></li>
+	                        <li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
+	                        <li><a href="${createLink(controller: 'result', action: 'showpdf')}">导出pdf报告</a></li>
 	                    </ul>
 	                </nav>
 	            </div>
