@@ -88,47 +88,41 @@
 	                            <div class="form-group">
 	                                <label class="col-md-2 col-md-offset-1 control-label">位置</label>
 	                                <div class="col-md-3">
-	                                    <input type="text" class="form-control input-sm">
+	                                    <input id="location" name="location" type="text" class="form-control input-sm">
 	                                </div>
 	                                <label class="col-md-2 control-label">样品编号</label>
 	                                <div class="col-md-3">
-	                                    <input type="text" class="form-control input-sm">
+	                                    <input id="sampleNum" name="sampleNum" type="text" class="form-control input-sm">
 	                                </div>
 	                            </div>
 	                            <div class="form-group">
 	                                <label class="col-md-2 col-md-offset-1 control-label">样品类型</label>
 	                                <div class="col-md-3">
-	                                    <input type="text" class="form-control input-sm">
+	                                    <input id="sampleBelong" name="sampleBelong" type="text" class="form-control input-sm">
 	                                </div>
 	                                <label class="col-md-2 control-label">FAM Ct</label>
 	                                <div class="col-md-3">
-	                                    <input type="text" class="form-control input-sm">
+	                                    <input id="famCt" name="famCt" type="text" class="form-control input-sm">
 	                                </div>
 	                            </div>
 	                            <div class="form-group">
 	                                <label class="col-md-2 col-md-offset-1 control-label">VIC Ct</label>
 	                                <div class="col-md-3">
-	                                    <input type="text" class="form-control input-sm">
+	                                    <input id="vicCt" name="vicCt" type="text" class="form-control input-sm">
 	                                </div>
 	                                <label class="col-md-2  control-label">NED Ct</label>
 	                                <div class="col-md-3">
-	                                    <input type="text" class="form-control input-sm">
+	                                    <input id="nedCt" name="nedCt" type="text" class="form-control input-sm">
 	                                </div>
 	                            </div>
 	                            <div class="form-group">
 	                                <label class="col-md-2 col-md-offset-1 control-label">检测结果</label>
 	                                <div class="col-md-3">
-	                                    <input type="text" class="form-control input-sm">
+	                                    <input id="detectedResult" name="detectedResult" type="text" class="form-control input-sm">
 	                                </div>
 	                                <label class="col-md-2  control-label">备注</label>
 	                                <div class="col-md-3">
-	                                    <input type="text" class="form-control input-sm">
-	                                </div>
-	                            </div>
-	                            <div class="form-group">
-	                                <label class="col-md-2 col-md-offset-1 control-label" for="InputFile">文件上传</label>
-	                                <div class="col-md-3">
-	                                    <input type="file" id="InputFile" class="input-sm" multiple="multiple">
+	                                    <input id="comment" name="comment" type="text" class="form-control input-sm">
 	                                </div>
 	                            </div>
 	                        </form>
