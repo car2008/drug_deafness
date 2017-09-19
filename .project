@@ -32,7 +32,7 @@
 		<link>
 			<name>.link_to_grails_plugins</name>
 			<type>2</type>
-			<location>D:/WorkSpace/WorkSpaceGrails2.5.4/drug_deafness/target/work/plugins</location>
+			<location>D:/Grails_work/drug_deafness/drug_deafness/target/work/plugins</location>
 		</link>
 	</linkedResources>
 </projectDescription>
