@@ -10,6 +10,13 @@ class Result {
 	String nedCt
 	String detectedResult
 	String comment
+	Information information
+	//生成pdf时需要的信息（可手动填写）： 报告图片路径， 医院，检验员，审核员，pdf备注
+	String resultpictureUrl
+	String resulttitle
+	String checker
+	String assessor
+	String pdfcomment
 	
     static constraints = {
 		 sampleNum blank: false,nullable: false
@@ -20,6 +27,12 @@ class Result {
 		 nedCt blank: true,nullable: true
 		 detectedResult blank: true,nullable: true
 		 comment blank: true,nullable: true
+		 information blank: true,nullable: true
+		 resultpictureUrl blank: true,nullable: true
+		 resulttitle blank: true,nullable: true
+		 checker blank: true,nullable: true
+		 assessor blank: true,nullable: true
+		 pdfcomment blank: true,nullable: true
     }
 	
 	static mapping = {
@@ -27,5 +40,5 @@ class Result {
 		comment type:'text'
 	}
 	
-	static belongsTo = Information
+	static belongsTo = [information:Information]
 }

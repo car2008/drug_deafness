@@ -1,8 +1,12 @@
 package com.capitalbiotech.drugdeafness
 
 class Record {
+	/**
+	 * 上传人员，上传信息，上传种类（信息或者结果），上传开始时间/结束时间，成功记录数，失败记录数，备注
+	 */
 	User uploadUser
 	String recordName
+	String recordCatagrory
 	String recordId
 	Date startTime
 	Date endTime
