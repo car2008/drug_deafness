@@ -1,8 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="renderer" content="webkit" />
+	<meta name="author" content="CBT Bioinformatics, CapitalBio Technology" />
 	<meta name="layout" content="auth">
-	<title>
+	<link rel="stylesheet" href="${resource(dir:'css/bootstrap/dist/css/', file:'bootstrap.css')}"/>
+    <link rel="stylesheet" href="${resource(dir:'css/font-awesome/css/', file:'font-awesome.min.css')}"/>
+    <link rel="stylesheet" href="${resource(dir:'css/', file:'login.css')}"/>
+    <script src="${resource(dir:'js/', file:'jquery.js')}"></script>
+    <script src="${resource(dir:'js/', file:'bootstrap.min.js')}"></script>
+    <link rel="stylesheet" href="${resource(dir:'css/', file:'sweetalert.css')}">   
+    <script src="${resource(dir:'js/', file:'sweetalert.min.js')}"></script>
+    <title>
 		${message(code: 'drug_deafness.springSecurity.login.title')}
 	</title>
 </head>
@@ -13,9 +25,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-
                     <div class="wrapper-page">
-
                         <div class="account-pages">
                             <div class="account-box">
                                 <div class="account-logo-box">
@@ -89,11 +99,8 @@
                             </div>
                         </div>
                         <!-- end card-box-->
-
-
                     </div>
                     <!-- end wrapper -->
-
                 </div>
             </div>
         </div>

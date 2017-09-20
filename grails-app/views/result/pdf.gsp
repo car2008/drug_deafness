@@ -55,16 +55,47 @@
 	    <div class="container-custom">
 	        <div class="row">
 	            <div class="col-md-2">
-	                <nav class="">
-	                    <ul class="nav">
-	                        <li><g:link url="[action:'index',controller:'information']">信息录入</g:link></li>
-	                        <li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
-	                        <li><a href="${createLink(controller: 'result', action: 'showpdf')}">导出pdf报告</a></li>
-	                    </ul>
-	                </nav>
+	                <ul id="nav-page" class="nav">
+                        <li><a href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
+                        <li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
+                        <li><a class="current" href="${createLink(controller: 'result', action: 'showpdf')}">导出pdf报告</a></li>
+                    </ul>
 	            </div>
 	            <div class="col-md-10">
 	                <div class="form-content clearfix" >
+	                	<div class="panel panel-default"> 
+					       <div class="panel-body"> 
+					            <form id="formSearch" class="form-horizontal" >
+					               <div class="form-group" style="margin-bottom:0px;">
+						                <label class="control-label col-sm-1">编号</label> 
+						                <div class="col-sm-2"> 
+						                    <input type="text" class="form-control input-sm" id="search_name"> 
+						                </div> 
+						                <div class="col-sm-1" style="text-align:left;"> 
+						                    <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary btn-sm">查询</button> 
+						                </div> 
+						            </div> 
+					            </form>
+					       </div> 
+					   	</div>
+	                	<table class="table" id="" >
+                			<thead>
+								<tr>
+									<th>
+										<g:checkBox name="selectedAll" id="selectedAll" />
+									</th>
+									<th>pdf报告编号</th>
+									<th>样本编号</th>
+									<th>姓名</th>
+									<th>上传记录</th>
+			                	</tr>
+		                	</thead>	
+	                		<tbody>
+	                			
+	                		
+	                		</tbody>
+	                	</table>
+	                	
 	                    <div style="text-align: center">
 	                        <h2>xxxxxxxxxxx医院</h2>
 	                        <h2>药物性耳聋核酸检测报告</h2>

@@ -55,13 +55,11 @@
 	    <div class="container-custom">
 	        <div class="row">
 	            <div class="col-md-2">
-	                <nav class="">
-	                    <ul class="nav">
-	                        <li><g:link url="[action:'index',controller:'information']">信息录入</g:link></li>
-	                        <li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
-	                        <li><a href="${createLink(controller: 'result', action: 'showpdf')}">导出pdf报告</a></li>
-	                    </ul>
-	                </nav>
+	                <ul id="nav-page" class="nav">
+                        <li><a href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
+                        <li><a class="current" href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
+                        <li><a href="${createLink(controller: 'result', action: 'showpdf')}">导出pdf报告</a></li>
+                    </ul>
 	            </div>
 	            <div class="col-md-10">
 	                <div class="clearfix">
@@ -70,6 +68,9 @@
 	                        <li role="presentation" class="active"><a>批量上传</a></li>
 	                        <li role="presentation"><a>单个录入</a></li>
 	                    </ul>
+	                    <div class="specialForm" style="display:none;">
+	                    	上传记录
+	                   	</div>
 	                    <div class="specialForm">
 		                    <form id="form-multiple" class="form-horizontal optForm" >
 		                        <div class="form-group">

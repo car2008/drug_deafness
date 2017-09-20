@@ -6,11 +6,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<meta name="renderer" content="webkit" />
 		<meta name="author" content="CBT Bioinformatics, CapitalBio Technology" />
-		<link rel="icon" type="image/png" href="/static/images/favicons/favicon-32x32.png" sizes="32x32" />
-		<link rel="icon" type="image/png" href="/static/images/favicons/android-chrome-192x192.png" sizes="192x192" />
-		<link rel="icon" type="image/png" href="/static/images/favicons/favicon-16x16.png" sizes="16x16" />
-		<link rel="shortcut icon" href="/static/images/favicons/favicon.ico" />
-		
 		<link rel="stylesheet" href="${resource(dir:'css/bootstrap/dist/css/', file:'bootstrap.css')}"/>
 	    <link rel="stylesheet" href="${resource(dir:'css/font-awesome/css/', file:'font-awesome.min.css')}"/>
 	    <link rel="stylesheet" href="${resource(dir:'css/', file:'index.css')}"/>
@@ -61,13 +56,11 @@
 	    <div class="container-custom" >
 	        <div class="row">
 	            <div class="col-md-2">
-	                <nav class="">
-	                    <ul class="nav">
-	                        <li><g:link url="[action:'index',controller:'information']">信息录入</g:link></li>
-	                        <li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
-	                        <li><a href="${createLink(controller: 'result', action: 'showpdf')}">导出pdf报告</a></li>
-	                    </ul>
-	                </nav>
+                    <ul id="nav-page" class="nav">
+                        <li><a class="current" href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
+                        <li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
+                        <li><a href="${createLink(controller: 'result', action: 'showpdf')}">导出pdf报告</a></li>
+                    </ul>
 	            </div>
 	            <div class="col-md-10">
 	                <div class="clearfix">
@@ -77,6 +70,34 @@
 	                        <li role="presentation"><a>单个录入</a></li>
 	                    </ul>
 	                </div>
+	                <div class="specialForm" style="display:none;">
+                    	<table class="table" id="" >
+                			<thead>
+								<tr>
+									<th>
+										<g:checkBox name="selectedAll" id="selectedAll" />
+									</th>
+									<th>上传人</th>
+									<th>上传文件名称</th>
+									<th>上传成功(次)</th>
+									<th>上传失败(次)</th>
+			                	</tr>
+		                	</thead>	
+	                		<tbody>
+                				<g:form name=""  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
+									<tr>
+										<th>
+											<g:checkBox name="" />
+										</th>
+							    		<td></td>
+							    		<td></td>
+							    		<td></td>
+							    		<td></td>
+									</tr>
+								</g:form>
+	                		</tbody>
+	                	</table>
+                   	</div>
 	                <div class="specialForm">
 	                    <form id="form-multiple" class="form-horizontal optForm"  enctype="multipart/form-data" action="saveByBatch" method="post">
 	                        <div class="form-group">
@@ -193,6 +214,7 @@
 		    $("#submitBtn_multiple").on("click",function(){
 				$("#form-multiple").submit();
 		    });
+		    
 		    $("#InputFile").on("change",function(e){
 		    	checkfile(this.id);
 		    	selectFile(e);
