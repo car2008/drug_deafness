@@ -72,23 +72,30 @@
 	            <div class="col-md-10">
 	                <div class="clearfix">
 	                    <ul class="nav nav-tabs">
+	                    	<li role="presentation"><a>上传记录</a></li>
 	                        <li role="presentation" class="active" ><a>批量上传</a></li>
 	                        <li role="presentation"><a>单个录入</a></li>
 	                    </ul>
 	                </div>
 	                <div class="specialForm">
-	                    <form id="form-multiple" class="form-horizontal optForm" >
+	                    <form id="form-multiple" class="form-horizontal optForm"  enctype="multipart/form-data" action="saveByBatch" method="post">
 	                        <div class="form-group">
-	                            <label class="col-md-2 col-md-offset-1 control-label" for="InputFile">文件上传</label>
-	                            <div class="col-sm-4">
-	                                <input type="file" id="InputFile" class="input-sm" multiple="multiple">
+	                            <label class="col-md-2 control-label" for="InputFile">文件上传</label>
+	                            <div class="col-md-4">
+	                                <input type="file" id="InputFile" class="input-sm" multiple="multiple" >
 	                            </div>
 	                        </div>
-	                        <div style="margin-top:30px;">
-	                            <button class="btn btn-default">清空</button>
-	                            <button class="btn btn-success" style="float: right;">提交</button>
-	                        </div>
 	                    </form>
+	                    <div id="fileList" class="file-info" style="width: 50%;display:none;">
+	                    	<table id="fileListTable" class="table table-bordered table-condensed">
+	                    		<thead><tr><td colspan="2"><label>已选择文件</label></td></tr></thead>
+	                    		<tbody></tbody>
+	                    	</table>
+	                    </div>
+	                    <div style="margin-top:30px;">
+	                        <button id="clearBtn_multiple" class="btn btn-default">清空</button>
+	                        <button id="submitBtn_multiple" class="btn btn-success" style="float: right;" >提交</button>
+	                    </div>
 	                </div>
 
 	                <div class="specialForm" style="display: none;">
@@ -155,8 +162,8 @@
 	                        </div>
 	                    </form>
 	                    <div style="margin-top:30px;">
-	                        <button class="btn btn-default">清空</button>
-	                        <button class="btn btn-success" style="float: right;">提交</button>
+	                        <button id="" class="btn btn-default">清空</button>
+	                        <button id="" class="btn btn-success" style="float: right;" >提交</button>
 	                    </div>
 	                </div>
 	            </div>
@@ -172,6 +179,93 @@
 	            target.show();
 	            target.siblings("div.specialForm").hide();
 	        })
+	        
+		    $("#clearBtn_multiple").on("click",function(){
+		    	$("#fileListTable tbody").empty();
+            	$("#fileList").hide();
+		    	$("#InputFile").replaceWith('<input type="file" id="InputFile" class="input-sm" multiple="multiple" >');
+    		    $('#InputFile').on('change', function (e) {
+    		    	checkfile(this.id);
+    		    	selectFile(e);
+    		    });
+			})	
+		    
+		    $("#submitBtn_multiple").on("click",function(){
+				$("#form-multiple").submit();
+		    });
+		    $("#InputFile").on("change",function(e){
+		    	checkfile(this.id);
+		    	selectFile(e);
+		    });
+
+				    
+		    function selectFile(e){
+		    	$("#fileListTable tbody").empty();
+		    	$("#fileList").hide();
+		    	var files = e.target.files;  //FileList Objects
+		        for (var i = 0, f; f = files[i]; i++) {
+		        	var ldot = f.name.lastIndexOf(".");
+		            var type = f.name.substring(ldot + 1);
+		            if ("csv" == type || "xls" == type || "xlsx" == type || "txt" == type || "rar" == type || "gz" == type || "zip" == type) {
+		            	$("#fileListTable tbody").append('<tr><td><label>文件名</label></td><td><label>' + f.name + '</label></td></tr>');
+		            	$("#fileList").show();
+		            } else {
+		            	$("#fileListTable tbody").empty();
+		            	$("#fileList").hide();
+		                alert("请选择正确的格式上传：csv excel或者压缩文件");
+		                //为避免type=file控件的change()只能执行一次，更换控件，重新绑定事件
+		                $("#InputFile").replaceWith('<input type="file" id="InputFile" class="input-sm" multiple="multiple" >');
+		    		    $('#InputFile').on('change', function (e) {
+		    		    	checkfile(this.id);
+		    		    	selectFile(e);
+		    		    });
+		    		    return;
+		            }	
+		        }
+		    }
+		    var maxsize = 2*1024*1024;//2M
+		    var errMsg = "上传的附件文件不能超过2M！！！";
+		    var tipMsg = "您的浏览器暂不支持计算上传文件的大小，确保上传文件不要超过2M，建议使用IE、FireFox、Chrome浏览器。";
+		    var  browserCfg = {};
+		    var ua = window.navigator.userAgent;
+		    if (ua.indexOf("MSIE")>=1){
+		        browserCfg.ie = true;
+		    }else if(ua.indexOf("Firefox")>=1){
+		        browserCfg.firefox = true;
+		    }else if(ua.indexOf("Chrome")>=1){
+		        browserCfg.chrome = true;
+		    }
+		    function checkfile(id){
+		        try{
+		            var obj_file = document.getElementById(id);
+		            if(obj_file.value==""){
+		                alert("请先选择上传文件");
+		                return;
+		            }
+		            var filesize = 0;
+		            if(browserCfg.firefox || browserCfg.chrome ){
+		                filesize = obj_file.files[0].size;
+		            }else if(browserCfg.ie){
+		                var obj_img = document.createElement("img");
+		                obj_img.dynsrc=obj_file.value;
+		                filesize = obj_img.fileSize;
+		            }else{
+		                alert(tipMsg);
+		                return;
+		            }
+		            if(filesize==-1){
+		                alert(tipMsg);
+		                return;
+		            }else if(filesize>maxsize){
+		                alert(errMsg);
+		                return;
+		            }else{
+		                return;
+		            }
+		        }catch(e){
+		            alert(e);
+		        }
+		    }
 	    </script>
 	</body>
 </html>
