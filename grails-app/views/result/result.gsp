@@ -117,7 +117,7 @@
 		                        <div class="form-group">
 		                            <label class="col-md-2 control-label" for="InputFile">文件上传</label>
 		                            <div class="col-md-4">
-		                                <input type="file" name="myFile" id="myFile" class="input-sm" multiple="multiple">
+		                            	<input type="file" id="InputFile" class="input-sm" multiple="multiple" >
 		                            </div>
 		                        </div>
 		                    </g:form>
@@ -207,11 +207,12 @@
 		    $("#submitBtn_multiple").on("click",function(){
 				$("#form-multiple").submit();
 		    });
+		    
 		    $("#submitBtn_single").on("click",function(){
 				$("#form-single").submit();
 		    });
 		    
-		    $("#InputFile").on("change",function(e){
+		    $("#form-multiple").on("change","#InputFile",function(e){
 		    	checkfile(this.id);
 		    	selectFile(e);
 		    });
@@ -233,7 +234,7 @@
 		                alert("请选择正确的格式上传：csv excel或者压缩文件");
 		                //为避免type=file控件的change()只能执行一次，更换控件，重新绑定事件
 		                $("#InputFile").replaceWith('<input type="file" id="InputFile" class="input-sm" multiple="multiple" >');
-		    		    $('#InputFile').on('change', function (e) {
+		                $("#form-multiple").on("change","#InputFile",function(e){
 		    		    	checkfile(this.id);
 		    		    	selectFile(e);
 		    		    });
