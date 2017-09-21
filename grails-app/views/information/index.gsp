@@ -36,8 +36,7 @@
 	                    <li><a href="#" style="color:#563d7c;">欢迎${loggedInUser?.name}用户</a></li>
 	                    <li>
 	                         <form method="post" action="${createLink(controller: 'logout', action: 'index')}">
-		                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding: 7px 20px;color:#F96A74;">
-		                           		<i class="dripicons-power m-r-10"></i>
+		                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding:15px;color:#F96A74;">
 		                           		<g:message code="drug_deafness.user.logout.label" />
 		                           </button>
 	                          </form>
