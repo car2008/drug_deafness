@@ -184,7 +184,7 @@ class ResultController {
 		def originalFileName
 		def fileName
 		def filePath
-		def f = request.getFile('myFile')
+		def f = request.getFile('InputFile')
 		String[] nameArray = new String[2]
 		if(!f.empty) {
 			 def webRootDir = "${grailsApplication.config.project.file.upload.path}"

@@ -117,7 +117,7 @@
 		                        <div class="form-group">
 		                            <label class="col-md-2 control-label" for="InputFile">文件上传</label>
 		                            <div class="col-md-4">
-		                            	<input type="file" id="InputFile" class="input-sm" multiple="multiple" >
+		                            	<input type="file" name="InputFile" id="InputFile" class="input-sm" multiple="multiple" >
 		                            </div>
 		                        </div>
 		                    </g:form>
