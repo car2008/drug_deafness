@@ -1,18 +1,28 @@
 package com.capitalbiotech.drugdeafness
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured(['permitAll'])
+import java.text.SimpleDateFormat
+
+import org.springframework.security.authentication.AccountExpiredException
+import org.springframework.security.authentication.CredentialsExpiredException
+import org.springframework.security.authentication.DisabledException
+import org.springframework.security.authentication.LockedException
+import org.springframework.security.core.context.SecurityContextHolder as SCH
+import org.springframework.security.web.WebAttributes
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+
+@Secured(['ROLE_USER'])
 class ResultController {
+	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	
+	def utilsService
 	def springSecurityService
-	def grailsApplication
 	
     def index() {
-		//render view: 'result'
-		redirect(action: "listrecord", params: params)
+		redirect(action:"listRecord",params: params)
 	}
 	
-	def listrecord(){
+	def listRecord(){
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		
 		if (!params.offset) {
@@ -25,17 +35,13 @@ class ResultController {
 			params.sort = 'dateCreated'
 		}
 
-		def currentUser = springSecurityService.currentUser
 		def recordInstanceList = Record.executeQuery("SELECT record FROM Record record WHERE record.recordCatagrory='CATAGRORY_RESULT' ORDER BY record.${params.sort} ${params.order}",[offset: params.offset,max:params.max])
 		
 		def recordInstanceTotal = Record.countByRecordCatagrory("CATAGRORY_RESULT")
 		def allRecordInstanceTotal = recordInstanceTotal
-		
-		render view:'reslut',model:
-									[ 
-									  recordInstanceList:recordInstanceList,
-								      allRecordInstanceTotal:allRecordInstanceTotal,
-									]
+		println recordInstanceList
+		println allRecordInstanceTotal
+		render view: 'result', model: [recordInstanceList: recordInstanceList,allRecordInstanceTotal:allRecordInstanceTotal,]
 	}
 	
 	def uploadOne() {
@@ -58,7 +64,7 @@ class ResultController {
 	}
 	
 	def uploadBatch() {
-		//render view: 'result'
+		render view: 'result'
 	}
 	
 	def showpdf() {

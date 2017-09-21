@@ -1,3 +1,5 @@
+<%@ page import="com.capitalbiotech.drugdeafness.Result" %>
+<%@ page import="com.capitalbiotech.drugdeafness.Record" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 	<head>
@@ -70,6 +72,16 @@
 	                    </ul>
 	                    <div class="specialForm" >
 	                    	<table class="table" id="" >
+	                			<g:if test="${flash.message}">
+									<div class="alert alert-info">
+										${flash.message}
+									</div>
+								</g:if>
+								<g:if test="${flash.error}">
+									<div class="alert alert-error">
+										${flash.error}
+									</div>
+								</g:if>
 	                			<thead>
 									<tr>
 										<th>
@@ -77,13 +89,13 @@
 										</th>
 										<th>上传人</th>
 										<th>上传文件名称</th>
-										<th>上传成功(次)</th>
-										<th>上传失败(次)</th>
+										<th>上传成功(条)</th>
+										<th>上传失败(条)</th>
 										<th>上传日期</th>
 				                	</tr>
 			                	</thead>	
 		                		<tbody>
-	                				<g:form name=""  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
+	                				<g:form name="recordForm"  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
 										<g:each in="${recordInstanceList}" var="recordInstance">
 											<tr>
 												<th>
@@ -93,7 +105,7 @@
 									    		<td>${recordInstance?.recordName}</td>
 									    		<td>${recordInstance?.successNum}</td>
 									    		<td>${recordInstance?.failedNum}</td>
-									    		<td>${recordInstance?.startTime}</td>
+									    		<td><g:formatDate format="yyyy-MM-dd" date="${recordInstance?.startTime}" /></td>
 											</tr>
 										</g:each>
 									</g:form>
@@ -101,14 +113,14 @@
 		                	</table>
 	                   	</div>
 	                    <div class="specialForm" style="display:none;">
-		                    <form id="form-multiple" class="form-horizontal optForm" enctype="multipart/form-data" action="saveByBatch" method="post">
+		                    <g:form id="form-multiple" class="form-horizontal optForm" url="[action:'saveByBatch',controller:'result']" >
 		                        <div class="form-group">
 		                            <label class="col-md-2 control-label" for="InputFile">文件上传</label>
 		                            <div class="col-md-4">
 		                                <input type="file" id="InputFile" class="input-sm" multiple="multiple">
 		                            </div>
 		                        </div>
-		                    </form>
+		                    </g:form>
 		                    <div id="fileList" class="file-info" style="width: 50%;display:none;">
 		                    	<table id="fileListTable" class="table table-bordered table-condensed">
 		                    		<thead><tr><td colspan="2"><label>已选择文件</label></td></tr></thead>
@@ -121,7 +133,7 @@
 		                    </div>
 		                 </div>
 	                     <div class="specialForm" style="display:none;">
-	                        <form id="form-single" class="form-horizontal optForm" method="post" action="uploadOne">
+	                        <g:form id="form-single" class="form-horizontal optForm" url="[action:'uploadOne',controller:'result']">
 	                            <div class="form-group">
 	                                <label class="col-md-2 col-md-offset-1 control-label">位置</label>
 	                                <div class="col-md-3">
@@ -162,7 +174,7 @@
 	                                    <input id="comment" name="comment" type="text" class="form-control input-sm">
 	                                </div>
 	                            </div>
-	                        </form>
+	                        </g:form>
 	                        <div style="margin-top:30px;">
 		                        <button class="btn btn-default">清空</button>
 		                        <button id="submitBtn_single" class="btn btn-success" style="float: right;">提交</button>
