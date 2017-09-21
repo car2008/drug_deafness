@@ -142,6 +142,7 @@ environments {
         grails.converters.default.pretty.print = true
         cbt_health.dir.root                     = "/work/cbt_health/data"
         grails.gsp.enable.reload               = true
+		project.file.upload.path="D:\\shiyanshuju\\bpms-project-upload"
     }
     production {
         cbt_health.dev_mode                     = false
@@ -150,6 +151,7 @@ environments {
         grails.converters.default.pretty.print = false
         grails.serverURL                       = "http://cloud.capitalbiotech.com/drug_deafness"
         grails.gsp.enable.reload               = true
+		project.file.upload.path="/data"
     }
 }
 

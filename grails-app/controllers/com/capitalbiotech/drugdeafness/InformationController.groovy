@@ -1,8 +1,9 @@
 package com.capitalbiotech.drugdeafness
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured(['permitAll'])
+@Secured(['ROLE_USER'])
 class InformationController {
+	def utilsService
 	def springSecurityService
 	
     def index() {
