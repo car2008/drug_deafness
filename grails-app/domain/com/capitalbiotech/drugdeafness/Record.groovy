@@ -14,8 +14,17 @@ class Record {
 	Integer failedNum
 	String recordLog
 	String comment
+	Date dateCreated
+	Date lastUpdated
 	
+	public static final String CATAGRORY_RESULT = "WAY_USUAL"
+	public static final String CATAGRORY_INFORMATION = "CATAGRORY_INFORMATION"
+
     static constraints = {
+		recordCatagrory inList: [
+			CATAGRORY_RESULT,
+			CATAGRORY_INFORMATION,
+		]
 		uploadUser blank: true,nullable: true
 		recordName blank: true,nullable: true
 		recordId blank: true,nullable: true

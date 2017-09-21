@@ -64,12 +64,12 @@
 	            <div class="col-md-10">
 	                <div class="clearfix">
 	                    <ul class="nav nav-tabs">
-	                    	<li role="presentation"><a>上传记录</a></li>
-	                        <li role="presentation" class="active" ><a>批量上传</a></li>
+	                    	<li role="presentation" class="active"><a>上传记录</a></li>
+	                        <li role="presentation" ><a>批量上传</a></li>
 	                        <li role="presentation"><a>单个录入</a></li>
 	                    </ul>
 	                </div>
-	                <div class="specialForm" style="display:none;">
+	                <div class="specialForm" >
                     	<table class="table" id="" >
                 			<thead>
 								<tr>
@@ -80,6 +80,7 @@
 									<th>上传文件名称</th>
 									<th>上传成功(次)</th>
 									<th>上传失败(次)</th>
+									<th>上传日期</th>
 			                	</tr>
 		                	</thead>	
 	                		<tbody>
@@ -92,12 +93,13 @@
 							    		<td></td>
 							    		<td></td>
 							    		<td></td>
+							    		<td></td>
 									</tr>
 								</g:form>
 	                		</tbody>
 	                	</table>
                    	</div>
-	                <div class="specialForm">
+	                <div class="specialForm" style="display:none;">
 	                    <form id="form-multiple" class="form-horizontal optForm"  enctype="multipart/form-data" action="saveByBatch" method="post">
 	                        <div class="form-group">
 	                            <label class="col-md-2 control-label" for="InputFile">文件上传</label>

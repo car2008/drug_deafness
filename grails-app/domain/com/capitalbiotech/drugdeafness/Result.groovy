@@ -17,6 +17,8 @@ class Result {
 	String checker
 	String assessor
 	String pdfcomment
+	Date dateCreated
+	Date lastUpdated
 	
     static constraints = {
 		 sampleNum blank: false,nullable: false

@@ -4,8 +4,6 @@ import grails.plugin.springsecurity.SpringSecurityUtils
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import com.capitalbiotech.drugdeafness.Notification;
-import com.capitalbiotech.drugdeafness.Preference;
 import com.capitalbiotech.drugdeafness.User;
 
 import grails.converters.JSON

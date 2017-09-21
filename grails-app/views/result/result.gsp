@@ -64,15 +64,44 @@
 	            <div class="col-md-10">
 	                <div class="clearfix">
 	                    <ul class="nav nav-tabs">
-	                    	<li role="presentation"><a>上传记录</a></li>
-	                        <li role="presentation" class="active"><a>批量上传</a></li>
+	                    	<li role="presentation" class="active"><a>上传记录</a></li>
+	                        <li role="presentation" ><a>批量上传</a></li>
 	                        <li role="presentation"><a>单个录入</a></li>
 	                    </ul>
-	                    <div class="specialForm" style="display:none;">
-	                    	上传记录
+	                    <div class="specialForm" >
+	                    	<table class="table" id="" >
+	                			<thead>
+									<tr>
+										<th>
+											<g:checkBox name="selectedAll" id="selectedAll" />
+										</th>
+										<th>上传人</th>
+										<th>上传文件名称</th>
+										<th>上传成功(次)</th>
+										<th>上传失败(次)</th>
+										<th>上传日期</th>
+				                	</tr>
+			                	</thead>	
+		                		<tbody>
+	                				<g:form name=""  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
+										<g:each in="${recordInstanceList}" var="recordInstance">
+											<tr>
+												<th>
+													<g:checkBox name="" />
+												</th>
+									    		<td>${recordInstance?.uploadUser.name}</td>
+									    		<td>${recordInstance?.recordName}</td>
+									    		<td>${recordInstance?.successNum}</td>
+									    		<td>${recordInstance?.failedNum}</td>
+									    		<td>${recordInstance?.startTime}</td>
+											</tr>
+										</g:each>
+									</g:form>
+		                		</tbody>
+		                	</table>
 	                   	</div>
-	                    <div class="specialForm">
-		                    <form id="form-multiple" class="form-horizontal optForm" >
+	                    <div class="specialForm" style="display:none;">
+		                    <form id="form-multiple" class="form-horizontal optForm" enctype="multipart/form-data" action="saveByBatch" method="post">
 		                        <div class="form-group">
 		                            <label class="col-md-2 control-label" for="InputFile">文件上传</label>
 		                            <div class="col-md-4">
@@ -92,7 +121,7 @@
 		                    </div>
 		                 </div>
 	                     <div class="specialForm" style="display:none;">
-	                        <form id="form-single" class="form-horizontal optForm" method="post">
+	                        <form id="form-single" class="form-horizontal optForm" method="post" action="uploadOne">
 	                            <div class="form-group">
 	                                <label class="col-md-2 col-md-offset-1 control-label">位置</label>
 	                                <div class="col-md-3">
@@ -136,7 +165,7 @@
 	                        </form>
 	                        <div style="margin-top:30px;">
 		                        <button class="btn btn-default">清空</button>
-		                        <button class="btn btn-success" style="float: right;">提交</button>
+		                        <button id="submitBtn_single" class="btn btn-success" style="float: right;">提交</button>
 	                        </div>
 	                    </div>
 	                </div>
@@ -166,6 +195,10 @@
 		    $("#submitBtn_multiple").on("click",function(){
 				$("#form-multiple").submit();
 		    });
+		    $("#submitBtn_single").on("click",function(){
+				$("#form-single").submit();
+		    });
+		    
 		    $("#InputFile").on("change",function(e){
 		    	checkfile(this.id);
 		    	selectFile(e);
