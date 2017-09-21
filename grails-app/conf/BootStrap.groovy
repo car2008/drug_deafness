@@ -6,7 +6,7 @@ import javax.script.ScriptEngineManager
 
 import grails.plugin.springsecurity.SpringSecurityUtils
 
-import com.capitalbiotech.drugdeafness.Preference
+
 import com.capitalbiotech.drugdeafness.Role
 import com.capitalbiotech.drugdeafness.User
 import com.capitalbiotech.drugdeafness.Utils;

@@ -17,6 +17,8 @@ class Information {
 	String phoneNum
 	String remark
 	Set<Result> results
+	Date dateCreated
+	Date lastUpdated
 	
     static constraints = {
 		sampleNum blank: false,nullable: false
