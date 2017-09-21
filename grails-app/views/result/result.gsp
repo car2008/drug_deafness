@@ -92,6 +92,7 @@
 		                        <button id="submitBtn_multiple" class="btn btn-success" style="float: right;" >提交</button>
 		                    </div>
 		                </div>
+		                
 	                    <div class="specialForm" style="display:none;">
 	                        <g:form id="form-single" class="form-horizontal optForm" url="[action:'uploadOne',controller:'result']" method="post" enctype="multipart/form-data">
 	                            <div class="form-group">
@@ -130,6 +131,7 @@
 		                        <button id="submitBtn_single" class="btn btn-success" style="float: right;">提交</button>
 	                        </div>
 	                    </div>
+	                    
 	                	<div class="specialForm" style="display:none;">
 	                    	<table class="table" id="" >
 	                			<g:if test="${flash.message}">
