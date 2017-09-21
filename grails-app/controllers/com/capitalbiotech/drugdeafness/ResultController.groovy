@@ -1,23 +1,14 @@
 package com.capitalbiotech.drugdeafness
 import grails.plugin.springsecurity.annotation.Secured
 
-import java.text.SimpleDateFormat
-
-import org.springframework.security.authentication.AccountExpiredException
-import org.springframework.security.authentication.CredentialsExpiredException
-import org.springframework.security.authentication.DisabledException
-import org.springframework.security.authentication.LockedException
-import org.springframework.security.core.context.SecurityContextHolder as SCH
-import org.springframework.security.web.WebAttributes
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.hssf.usermodel.HSSFCell
+import org.apache.poi.hssf.usermodel.HSSFWorkbook
+import org.apache.poi.ss.usermodel.Cell
+import org.apache.poi.ss.usermodel.Row
+import org.apache.poi.ss.usermodel.Sheet
+import org.apache.poi.ss.usermodel.Workbook
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.apache.tools.ant.Project
 
 @Secured(['ROLE_USER'])
 class ResultController {
@@ -72,11 +63,12 @@ class ResultController {
 	
 	def uploadBatch() {
 		def nameArray=upload()
+		println nameArray[1]
 		def currentUser = springSecurityService.currentUser
 		def startTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
 		int successNum = 0 
 		int failedNum = 0
-		def str=getStringFromXml("C:\\Users\\Administrator\\Desktop\\drugdeafness\\给张云峰\\2.xls")
+		def str=getStringFromXml(nameArray[1])
 		str=str.replaceFirst("位置","location");
 		str=str.replaceFirst("样品编号","sampleNum");
 		str=str.replaceFirst("样品类型","sampleBelong");
@@ -210,7 +202,7 @@ class ResultController {
 			 filePath=makePath(fileName,userDir.toString())      //防止单个文件夹下文件过多
 			 f.transferTo(new File(filePath,fileName))
 		}
-		nameArray[1] = fileName
+		nameArray[1] = filePath+"\\"+fileName
 		return nameArray
 	}
 	

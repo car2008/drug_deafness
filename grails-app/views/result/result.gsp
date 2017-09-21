@@ -113,7 +113,7 @@
 		                	</table>
 	                   	</div>
 	                    <div class="specialForm" style="display:none;">
-		                    <g:form id="form-multiple" class="form-horizontal optForm" url="[action:'uploadBatch',controller:'result']" >
+		                    <g:form id="form-multiple" class="form-horizontal optForm" method="post" enctype="multipart/form-data" url="[action:'uploadBatch',controller:'result']" >
 		                        <div class="form-group">
 		                            <label class="col-md-2 control-label" for="InputFile">文件上传</label>
 		                            <div class="col-md-4">
@@ -133,7 +133,7 @@
 		                    </div>
 		                 </div>
 	                     <div class="specialForm" style="display:none;">
-	                        <g:form id="form-single" class="form-horizontal optForm" url="[action:'uploadOne',controller:'result']">
+	                        <g:form id="form-single" class="form-horizontal optForm" url="[action:'uploadOne',controller:'result']" method="post" enctype="multipart/form-data">
 	                            <div class="form-group">
 	                                <label class="col-md-2 col-md-offset-1 control-label">位置</label>
 	                                <div class="col-md-3">
