@@ -56,6 +56,7 @@
 	        <div class="row">
 	            <div class="col-md-2">
 	                <ul id="nav-page" class="nav">
+	                	<li><a href="">信息列表</a></li>
                         <li><a href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
                         <li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
                         <li><a class="current" href="${createLink(controller: 'result', action: 'showpdf')}">导出pdf报告</a></li>

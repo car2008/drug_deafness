@@ -56,6 +56,7 @@
 	        <div class="row">
 	            <div class="col-md-2">
                     <ul id="nav-page" class="nav">
+                    	<li><a href="">信息列表</a></li>
                         <li><a class="current" href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
                         <li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
                         <li><a href="${createLink(controller: 'result', action: 'showpdf')}">导出pdf报告</a></li>
@@ -64,47 +65,18 @@
 	            <div class="col-md-10">
 	                <div class="clearfix">
 	                    <ul class="nav nav-tabs">
-	                    	<li role="presentation" class="active"><a>上传记录</a></li>
-	                        <li role="presentation" ><a>批量上传</a></li>
+	                        <li role="presentation"  class="active"><a>批量上传</a></li>
 	                        <li role="presentation"><a>单个录入</a></li>
+	                        <li role="presentation"><a>上传记录</a></li>
 	                    </ul>
 	                </div>
-	                <div class="specialForm" >
-                    	<table class="table" id="" >
-                			<thead>
-								<tr>
-									<th>
-										<g:checkBox name="selectedAll" id="selectedAll" />
-									</th>
-									<th>上传人</th>
-									<th>上传文件名称</th>
-									<th>上传成功(次)</th>
-									<th>上传失败(次)</th>
-									<th>上传日期</th>
-			                	</tr>
-		                	</thead>	
-	                		<tbody>
-                				<g:form name=""  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
-									<tr>
-										<th>
-											<g:checkBox name="" />
-										</th>
-							    		<td></td>
-							    		<td></td>
-							    		<td></td>
-							    		<td></td>
-							    		<td></td>
-									</tr>
-								</g:form>
-	                		</tbody>
-	                	</table>
-                   	</div>
-	                <div class="specialForm" style="display:none;">
+	                
+	                <div class="specialForm">
 	                    <form id="form-multiple" class="form-horizontal optForm"  enctype="multipart/form-data" action="saveByBatch" method="post">
 	                        <div class="form-group">
 	                            <label class="col-md-2 control-label" for="InputFile">文件上传</label>
 	                            <div class="col-md-4">
-	                                <input type="file" id="InputFile" class="input-sm" multiple="multiple" >
+	                                <input type="file" name="InputFile" id="InputFile" class="input-sm" multiple="multiple" >
 	                            </div>
 	                        </div>
 	                    </form>
@@ -120,7 +92,7 @@
 	                    </div>
 	                </div>
 
-	                <div class="specialForm" style="display: none;">
+	                <div class="specialForm" style="display:none;">
 	                    <form id="form-single" class="form-horizontal optForm">
 	                        <div class="form-group">
 	                            <label class="col-md-2 col-md-offset-1 control-label">样本编号</label>
@@ -188,6 +160,37 @@
 	                        <button id="" class="btn btn-success" style="float: right;" >提交</button>
 	                    </div>
 	                </div>
+	            	
+	            	<div class="specialForm" style="display:none;">
+                    	<table class="table" id="" >
+                			<thead>
+								<tr>
+									<th>
+										<g:checkBox name="selectedAll" id="selectedAll" />
+									</th>
+									<th>上传人</th>
+									<th>上传文件名称</th>
+									<th>上传成功(次)</th>
+									<th>上传失败(次)</th>
+									<th>上传日期</th>
+			                	</tr>
+		                	</thead>	
+	                		<tbody>
+                				<g:form name=""  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
+									<tr>
+										<th>
+											<g:checkBox name="" />
+										</th>
+							    		<td></td>
+							    		<td></td>
+							    		<td></td>
+							    		<td></td>
+							    		<td></td>
+									</tr>
+								</g:form>
+	                		</tbody>
+	                	</table>
+                   	</div>
 	            </div>
 	        </div>
 	    </div>
@@ -205,7 +208,7 @@
 		    $("#clearBtn_multiple").on("click",function(){
 		    	$("#fileListTable tbody").empty();
             	$("#fileList").hide();
-		    	$("#InputFile").replaceWith('<input type="file" id="InputFile" class="input-sm" multiple="multiple" >');
+		    	$("#InputFile").replaceWith('<input type="file" name="InputFile" id="InputFile" class="input-sm" multiple="multiple" >');
     		    $('#InputFile').on('change', function (e) {
     		    	checkfile(this.id);
     		    	selectFile(e);
@@ -237,7 +240,7 @@
 		            	$("#fileList").hide();
 		                alert("请选择正确的格式上传：csv excel或者压缩文件");
 		                //为避免type=file控件的change()只能执行一次，更换控件，重新绑定事件
-		                $("#InputFile").replaceWith('<input type="file" id="InputFile" class="input-sm" multiple="multiple" >');
+		                $("#InputFile").replaceWith('<input type="file" name="InputFile" id="InputFile" class="input-sm" multiple="multiple">');
 		                $("#form-multiple").on("change","#InputFile",function(e){
 		    		    	checkfile(this.id);
 		    		    	selectFile(e);

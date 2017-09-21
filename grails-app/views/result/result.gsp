@@ -58,6 +58,7 @@
 	        <div class="row">
 	            <div class="col-md-2">
 	                <ul id="nav-page" class="nav">
+	                	<li><a href="">信息列表</a></li>
                         <li><a href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
                         <li><a class="current" href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
                         <li><a href="${createLink(controller: 'result', action: 'showpdf')}">导出pdf报告</a></li>
@@ -66,11 +67,70 @@
 	            <div class="col-md-10">
 	                <div class="clearfix">
 	                    <ul class="nav nav-tabs">
-	                    	<li role="presentation" class="active"><a>上传记录</a></li>
-	                        <li role="presentation" ><a>批量上传</a></li>
+	                        <li role="presentation" class="active"><a>批量上传</a></li>
 	                        <li role="presentation"><a>单个录入</a></li>
+	                        <li role="presentation"><a>上传记录</a></li>
 	                    </ul>
-	                    <div class="specialForm" >
+	                    
+	                    <div class="specialForm">
+		                    <g:form id="form-multiple" class="form-horizontal optForm" method="post" enctype="multipart/form-data" url="[action:'uploadBatch',controller:'result']" >
+		                        <div class="form-group">
+		                            <label class="col-md-2 control-label" for="InputFile">文件上传</label>
+		                            <div class="col-md-4">
+		                            	<input type="file" name="InputFile" id="InputFile" class="input-sm" multiple="multiple" >
+		                            </div>
+		                        </div>
+		                    </g:form>
+		                    <div id="fileList" class="file-info" style="width: 50%;display:none;">
+		                    	<table id="fileListTable" class="table table-bordered table-condensed">
+		                    		<thead><tr><td colspan="2"><label>已选择文件</label></td></tr></thead>
+		                    		<tbody></tbody>
+		                    	</table>
+		                    </div>
+		                    <div style="margin-top:30px;">
+		                        <button id="clearBtn_multiple" class="btn btn-default">清空</button>
+		                        <button id="submitBtn_multiple" class="btn btn-success" style="float: right;" >提交</button>
+		                    </div>
+		                </div>
+	                    <div class="specialForm" style="display:none;">
+	                        <g:form id="form-single" class="form-horizontal optForm" url="[action:'uploadOne',controller:'result']" method="post" enctype="multipart/form-data">
+	                            <div class="form-group">
+	                                <label class="col-md-2 col-md-offset-1 control-label">样品编号</label>
+	                                <div class="col-md-3">
+	                                    <input id="sampleNum" name="sampleNum" type="text" class="form-control input-sm">
+	                                </div>
+	                                <label class="col-md-2 control-label">FAM Ct</label>
+	                                <div class="col-md-3">
+	                                    <input id="famCt" name="famCt" type="text" class="form-control input-sm">
+	                                </div>
+	                            </div>
+	                            <div class="form-group">
+	                                <label class="col-md-2 col-md-offset-1 control-label">VIC Ct</label>
+	                                <div class="col-md-3">
+	                                    <input id="vicCt" name="vicCt" type="text" class="form-control input-sm">
+	                                </div>
+	                                <label class="col-md-2  control-label">NED Ct</label>
+	                                <div class="col-md-3">
+	                                    <input id="nedCt" name="nedCt" type="text" class="form-control input-sm">
+	                                </div>
+	                            </div>
+	                            <div class="form-group">
+	                                <label class="col-md-2 col-md-offset-1 control-label">检测结果</label>
+	                                <div class="col-md-3">
+	                                    <input id="detectedResult" name="detectedResult" type="text" class="form-control input-sm">
+	                                </div>
+	                                <label class="col-md-2  control-label">备注</label>
+	                                <div class="col-md-3">
+	                                    <input id="comment" name="comment" type="text" class="form-control input-sm">
+	                                </div>
+	                            </div>
+	                        </g:form>
+	                        <div style="margin-top:30px;">
+		                        <button class="btn btn-default">清空</button>
+		                        <button id="submitBtn_single" class="btn btn-success" style="float: right;">提交</button>
+	                        </div>
+	                    </div>
+	                	<div class="specialForm" style="display:none;">
 	                    	<table class="table" id="" >
 	                			<g:if test="${flash.message}">
 									<div class="alert alert-info">
@@ -112,74 +172,6 @@
 		                		</tbody>
 		                	</table>
 	                   	</div>
-	                    <div class="specialForm" style="display:none;">
-		                    <g:form id="form-multiple" class="form-horizontal optForm" method="post" enctype="multipart/form-data" url="[action:'uploadBatch',controller:'result']" >
-		                        <div class="form-group">
-		                            <label class="col-md-2 control-label" for="InputFile">文件上传</label>
-		                            <div class="col-md-4">
-		                            	<input type="file" id="InputFile" class="input-sm" multiple="multiple" >
-		                            </div>
-		                        </div>
-		                    </g:form>
-		                    <div id="fileList" class="file-info" style="width: 50%;display:none;">
-		                    	<table id="fileListTable" class="table table-bordered table-condensed">
-		                    		<thead><tr><td colspan="2"><label>已选择文件</label></td></tr></thead>
-		                    		<tbody></tbody>
-		                    	</table>
-		                    </div>
-		                    <div style="margin-top:30px;">
-		                        <button id="clearBtn_multiple" class="btn btn-default">清空</button>
-		                        <button id="submitBtn_multiple" class="btn btn-success" style="float: right;" >提交</button>
-		                    </div>
-		                 </div>
-	                     <div class="specialForm" style="display:none;">
-	                        <g:form id="form-single" class="form-horizontal optForm" url="[action:'uploadOne',controller:'result']" method="post" enctype="multipart/form-data">
-	                            <div class="form-group">
-	                                <label class="col-md-2 col-md-offset-1 control-label">位置</label>
-	                                <div class="col-md-3">
-	                                    <input id="location" name="location" type="text" class="form-control input-sm">
-	                                </div>
-	                                <label class="col-md-2 control-label">样品编号</label>
-	                                <div class="col-md-3">
-	                                    <input id="sampleNum" name="sampleNum" type="text" class="form-control input-sm">
-	                                </div>
-	                            </div>
-	                            <div class="form-group">
-	                                <label class="col-md-2 col-md-offset-1 control-label">样品类型</label>
-	                                <div class="col-md-3">
-	                                    <input id="sampleBelong" name="sampleBelong" type="text" class="form-control input-sm">
-	                                </div>
-	                                <label class="col-md-2 control-label">FAM Ct</label>
-	                                <div class="col-md-3">
-	                                    <input id="famCt" name="famCt" type="text" class="form-control input-sm">
-	                                </div>
-	                            </div>
-	                            <div class="form-group">
-	                                <label class="col-md-2 col-md-offset-1 control-label">VIC Ct</label>
-	                                <div class="col-md-3">
-	                                    <input id="vicCt" name="vicCt" type="text" class="form-control input-sm">
-	                                </div>
-	                                <label class="col-md-2  control-label">NED Ct</label>
-	                                <div class="col-md-3">
-	                                    <input id="nedCt" name="nedCt" type="text" class="form-control input-sm">
-	                                </div>
-	                            </div>
-	                            <div class="form-group">
-	                                <label class="col-md-2 col-md-offset-1 control-label">检测结果</label>
-	                                <div class="col-md-3">
-	                                    <input id="detectedResult" name="detectedResult" type="text" class="form-control input-sm">
-	                                </div>
-	                                <label class="col-md-2  control-label">备注</label>
-	                                <div class="col-md-3">
-	                                    <input id="comment" name="comment" type="text" class="form-control input-sm">
-	                                </div>
-	                            </div>
-	                        </g:form>
-	                        <div style="margin-top:30px;">
-		                        <button class="btn btn-default">清空</button>
-		                        <button id="submitBtn_single" class="btn btn-success" style="float: right;">提交</button>
-	                        </div>
-	                    </div>
 	                </div>
 	            </div>
 	        </div>
@@ -197,7 +189,7 @@
 		    $("#clearBtn_multiple").on("click",function(){
 		    	$("#fileListTable tbody").empty();
             	$("#fileList").hide();
-		    	$("#InputFile").replaceWith('<input type="file" id="InputFile" class="input-sm" multiple="multiple" >');
+		    	$("#InputFile").replaceWith('<input type="file" name="InputFile" id="InputFile" class="input-sm" multiple="multiple">');
     		    $('#InputFile').on('change', function (e) {
     		    	checkfile(this.id);
     		    	selectFile(e);
@@ -233,7 +225,7 @@
 		            	$("#fileList").hide();
 		                alert("请选择正确的格式上传：csv excel或者压缩文件");
 		                //为避免type=file控件的change()只能执行一次，更换控件，重新绑定事件
-		                $("#InputFile").replaceWith('<input type="file" id="InputFile" class="input-sm" multiple="multiple" >');
+		                $("#InputFile").replaceWith('<input type="file" name="InputFile" id="InputFile" class="input-sm" multiple="multiple">');
 		                $("#form-multiple").on("change","#InputFile",function(e){
 		    		    	checkfile(this.id);
 		    		    	selectFile(e);
