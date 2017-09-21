@@ -113,11 +113,11 @@
 		                	</table>
 	                   	</div>
 	                    <div class="specialForm" style="display:none;">
-		                    <g:form id="form-multiple" class="form-horizontal optForm" url="[action:'saveByBatch',controller:'result']" >
+		                    <g:form id="form-multiple" class="form-horizontal optForm" url="[action:'uploadBatch',controller:'result']" >
 		                        <div class="form-group">
 		                            <label class="col-md-2 control-label" for="InputFile">文件上传</label>
 		                            <div class="col-md-4">
-		                                <input type="file" id="InputFile" class="input-sm" multiple="multiple">
+		                                <input type="file" name="myFile" id="myFile" class="input-sm" multiple="multiple">
 		                            </div>
 		                        </div>
 		                    </g:form>
