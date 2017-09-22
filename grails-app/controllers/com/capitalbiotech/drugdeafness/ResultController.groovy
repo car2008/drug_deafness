@@ -1,5 +1,6 @@
 package com.capitalbiotech.drugdeafness
 import grails.plugin.springsecurity.annotation.Secured
+import java.text.DecimalFormat
 
 import org.apache.poi.hssf.usermodel.HSSFCell
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
@@ -168,7 +169,8 @@ class ResultController {
 					switch (cell.getCellType()) {   //根据cell中的类型来输出数据
 					case HSSFCell.CELL_TYPE_NUMERIC:
 						//System.out.println(cell.getNumericCellValue());
-						sb.append(cell.getNumericCellValue()+"\t");
+						DecimalFormat df = new DecimalFormat("0");
+						sb.append(df.format(cell.getNumericCellValue())+"\t");
 						break;
 					case HSSFCell.CELL_TYPE_STRING:
 						//System.out.println(cell.getStringCellValue());

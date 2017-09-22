@@ -1,5 +1,7 @@
 package com.capitalbiotech.drugdeafness
 import grails.plugin.springsecurity.annotation.Secured
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import org.apache.poi.hssf.usermodel.HSSFCell
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Cell
@@ -152,7 +154,8 @@ class InformationController {
 					switch (cell.getCellType()) {   //根据cell中的类型来输出数据
 					case HSSFCell.CELL_TYPE_NUMERIC:
 						//System.out.println(cell.getNumericCellValue());
-						sb.append(cell.getNumericCellValue()+"\t");
+						DecimalFormat df = new DecimalFormat("0");                 //数字格式，防止长数字成为科学计数法形式，或者int变为double形式
+						sb.append(df.format(cell.getNumericCellValue())+"\t");
 						break;
 					case HSSFCell.CELL_TYPE_STRING:
 						//System.out.println(cell.getStringCellValue());
