@@ -171,36 +171,41 @@
 	                </div>
 	            	
 	            	<div class="specialForm" style="display:none;">
-                    	<table class="table" id="" >
-                			<thead>
-								<tr>
-									<th>
-										<g:checkBox name="selectedAll" id="selectedAll" />
-									</th>
-									<th>上传人</th>
-									<th>上传文件名称</th>
-									<th>上传成功(条)</th>
-									<th>上传失败(条)</th>
-									<th>上传日期</th>
-			                	</tr>
-		                	</thead>	
-	                		<tbody>
-                				<g:form name="recordForm"  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
-									<g:each in="${recordInstanceList}" var="recordInstance">
-										<tr>
-											<th>
-												<g:checkBox name="" />
-											</th>
-								    		<td>${recordInstance?.uploadUser.name}</td>
-								    		<td>${recordInstance?.recordName}</td>
-								    		<td>${recordInstance?.successNum}</td>
-								    		<td>${recordInstance?.failedNum}</td>
-								    		<td><g:formatDate format="yyyy-MM-dd" date="${recordInstance?.startTime}" /></td>
-										</tr>
-									</g:each>
-								</g:form>
-	                		</tbody>
-	                	</table>
+	            		<div class="table-container">
+	            			<table class="table" id="" >
+	                			<thead>
+									<tr>
+										<th>
+											<g:checkBox name="selectedAll" id="selectedAll" />
+										</th>
+										<th>上传人</th>
+										<th>上传文件名称</th>
+										<th>上传成功(条)</th>
+										<th>上传失败(条)</th>
+										<th>上传日期</th>
+				                	</tr>
+			                	</thead>	
+		                		<tbody>
+	                				<g:form name="recordForm"  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
+										<g:each in="${recordInstanceList}" var="recordInstance">
+											<tr>
+												<th>
+													<g:checkBox name="" />
+												</th>
+									    		<td>${recordInstance?.uploadUser.name}</td>
+									    		<td>${recordInstance?.recordName}</td>
+									    		<td>${recordInstance?.successNum}</td>
+									    		<td>${recordInstance?.failedNum}</td>
+									    		<td><g:formatDate format="yyyy-MM-dd" date="${recordInstance?.startTime}" /></td>
+											</tr>
+										</g:each>
+									</g:form>
+		                		</tbody>
+		                	</table>
+	            		</div>
+	            		<%--<div class="pagination">
+							<cbt_health:paginate total="${recordInstanceList}" params="${params}" />
+						</div>--%>
                    	</div>
 	            </div>
 	        </div>
