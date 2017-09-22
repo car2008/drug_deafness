@@ -21,6 +21,26 @@ class ResultController {
 		redirect(action: "listRecord",flash:flash)
 	}
 	
+	def list(){
+		params.max = Math.min(params.max ? params.int('max') : 10, 100)
+		
+		if (!params.offset) {
+			params.offset = 0
+		}
+		if (!params.order) {
+			params.order = 'desc'
+		}
+		if (!params.sort) {
+			params.sort = 'dateCreated'
+		}
+
+		def resultInstanceList = Result.list(params)
+		
+		def resultInstanceTotal = Result.count()
+		def allResultInstanceTotal = resultInstanceTotal
+		render view: 'list', model: [resultInstanceList: resultInstanceList,allResultInstanceTotal:allResultInstanceTotal,]
+	}
+	
 	def listRecord(){
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		
@@ -121,10 +141,6 @@ class ResultController {
 			record.save(flush: true)
 			redirect(action: "index")
 		}
-	}
-	
-	def showpdf() {
-		render view: 'pdf'
 	}
 	
 	public static String getStringFromXml(String fileName){
