@@ -58,7 +58,7 @@
 	        <div class="row">
 	            <div class="col-md-2">
 	                <ul id="nav-page" class="nav">
-	                	<li><a href="">信息列表</a></li>
+	                	<li><a href="${createLink(controller: 'information', action: 'list')}">信息列表</a></li>
                         <li><a href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
                         <li><a class="current" href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
                         <li><a href="${createLink(controller: 'result', action: 'showpdf')}">导出pdf报告</a></li>
@@ -71,7 +71,16 @@
 	                        <li role="presentation"><a>单个录入</a></li>
 	                        <li role="presentation"><a>上传记录</a></li>
 	                    </ul>
-	                    
+	                    <g:if test="${flash.message}">
+							<div class="alert alert-info">
+								${flash.message}
+							</div>
+						</g:if>
+						<g:if test="${flash.error}">
+							<div class="alert alert-error">
+								${flash.error}
+							</div>
+						</g:if>
 	                    <div class="specialForm">
 		                    <g:form id="form-multiple" class="form-horizontal optForm" method="post" enctype="multipart/form-data" url="[action:'uploadBatch',controller:'result']" >
 		                        <div class="form-group">
@@ -134,16 +143,6 @@
 	                    
 	                	<div class="specialForm" style="display:none;">
 	                    	<table class="table" id="" >
-	                			<g:if test="${flash.message}">
-									<div class="alert alert-info">
-										${flash.message}
-									</div>
-								</g:if>
-								<g:if test="${flash.error}">
-									<div class="alert alert-error">
-										${flash.error}
-									</div>
-								</g:if>
 	                			<thead>
 									<tr>
 										<th>

@@ -8,7 +8,6 @@ import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import org.apache.tools.ant.Project
 
 @Secured(['ROLE_USER'])
 class ResultController {
@@ -19,7 +18,7 @@ class ResultController {
 	def grailsApplication
 	
     def index() {
-		redirect(action:"listRecord",params: params)
+		redirect(action: "listRecord",flash:flash)
 	}
 	
 	def listRecord(){
@@ -47,52 +46,81 @@ class ResultController {
 		def currentUser = springSecurityService.currentUser
 		def resultInstance = new Result(params)
 		def informationInstance = Information.findBySampleNum(params.sampleNum)
-		if(informationInstance) resultInstance.information = informationInstance
+		if(informationInstance && !Result.findBySampleNum(params.sampleNum)) {
+			resultInstance.information = informationInstance
+			informationInstance.results.add(resultInstance)
+			informationInstance.save(flush: true)
+		}else if(informationInstance && Result.findBySampleNum(params.sampleNum)){
+			flash.message = "${message(code: 'result.information.found.message', args: [message(code: 'result.label', default: 'resultInstance'), params.sampleNum])}"
+			//redirect(action: "index",flash:flash)
+			render view:'result'
+			return
+		}else{
+			flash.message = "${message(code: 'result.information.not.found.message', args: [message(code: 'information.label', default: 'informationInstance'), params.sampleNum])}"
+			//redirect(action: "index",flash:flash)
+			render view:'result'
+			return
+		}
 		if (!resultInstance.hasErrors() && resultInstance.save(flush: true)) {
 			def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
 			def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_RESULT", recordName: resultInstance.sampleNum+"(单个录入)", successNum: 1, failedNum: 0, startTime:startTime, endTime: endTime)
 			record.save(flush: true)
 
 			flash.message = "${message(code: 'default.created.message', args: [message(code: 'result.label', default: 'resultInstance'), ''])}"
-			redirect(action: "index", id: resultInstance.id)
+			redirect(action: "index", id: resultInstance.id,flash:flash)
 		}else {
 			flash.error = renderErrors(bean: resultInstance, as: "list")
-			redirect(action: "index", id: resultInstance.id, model: [resultInstance: resultInstance])
+			redirect(action: "index", id: resultInstance.id, model: [resultInstance: resultInstance],flash:flash)
 		}
 	}
 	
 	def uploadBatch() {
 		def nameArray=upload()
-		println nameArray[1]
 		def currentUser = springSecurityService.currentUser
 		def startTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
 		int successNum = 0 
 		int failedNum = 0
 		def str=getStringFromXml(nameArray[1])
-		str=str.replaceFirst("位置","location");
-		str=str.replaceFirst("样品编号","sampleNum");
-		str=str.replaceFirst("样品类型","sampleBelong");
-		str=str.replaceFirst("FAM Ct","famCt");
-		str=str.replaceFirst("VIC Ct","vicCt");
-		str=str.replaceFirst("NED Ct","nedCt");
-		str=str.replaceFirst("检测结果","detectedResult");
-		str=str.replaceFirst("备注","comment");
-		def propertiesList = readPropFromString(str)
-		propertiesList?.each { properties ->
-			def resultInstance = new Result(properties)
-			if (resultInstance.hasErrors() || !resultInstance.save(flush: true)) {
-				failedNum++
-				resultInstance.errors?.each { error ->
-					log.error error
+		if(str==null || "".equals(str)){
+			flash.message = "${message(code: 'result.upload.success.label')}"
+			redirect(action: "index")
+		}else{
+			str=str.replaceFirst("位置","location");
+			str=str.replaceFirst("样品编号","sampleNum");
+			str=str.replaceFirst("样品类型","sampleBelong");
+			str=str.replaceFirst("FAM Ct","famCt");
+			str=str.replaceFirst("VIC Ct","vicCt");
+			str=str.replaceFirst("NED Ct","nedCt");
+			str=str.replaceFirst("检测结果","detectedResult");
+			str=str.replaceFirst("备注","comment");
+			def propertiesList = readPropFromString(str)
+			propertiesList?.each { properties ->
+				properties["sampleNum"] = properties["sampleNum"].contains(".0")?properties["sampleNum"].substring(0,properties["sampleNum"].indexOf(".0")):properties["sampleNum"]
+				def informationInstance = Information.findBySampleNum(properties["sampleNum"])
+				if(Result.findBySampleNum(properties["sampleNum"])){
+					failedNum++
+				}else if(!Result.findBySampleNum(properties["sampleNum"]) && !informationInstance){
+					failedNum++
+				}else if(!Result.findBySampleNum(properties["sampleNum"]) && informationInstance){
+					def resultInstance = new Result(properties)
+					if (resultInstance.hasErrors() || !resultInstance.save(flush: true)) {
+						failedNum++
+						resultInstance.errors?.each { error ->
+							log.error error
+						}
+					}else{
+						resultInstance.information = informationInstance
+						informationInstance.results.add(resultInstance)
+						informationInstance.save(flush: true)
+						successNum++
+					}
 				}
-			}else{
-				successNum++
 			}
+			def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
+			def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_RESULT", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime)
+			record.save(flush: true)
+			redirect(action: "index")
 		}
-		def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
-		def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_RESULT", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime)
-		record.save(flush: true)
-		redirect(action: "index")
 	}
 	
 	def showpdf() {
