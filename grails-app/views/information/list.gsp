@@ -59,7 +59,7 @@
                     	<li><a class="current" href="#">信息列表</a></li>
                         <li><a href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
                         <li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
-                        <li><a href="${createLink(controller: 'result', action: 'showpdf')}">导出pdf报告</a></li>
+                        <li><a href="${createLink(controller: 'result', action: 'list')}">导出pdf报告</a></li>
                     </ul>
 	            </div>
 	            <div class="col-md-10">
@@ -76,27 +76,43 @@
 									<th>
 										<g:checkBox name="selectedAll" id="selectedAll" />
 									</th>
-									<th>字段1</th>
-									<th>字段2</th>
-									<th>字段3</th>
-									<th>字段4</th>
-									<th>字段5</th>
-									<th>字段6</th>
-									<th>字段7</th>
+									<th>样本编号</th>
+									<th>姓名</th>
+									<th>性别</th>
+									<th>年龄</th>
+									<th>医院/单位</th>
+									<th>门诊号/住院号</th>
+									<th>病房/床位</th>
+									<th>送检科室</th>
+									<th>送检医生</th>
+									<th>送检样本</th>
+									<th>送检时间</th>
+									<th>联系电话</th>
+									<th>备注</th>
 			                	</tr>
 		                	</thead>	
 	                		<tbody>
                 				<g:form name=""  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
-									<tr>
-										<th>
-											<g:checkBox name="" />
-										</th>
-							    		<td></td>
-							    		<td></td>
-							    		<td></td>
-							    		<td></td>
-							    		<td></td>
-									</tr>
+									<g:each in="${informationInstanceList}" var="informationInstance">
+										<tr>
+											<th>
+												<g:checkBox name="" />
+											</th>
+								    		<td>${informationInstance?.sampleNum}</td>
+								    		<td>${informationInstance?.patientName}</td>
+								    		<td>${informationInstance?.gender}</td>
+								    		<td>${informationInstance?.age}</td>
+								    		<td>${informationInstance?.hospital}</td>
+								    		<td>${informationInstance?.patientNum}</td>
+								    		<td>${informationInstance?.wardBed}</td>
+								    		<td>${informationInstance?.inspectionDepartment}</td>
+								    		<td>${informationInstance?.inspectionDoctor}</td>
+								    		<td>${informationInstance?.inspectionSample}</td>
+								    		<td>${informationInstance?.inspectionTime}</td>
+								    		<td>${informationInstance?.phoneNum}</td>
+								    		<td>${informationInstance?.remark}</td>
+										</tr>
+									</g:each>
 								</g:form>
 	                		</tbody>
 	                	</table>

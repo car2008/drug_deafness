@@ -18,7 +18,23 @@ class InformationController {
 	}
 	
 	def list(){
+		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		
+		if (!params.offset) {
+			params.offset = 0
+		}
+		if (!params.order) {
+			params.order = 'desc'
+		}
+		if (!params.sort) {
+			params.sort = 'dateCreated'
+		}
+
+		def informationInstanceList = Information.list(params)
+		
+		def informationInstanceTotal = Information.count()
+		def allInformationInstanceTotal = informationInstanceTotal
+		render view: 'list', model: [informationInstanceList: informationInstanceList,allInformationInstanceTotal:allInformationInstanceTotal,]
 	}
 	
 	def listRecord(){

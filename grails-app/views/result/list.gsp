@@ -59,7 +59,7 @@
 	                	<li><a href="${createLink(controller: 'information', action: 'list')}">信息列表</a></li>
                         <li><a href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
                         <li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
-                        <li><a class="current" href="${createLink(controller: 'result', action: 'showpdf')}">导出pdf报告</a></li>
+                        <li><a class="current" href="${createLink(controller: 'result', action: 'list')}">导出pdf报告</a></li>
                     </ul>
 	            </div>
 	            <div class="col-md-10">
@@ -85,115 +85,55 @@
 									<th>
 										<g:checkBox name="selectedAll" id="selectedAll" />
 									</th>
-									<th>pdf报告编号</th>
 									<th>样本编号</th>
 									<th>姓名</th>
-									<th>上传记录</th>
+									<th>性别</th>
+									<th>年龄</th>
+									<%--<th>医院/单位</th>
+									<th>门诊号/住院号</th>
+									<th>病房/床位</th>
+									<th>送检科室</th>
+									<th>送检医生</th>
+									<th>送检样本</th>
+									<th>送检时间</th>
+									<th>联系电话</th>
+									--%><th>FAM Ct</th>
+									<th>VIC Ct</th>
+									<th>NED Ct</th>
+									<th>检测结果</th>
+									<th>备注</th>
 			                	</tr>
 		                	</thead>	
 	                		<tbody>
-	                			
-	                		
+                				<g:form name=""  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
+									<g:each in="${resultInstanceList}" var="resultInstance">
+										<tr>
+											<th>
+												<g:checkBox name="" />
+											</th>
+								    		<td>${resultInstance.information?.sampleNum}</td>
+								    		<td>${resultInstance.information?.patientName}</td>
+								    		<td>${resultInstance.information?.gender}</td>
+								    		<td>${resultInstance.information?.age}</td>
+								    		<%--<td>${resultInstance.information?.hospital}</td>
+								    		<td>${resultInstance.information?.patientNum}</td>
+								    		<td>${resultInstance.information?.wardBed}</td>
+								    		<td>${resultInstance.information?.inspectionDepartment}</td>
+								    		<td>${resultInstance.information?.inspectionDoctor}</td>
+								    		<td>${resultInstance.information?.inspectionSample}</td>
+								    		<td>${resultInstance.information?.inspectionTime}</td>
+								    		<td>${resultInstance.information?.phoneNum}</td>
+								    		--%><td>${resultInstance.famCt}</td>
+								    		<td>${resultInstance.vicCt}</td>
+								    		<td>${resultInstance.nedCt}</td>
+								    		<td>${resultInstance.detectedResult}</td>
+								    		<td>${resultInstance.information?.remark}</td>
+								    		
+										</tr>
+									</g:each>
+								</g:form>
 	                		</tbody>
 	                	</table>
-	                	
-	                    <div style="text-align: center">
-	                        <h2>xxxxxxxxxxx医院</h2>
-	                        <h2>药物性耳聋核酸检测报告</h2>
-	                    </div>
-	                    <hr>
-	                    <table class="table table-bordered">
-	                        <h4><strong>病人基本信息</strong></h4>
-	                        <tbody>
-	                        <tr>
-	                            <th>姓名</th>
-	                            <td></td>
-	                            <th>性别</th>
-	                            <td></td>
-	                            <th>年龄</th>
-	                            <td></td>
-	                        </tr>
-	                        <tr>
-	                            <th>样本编号</th>
-	                            <td></td>
-	                            <th>门诊号/住院号</th>
-	                            <td></td>
-	                            <th>病房/床位</th>
-	                            <td></td>
-	                        </tr>
-	                        <tr>
-	                            <th>送检科室</th>
-	                            <td></td>
-	                            <th>送检医生</th>
-	                            <td></td>
-	                            <th>送检样本</th>
-	                            <th></th>
-	                        </tr>
-	                        <tr>
-	                            <th>送检时间</th>
-	                            <td></td>
-	                            <th>备注</th>
-	                            <td colspan="3"></td>
-	                        </tr>
-	                        </tbody>
-	                    </table>
-	                    <table class="table">
-	                        <h4><strong>检测结果</strong></h4>
-	                        <thead>
-	                            <tr>
-	                                <th>序号</th>
-	                                <th>检测项目</th>
-	                                <th>检测值</th>
-	                                <th>阴阳性判断</th>
-	                            </tr>
-	                        </thead>
-	                        <tbody>
-	                            <tr>
-	                                <th>1</th>
-	                                <td>FAM（1494 C > T）</td>
-	                                <td>18.35</td>
-	                                <td>阳性（+）</td>
-	                            </tr>
-	                            <tr>
-	                                <th>2</th>
-	                                <td>VIC（1555 A > G）</td>
-	                                <td>--</td>
-	                                <td>阴性（-）</td>
-	                            </tr>
-	                            <tr>
-	                                <th>3</th>
-	                                <td>NED（质控）</td>
-	                                <td>18.89</td>
-	                                <td>阳性（+）</td>
-	                            </tr>
-	                            <tr>
-	                                <th colspan="4">备注</th>
-	                            </tr>
-	                        </tbody>
-	                    </table>
-	                    <div class="result_notice">
-	                        <h4><strong>检测结果</strong></h4>
-	                        <p>本次送检样本为1494 C > T突变型。</p>
-	                        <p>药物性耳聋敏感个体。</p>
-	                        <p>提示服用耳毒性药物会导致耳聋,应终生禁用耳毒性药物。</p>
-	                        <p>建议被检者亲属进行基因检测，以确认其是否为遗传性耳聋或遗传性耳聋基因突变携带者。</p>
-	                    </div>
-	                    <div class="examination_info clearfix">
-	                        <ul>
-	                            <li>
-	                                <span>检验员</span>
-	                                <span style="text-decoration:underline">XXX</span></li>
-	                            <li>
-	                                <span>审核员</span>
-	                                <span style="text-decoration:underline">XXX</span></li>
-	                            <li>
-	                                <span>检验日期</span>
-	                                <span style="text-decoration:underline">XXX</span></li>
-	                        </ul>
-	                    </div>
-	                    <div class="warning" style="color: red;">
-	                        *&nbsp;&nbsp;<strong>本报告仅对本次送检样品负责，如有疑问，请与您的医生联系。</strong>
-	                    </div>
 	                    <div style="margin-top:20px;">
 	                        <a href="./result/single.html" class="btn btn-default" role="button">上一步</a>
 	                        <a href="../pdf.html" class="btn btn-success" role="button" style="float: right;">生成报告</a>
