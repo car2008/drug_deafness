@@ -136,7 +136,7 @@
 	                	</table>
 	                    <div style="margin-top:20px;">
 	                        <a href="./result/single.html" class="btn btn-default" role="button">上一步</a>
-	                        <a href="../pdf.html" class="btn btn-success" role="button" style="float: right;">生成报告</a>
+	                        <a href="${createLink(controller: 'result', action: 'generatePdf')}" class="btn btn-success" role="button" style="float: right;">生成报告</a>
 	                    </div>
 	                </div>
 	            </div>

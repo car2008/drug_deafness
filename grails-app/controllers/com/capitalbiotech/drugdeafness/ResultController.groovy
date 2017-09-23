@@ -1,6 +1,9 @@
 package com.capitalbiotech.drugdeafness
 import grails.plugin.springsecurity.annotation.Secured
+
 import java.text.DecimalFormat
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.apache.poi.hssf.usermodel.HSSFCell
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
@@ -40,6 +43,42 @@ class ResultController {
 		def resultInstanceTotal = Result.count()
 		def allResultInstanceTotal = resultInstanceTotal
 		render view: 'list', model: [resultInstanceList: resultInstanceList,allResultInstanceTotal:allResultInstanceTotal,]
+	}
+	
+	def generatePdf(){
+		def outDir = "C:\\Users\\Administrator\\Desktop\\drugdeafness\\generatepdf"
+		def resultInstanceList = Result.list()
+		resultInstanceList.each{ resultInstance ->
+			HashMap map = new LinkedHashMap<String,String>();
+			map.put("医院", "北医三院");
+			map.put("姓名",resultInstance.information.patientName);
+			map.put("性别",resultInstance.information.gender);
+			map.put("年龄",resultInstance.information.age);
+			map.put("样本编号",resultInstance.information.sampleNum);
+			map.put("门诊号/住院号",resultInstance.information.patientNum);
+			map.put("病房/床位",resultInstance.information.wardBed);
+			map.put("送检科室",resultInstance.information.inspectionDepartment);
+			map.put("送检医生",resultInstance.information.inspectionDoctor);
+			map.put("送检样本",resultInstance.information.inspectionSample);
+			map.put("送检时间",resultInstance.information.inspectionTime);
+			map.put("备注",resultInstance.information.remark);
+			map.put("famCt",resultInstance.famCt);
+			map.put("vicCt",resultInstance.vicCt);
+			map.put("nedCt",resultInstance.nedCt);
+			map.put("famCtResult","阴性");
+			map.put("vicCtResult","阴性");
+			map.put("nedCtResult","阴性");
+			map.put("resultcomment",resultInstance.comment+"beizhu");
+			map.put("resultpictureUrl","web-app\\images\\detected_pic\\0001-检测异常.bmp");
+			map.put("checker","zhangsan");
+			map.put("assessor","zhangsan");
+			map.put("dateCreated","2017-9-1");
+			map.put("pdfcomment","* 本报告仅对本次送检样品负责，如有疑问，请与您的医生联系。");
+			map.put("outDir", outDir+"\\"+resultInstance.sampleNum+".pdf");
+			PDFUtil.createPDF(map)
+		}
+		
+		redirect(action: "index")
 	}
 	
 	def listRecord(){
