@@ -181,7 +181,7 @@ class CloudTagLib {
 
         // display previous link when not on firststep
         if (currentstep > firststep) {
-            linkTagAttrs.class = 'prevLink'
+            //linkTagAttrs.class = 'prevLink'
             linkParams.offset = offset - max
             out << "<li>" + link(linkTagAttrs.clone()) {
                 (attrs.prev ?: '<i class="fa fa-angle-left"></i>')
@@ -190,7 +190,7 @@ class CloudTagLib {
 
         // display steps when steps are enabled and laststep is not firststep
         if (steps && laststep > firststep) {
-            linkTagAttrs.class = 'step'
+            //linkTagAttrs.class = 'step'
 
             // determine begin and endstep paging variables
             int beginstep = currentstep - Math.round(maxsteps / 2) + (maxsteps % 2)
@@ -240,7 +240,7 @@ class CloudTagLib {
 
         // display next link when not on laststep
         if (currentstep < laststep) {
-            linkTagAttrs.class = 'nextLink'
+            //linkTagAttrs.class = 'nextLink'
             linkParams.offset = offset + max
             out << "<li>" + link(linkTagAttrs.clone()) {
                 (attrs.next ?: '<i class="fa fa-angle-right"></i>')

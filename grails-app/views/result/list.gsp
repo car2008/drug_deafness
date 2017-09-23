@@ -6,10 +6,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<meta name="renderer" content="webkit" />
 		<meta name="author" content="CBT Bioinformatics, CapitalBio Technology" />
-		<link rel="icon" type="image/png" href="/static/images/favicons/favicon-32x32.png" sizes="32x32" />
-		<link rel="icon" type="image/png" href="/static/images/favicons/android-chrome-192x192.png" sizes="192x192" />
-		<link rel="icon" type="image/png" href="/static/images/favicons/favicon-16x16.png" sizes="16x16" />
-		<link rel="shortcut icon" href="/static/images/favicons/favicon.ico" />
 		
 		<link rel="stylesheet" href="${resource(dir:'css/bootstrap/dist/css/', file:'bootstrap.css')}"/>
 	    <link rel="stylesheet" href="${resource(dir:'css/font-awesome/css/', file:'font-awesome.min.css')}"/>
@@ -79,25 +75,17 @@
 					            </form>
 					       </div> 
 					   	</div>
-	                	<table class="table" id="" >
+	                	<table class="table" id="table-pdf" >
                 			<thead>
 								<tr>
 									<th>
-										<g:checkBox name="selectedAll" id="selectedAll" />
+										<input type="checkbox" name="selectedAll" id="selectedAll">
 									</th>
 									<th>样本编号</th>
 									<th>姓名</th>
 									<th>性别</th>
 									<th>年龄</th>
-									<%--<th>医院/单位</th>
-									<th>门诊号/住院号</th>
-									<th>病房/床位</th>
-									<th>送检科室</th>
-									<th>送检医生</th>
-									<th>送检样本</th>
-									<th>送检时间</th>
-									<th>联系电话</th>
-									--%><th>FAM Ct</th>
+									<th>FAM Ct</th>
 									<th>VIC Ct</th>
 									<th>NED Ct</th>
 									<th>检测结果</th>
@@ -108,39 +96,59 @@
                 				<g:form name=""  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
 									<g:each in="${resultInstanceList}" var="resultInstance">
 										<tr>
-											<th>
-												<g:checkBox name="" />
-											</th>
+											<td>
+												<input type="checkbox" name="singleRow" id="singleRow" value="">
+												<%-- <input type="hidden" name="id" >--%>
+											</td>
 								    		<td>${resultInstance.information?.sampleNum}</td>
 								    		<td>${resultInstance.information?.patientName}</td>
 								    		<td>${resultInstance.information?.gender}</td>
 								    		<td>${resultInstance.information?.age}</td>
-								    		<%--<td>${resultInstance.information?.hospital}</td>
-								    		<td>${resultInstance.information?.patientNum}</td>
-								    		<td>${resultInstance.information?.wardBed}</td>
-								    		<td>${resultInstance.information?.inspectionDepartment}</td>
-								    		<td>${resultInstance.information?.inspectionDoctor}</td>
-								    		<td>${resultInstance.information?.inspectionSample}</td>
-								    		<td>${resultInstance.information?.inspectionTime}</td>
-								    		<td>${resultInstance.information?.phoneNum}</td>
-								    		--%><td>${resultInstance.famCt}</td>
+								    		<td>${resultInstance.famCt}</td>
 								    		<td>${resultInstance.vicCt}</td>
 								    		<td>${resultInstance.nedCt}</td>
 								    		<td>${resultInstance.detectedResult}</td>
 								    		<td>${resultInstance.information?.remark}</td>
-								    		
 										</tr>
 									</g:each>
 								</g:form>
 	                		</tbody>
 	                	</table>
+	                	<%--<div>
+	            			<cbt_health:paginate total="${allRecordInstanceTotal}" params="${params}" />
+	            		</div> --%>
 	                    <div style="margin-top:20px;">
-	                        <a href="./result/single.html" class="btn btn-default" role="button">上一步</a>
-	                        <a href="../pdf.html" class="btn btn-success" role="button" style="float: right;">生成报告</a>
+	                        <a href="#" id="createReport" class="btn btn-success" role="button" style="float: right;">生成报告</a>
 	                    </div>
 	                </div>
 	            </div>
 	        </div>
 	    </div>
+	    
+	    
+	    <script>
+			$("#"createReport"").on("click",function(){
+				var selectedRows = $(".table>tbody>td").find("input[type='checkbox']:checked");
+				var serverUrl = "${createLink(controller: '', action: '')}";
+				var dataArr = [];
+				selectedRows.each(function(index,value){
+					var itemid = this.attr("value");
+					var obj = {"id":itemid};
+					dataArr.push(obj);
+				});
+				postDataByAjax(serverUrl,dataArr);
+			});
+			
+			function postDataByAjax(serverUrl,params){
+				$.ajax({
+					type: "post",
+					url: serverUrl,
+					data: JSON.stringify(params),
+					success: function(data){
+						alert("下载中,请稍后");
+					});
+				});
+			}
+	    </script>
 	</body>
 </html>

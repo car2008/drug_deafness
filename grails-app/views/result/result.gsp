@@ -8,10 +8,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<meta name="renderer" content="webkit" />
 		<meta name="author" content="CBT Bioinformatics, CapitalBio Technology" />
-		<link rel="icon" type="image/png" href="/static/images/favicons/favicon-32x32.png" sizes="32x32" />
-		<link rel="icon" type="image/png" href="/static/images/favicons/android-chrome-192x192.png" sizes="192x192" />
-		<link rel="icon" type="image/png" href="/static/images/favicons/favicon-16x16.png" sizes="16x16" />
-		<link rel="shortcut icon" href="/static/images/favicons/favicon.ico" />
 		
 		<link rel="stylesheet" href="${resource(dir:'css/bootstrap/dist/css/', file:'bootstrap.css')}"/>
 	    <link rel="stylesheet" href="${resource(dir:'css/font-awesome/css/', file:'font-awesome.min.css')}"/>
@@ -142,11 +138,11 @@
 	                    </div>
 	                    
 	                	<div class="specialForm" style="display:none;">
-	                    	<table class="table" id="" >
+	                    	<table class="table" id="table-result" >
 	                			<thead>
 									<tr>
 										<th>
-											<g:checkBox name="selectedAll" id="selectedAll" />
+											<input type="checkbox" name="selectedAll" id="selectedAll">
 										</th>
 										<th>上传人</th>
 										<th>上传文件名称</th>
@@ -159,9 +155,9 @@
 	                				<g:form name="recordForm"  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
 										<g:each in="${recordInstanceList}" var="recordInstance">
 											<tr>
-												<th>
-													<g:checkBox name="" />
-												</th>
+												<td>
+													<input type="checkbox" name="singleRow" id="singleRow">
+												</td>
 									    		<td>${recordInstance?.uploadUser.name}</td>
 									    		<td>${recordInstance?.recordName}</td>
 									    		<td>${recordInstance?.successNum}</td>
@@ -172,7 +168,10 @@
 									</g:form>
 		                		</tbody>
 		                	</table>
-	                   	</div>
+		                	<ul class="pagination">
+		            			<cbt_health:paginate total="${allRecordInstanceTotal}" params="${params}" />
+		            		</div>
+         		    	</div>
 	                </div>
 	            </div>
 	        </div>
