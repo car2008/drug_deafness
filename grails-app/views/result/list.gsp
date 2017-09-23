@@ -133,8 +133,7 @@
 				var dataArr = [];
 				selectedRows.each(function(index,value){
 					var itemid = $(this).attr("value");
-					var obj = {"resultId":itemid};
-					dataArr.push(obj);
+					dataArr.push(itemid);
 				});
 				postDataByAjax(serverUrl,dataArr);
 			});
