@@ -128,23 +128,22 @@
 	    
 	    <script>
 			$("#createReport").on("click",function(){
-				var selectedRows = $(".table>tbody>td").find("input[type='checkbox']:checked");
+				var selectedRows = $(".table>tbody td").find("input[type='checkbox']:checked");
 				var serverUrl = "${createLink(controller: 'result', action: 'generatePdf')}";
 				var dataArr = [];
 				selectedRows.each(function(index,value){
-					var itemid = this.attr("value");
-					var obj = {"id":itemid};
-					dataArr.push(obj);
+					var itemid = $(this).attr("value");
+					dataArr.push(itemid);
 				});
 				console.log(dataArr);
-				//postDataByAjax(serverUrl,dataArr);
+				postDataByAjax(serverUrl,dataArr);
 			});
 			
 			function postDataByAjax(serverUrl,params){
 				$.ajax({
 					type: "post",
 					url: serverUrl,
-					data: JSON.stringify(params),
+					data: {jsonData:JSON.stringify(params)},
 					success: function(data){
 						alert("下载中,请稍后");
 					}
