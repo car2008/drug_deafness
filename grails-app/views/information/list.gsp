@@ -74,7 +74,7 @@
                 			<thead>
 								<tr>
 									<th>
-										<g:checkBox name="selectedAll" id="selectedAll" />
+										<input type="checkbox" name="selectedAll" id="selectedAll">
 									</th>
 									<th>样本编号</th>
 									<th>姓名</th>
@@ -95,9 +95,9 @@
                 				<g:form name=""  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
 									<g:each in="${informationInstanceList}" var="informationInstance">
 										<tr>
-											<th>
-												<g:checkBox name="" />
-											</th>
+											<td>
+												<input type="checkbox" name="singleRow" id="singleRow">
+											</td>
 								    		<td>${informationInstance?.sampleNum}</td>
 								    		<td>${informationInstance?.patientName}</td>
 								    		<td>${informationInstance?.gender}</td>
@@ -116,7 +116,10 @@
 								</g:form>
 	                		</tbody>
 	                	</table>
-                   	</div>
+	                	<ul class="pagination">
+	                		<cbt_health:paginate total="${allInformationInstanceTotal}" params="${params}" />
+	                	</ul>
+					</div>
 	            </div>
 	        </div>
 	    </div>
@@ -130,6 +133,7 @@
 	            target.show();
 	            target.siblings("div.specialForm").hide();
 	        })
+	        
 	    </script>
 	</body>
 </html>
