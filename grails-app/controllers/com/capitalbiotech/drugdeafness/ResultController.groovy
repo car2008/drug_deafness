@@ -46,12 +46,12 @@ class ResultController {
 	}
 	
 	def generatePdf(){
-		def outDir = "${grailsApplication.config.project.file.pdf.path}"
-		def idStr  = params.jsonData
+		def idStr  = params.jsonData.toString()
 		idStr=idStr.replace("[","")
 		idStr=idStr.replace("]","")
 		idStr=idStr.replace('"',"")
 		def resultInstanceList = Result.executeQuery("SELECT record FROM Result record WHERE record.id in ("+idStr+")")
+		def outDir = "${grailsApplication.config.project.file.pdf.path}".toString()
 		resultInstanceList.each{ resultInstance ->
 			HashMap map = new LinkedHashMap<String,String>();
 			map.put("医院", "北医三院");
