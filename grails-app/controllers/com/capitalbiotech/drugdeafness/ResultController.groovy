@@ -46,7 +46,7 @@ class ResultController {
 	}
 	
 	def generatePdf(){
-		def outDir = "C:\\Users\\Administrator\\Desktop\\drugdeafness\\generatepdf"
+		String outDir = "${grailsApplication.config.project.file.pdf.path}"
 		def resultInstanceList = Result.list()
 		resultInstanceList.each{ resultInstance ->
 			HashMap map = new LinkedHashMap<String,String>();
