@@ -65,60 +65,73 @@
 	            <div class="col-md-10">
 	                <div class="clearfix">
 	                    <ul class="nav nav-tabs">
-	                        <li role="presentation"  class="active"><a>表格</a></li>
+	                        <li role="presentation"  class="active"><a>信息列表</a></li>
 	                    </ul>
 	                </div>
 
 	            	<div class="specialForm">
-                    	<table class="table" id="" >
-                			<thead>
-								<tr>
-									<th>
-										<input type="checkbox" name="selectedAll" id="selectedAll">
-									</th>
-									<th>样本编号</th>
-									<th>姓名</th>
-									<th>性别</th>
-									<th>年龄</th>
-									<th>医院/单位</th>
-									<th>门诊号/住院号</th>
-									<th>病房/床位</th>
-									<th>送检科室</th>
-									<th>送检医生</th>
-									<th>送检样本</th>
-									<th>送检时间</th>
-									<th>联系电话</th>
-									<th>备注</th>
-			                	</tr>
-		                	</thead>	
-	                		<tbody>
-                				<g:form name=""  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
-									<g:each in="${informationInstanceList}" var="informationInstance">
-										<tr>
-											<td>
-												<input type="checkbox" name="singleRow" id="singleRow">
-											</td>
-								    		<td>${informationInstance?.sampleNum}</td>
-								    		<td>${informationInstance?.patientName}</td>
-								    		<td>${informationInstance?.gender}</td>
-								    		<td>${informationInstance?.age}</td>
-								    		<td>${informationInstance?.hospital}</td>
-								    		<td>${informationInstance?.patientNum}</td>
-								    		<td>${informationInstance?.wardBed}</td>
-								    		<td>${informationInstance?.inspectionDepartment}</td>
-								    		<td>${informationInstance?.inspectionDoctor}</td>
-								    		<td>${informationInstance?.inspectionSample}</td>
-								    		<td>${informationInstance?.inspectionTime}</td>
-								    		<td>${informationInstance?.phoneNum}</td>
-								    		<td>${informationInstance?.remark}</td>
-										</tr>
+	            		<div style="height:430px;overflow-y:auto;">
+	            			<table class="table" id="" style="margin-bottom:0px;">
+	                			<thead>
+									<tr>
+										<th>
+											<input type="checkbox" name="selectedAll" id="selectedAll">
+										</th>
+										<th>样本编号</th>
+										<th>姓名</th>
+										<th>性别</th>
+										<th>年龄</th>
+										<th>医院/单位</th>
+										<th>门诊号/住院号</th>
+										<th>病房/床位</th>
+										<th>送检科室</th>
+										<th>送检医生</th>
+										<th>送检样本</th>
+										<th>送检时间</th>
+										<th>联系电话</th>
+										<th>备注</th>
+				                	</tr>
+			                	</thead>	
+		                		<tbody>
+	                				<g:form name=""  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
+										<g:each in="${informationInstanceList}" var="informationInstance">
+											<tr>
+												<td>
+													<input type="checkbox" name="singleRow" id="singleRow">
+												</td>
+									    		<td>${informationInstance?.sampleNum}</td>
+									    		<td>${informationInstance?.patientName}</td>
+									    		<td>${informationInstance?.gender}</td>
+									    		<td>${informationInstance?.age}</td>
+									    		<td>${informationInstance?.hospital}</td>
+									    		<td>${informationInstance?.patientNum}</td>
+									    		<td>${informationInstance?.wardBed}</td>
+									    		<td>${informationInstance?.inspectionDepartment}</td>
+									    		<td>${informationInstance?.inspectionDoctor}</td>
+									    		<td>${informationInstance?.inspectionSample}</td>
+									    		<td>${informationInstance?.inspectionTime}</td>
+									    		<td>${informationInstance?.phoneNum}</td>
+									    		<td>${informationInstance?.remark}</td>
+											</tr>
+										</g:each>
+									</g:form>
+		                		</tbody>
+		                	</table>
+	            		</div>
+	                	<div class="clearfix">
+	                		<div style="margin-top:20px;float:left;" >
+		                		显示第 1 到第 10 条记录，总共${allInformationInstanceTotal}条记录 每页
+								<select id="pageCount" class="form-control" style="width:auto;padding:0;display:inline-block;">
+									<g:each in="${[10, 20, 50, 100]}" var="option">
+										<option value="${option}" ${params.max == option ? 'selected' : ''}>${option}</option>
 									</g:each>
-								</g:form>
-	                		</tbody>
-	                	</table>
-	                	<ul class="pagination">
-	                		<cbt_health:paginate total="${allInformationInstanceTotal}" params="${params}" />
-	                	</ul>
+								</select>
+								条记录
+	                		</div>
+							<ul class="pagination" style="float:right;">
+		                		<cbt_health:paginate total="${allInformationInstanceTotal}" params="${params}" />
+		                	</ul>
+						</div>
 					</div>
 	            </div>
 	        </div>

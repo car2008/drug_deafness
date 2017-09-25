@@ -138,7 +138,7 @@
 	                    </div>
 	                    
 	                	<div class="specialForm" style="display:none;">
-	                    	<table class="table" id="table-result" >
+	                    	<table class="table" id="table-result" style="margin-bottom:0px;">
 	                			<thead>
 									<tr>
 										<th>
@@ -170,7 +170,7 @@
 		                	</table>
 		                	<ul class="pagination">
 		            			<cbt_health:paginate total="${allRecordInstanceTotal}" params="${params}" />
-		            		</div>
+		            		</ul>
          		    	</div>
 	                </div>
 	            </div>
@@ -234,6 +234,7 @@
 		            }	
 		        }
 		    }
+		    
 		    var maxsize = 2*1024*1024;//2M
 		    var errMsg = "上传的附件文件不能超过2M！！！";
 		    var tipMsg = "您的浏览器暂不支持计算上传文件的大小，确保上传文件不要超过2M，建议使用IE、FireFox、Chrome浏览器。";

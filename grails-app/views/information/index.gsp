@@ -173,7 +173,7 @@
 	            	
 	            	<div class="specialForm" style="display:none;">
 	            		<div class="table-container">
-	            			<table class="table" id="table-info" >
+	            			<table class="table" id="table-info" style="margin-bottom:0px;">
 	                			<thead>
 									<tr>
 										<th>
