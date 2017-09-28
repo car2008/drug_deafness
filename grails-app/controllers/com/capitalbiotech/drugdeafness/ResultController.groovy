@@ -46,7 +46,18 @@ class ResultController {
 	}
 	
 	def generatePdf(){
-		println params
+		if(!params.hospital){
+			
+		}
+		if(!params.checker){
+		
+		}
+		if(!params.assessor){
+		
+		}
+		if(!params.pdfcomment){
+			params.pdfcomment = "* 本报告仅对本次送检样品负责，如有疑问，请与您的医生联系。"
+		}
 		def outPathList = []
 		def idStr  = params.singleRow.toString()//params.jsonData.toString()
 		idStr=idStr.replace("[","")
@@ -56,7 +67,7 @@ class ResultController {
 		def outDir = "${grailsApplication.config.project.file.pdf.path}".toString()
 		resultInstanceList.each{ resultInstance ->
 			HashMap map = new LinkedHashMap<String,String>();
-			map.put("医院", "北医三院");
+			map.put("医院", params.hospital);
 			map.put("姓名",resultInstance.information.patientName);
 			map.put("性别",resultInstance.information.gender);
 			map.put("年龄",resultInstance.information.age);
@@ -76,10 +87,10 @@ class ResultController {
 			map.put("nedCtResult","阴性");
 			map.put("resultcomment",resultInstance.comment+"beizhu");
 			map.put("resultpictureUrl","web-app\\images\\detected_pic\\0001-检测异常.bmp");
-			map.put("checker","zhangsan");
-			map.put("assessor","zhangsan");
+			map.put("checker",params.checker);
+			map.put("assessor",params.assessor);
 			map.put("dateCreated","2017-9-1");
-			map.put("pdfcomment","* 本报告仅对本次送检样品负责，如有疑问，请与您的医生联系。");
+			map.put("pdfcomment",params.pdfcomment);
 			map.put("outDir", outDir+"/"+resultInstance.sampleNum+".pdf");
 			outPathList.add(PDFUtil.createPDF(map))
 		}
@@ -91,6 +102,9 @@ class ResultController {
 	}
 	
 	def listRecord(){
+		if(!params.showRecords){
+			params.showRecords="showRecords"
+		}
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		
 		if (!params.offset) {
@@ -136,10 +150,10 @@ class ResultController {
 			record.save(flush: true)
 
 			flash.message = "${message(code: 'default.created.message', args: [message(code: 'result.label', default: 'resultInstance'), ''])}"
-			redirect(action: "index", id: resultInstance.id,flash:flash)
+			redirect(action: "listRecord", id: resultInstance.id,flash:flash, params: [showRecords: "showNewRecords"])
 		}else {
 			flash.error = renderErrors(bean: resultInstance, as: "list")
-			redirect(action: "index", id: resultInstance.id, model: [resultInstance: resultInstance],flash:flash)
+			redirect(action: "listRecord", id: resultInstance.id, model: [resultInstance: resultInstance],flash:flash)
 		}
 	}
 	
@@ -188,7 +202,7 @@ class ResultController {
 			def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
 			def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_RESULT", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime)
 			record.save(flush: true)
-			redirect(action: "index")
+			redirect(action: "listRecord", params: [showRecords: "showNewRecords"])
 		}
 	}
 	

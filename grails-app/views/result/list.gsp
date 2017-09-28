@@ -148,17 +148,17 @@
 							    </div>
 							    <label class="col-md-2 control-label">检验员</label>
 							    <div class="col-md-4">
-							    	<input name="testPerson" id="testPerson" class="form-control input-sm"></input>
+							    	<input name=checker id="checker" class="form-control input-sm"></input>
 							    </div>
 							</div>
 							<div class="form-group">
 							    <label class="col-md-2 control-label">审核员</label>
 							    <div class="col-md-4">
-							    	<input name="checkPerson" id="checkPerson" class="form-control input-sm"></input>
+							    	<input name="assessor" id="assessor" class="form-control input-sm"></input>
 							    </div>
 							    <label class="col-md-2 control-label">备注</label>
 							    <div class=" col-md-4">
-							    	<input name="remark" id="remark" class="form-control input-sm"></input>
+							    	<input name="pdfcomment" id="pdfcomment" class="form-control input-sm"></input>
 							    </div>
 							</div>
 						</form>

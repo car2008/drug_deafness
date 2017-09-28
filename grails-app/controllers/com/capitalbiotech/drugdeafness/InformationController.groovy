@@ -64,7 +64,6 @@ class InformationController {
 	}
 	
 	def uploadOne() {
-		println params
 		def startTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
 		def currentUser = springSecurityService.currentUser
 		def informationInstance = new Information(params)
