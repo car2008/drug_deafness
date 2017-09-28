@@ -81,64 +81,52 @@
 					            </form>
 					       </div> 
 					   	</div>
-			   			<div style="height:430px;overflow-y:auto;">
-		                	<table class="table" id="table-pdf" style="margin-bottom:0px;">
-	                			<thead>
-									<tr>
-										<th>
-											<input type="checkbox" name="selectedAll" id="selectedAll">
-										</th>
-										<th>样本编号</th>
-										<th>姓名</th>
-										<th>性别</th>
-										<th>年龄</th>
-										<th>FAM Ct</th>
-										<th>VIC Ct</th>
-										<th>NED Ct</th>
-										<th>检测结果</th>
-										<th>备注</th>
-				                	</tr>
-			                	</thead>	
-		                		<tbody>
-	                				<g:form name=""  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
-										<g:each in="${resultInstanceList}" var="resultInstance">
-											<tr>
-												<td>
-													<input type="checkbox" name="singleRow" id="singleRow" value="${resultInstance.id}">
-													<%-- <input type="hidden" name="id" >--%>
-												</td>
-									    		<td>${resultInstance.information?.sampleNum}</td>
-									    		<td>${resultInstance.information?.patientName}</td>
-									    		<td>${resultInstance.information?.gender}</td>
-									    		<td>${resultInstance.information?.age}</td>
-									    		<td>${resultInstance.famCt}</td>
-									    		<td>${resultInstance.vicCt}</td>
-									    		<td>${resultInstance.nedCt}</td>
-									    		<td>${resultInstance.detectedResult}</td>
-									    		<td>${resultInstance.information?.remark}</td>
-											</tr>
-										</g:each>
-									</g:form>
-		                		</tbody>
-		                	</table>
-	                	</div>
-	                	<div class="clearfix">
-	                		<div style="margin-top:20px;float:left;" >
-		                		显示第 1 到第 10 条记录，总共${allInformationInstanceTotal}条记录 每页
-								<select id="pageCount" class="form-control" style="width:auto;padding:0;display:inline-block;">
-									<g:each in="${[10, 20, 50, 100]}" var="option">
-										<option value="${option}" ${params.max == option ? 'selected' : ''}>${option}</option>
+	                	<table class="table" id="table-pdf" >
+                			<thead>
+								<tr>
+									<th>
+										<input type="checkbox" name="selectedAll" id="selectedAll">
+									</th>
+									<th>样本编号</th>
+									<th>姓名</th>
+									<th>性别</th>
+									<th>年龄</th>
+									<th>FAM Ct</th>
+									<th>VIC Ct</th>
+									<th>NED Ct</th>
+									<th>检测结果</th>
+									<th>备注</th>
+			                	</tr>
+		                	</thead>	
+	                		<tbody>
+                				<g:form name="generatePdfForm"  method="post" enctype="multipart/form-data" url="[action:'generatePdf',controller:'result']" style="margin-bottom:0;">
+									<g:each in="${resultInstanceList}" var="resultInstance">
+										<tr>
+											<td>
+												<input type="checkbox" name="singleRow" id="singleRow" value="${resultInstance.id}">
+												<%-- <input type="hidden" name="id" >--%>
+											</td>
+								    		<td>${resultInstance.information?.sampleNum}</td>
+								    		<td>${resultInstance.information?.patientName}</td>
+								    		<td>${resultInstance.information?.gender}</td>
+								    		<td>${resultInstance.information?.age}</td>
+								    		<td>${resultInstance.famCt}</td>
+								    		<td>${resultInstance.vicCt}</td>
+								    		<td>${resultInstance.nedCt}</td>
+								    		<td>${resultInstance.detectedResult}</td>
+								    		<td>${resultInstance.information?.remark}</td>
+										</tr>
 									</g:each>
-								</select>
-								条记录
-	                		</div>
-							<ul class="pagination" style="float:right;">
-		            			<cbt_health:paginate total="${allResultInstanceTotal}" params="${params}" />
-		            		</ul>
-						</div>
-	                    <div>
+									<g:submitButton name="下载报告" />
+								</g:form>
+	                		</tbody>
+	                	</table>
+	                	<%--<div>
+	            			<cbt_health:paginate total="${allRecordInstanceTotal}" params="${params}" />
+	            		</div> --%>
+	                    <%--<div style="margin-top:20px;">
 	                        <a href="#" id="createReport" class="btn btn-success" role="button" style="float: right;">生成报告</a>
-	                    </div>
+	                    </div>--%>
 	                </div>
 	            </div>
 	        </div>
@@ -168,7 +156,7 @@
 					url: serverUrl,
 					data: {jsonData:JSON.stringify(params)},
 					success: function(data){
-						alert("下载中,请稍后");
+						//alert("下载中,请稍后");
 					}
 				});
 			}
