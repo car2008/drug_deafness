@@ -99,7 +99,7 @@
 			                	</tr>
 		                	</thead>	
 	                		<tbody>
-                				<g:form name="generatePdfForm"  method="post" enctype="multipart/form-data" url="[action:'generatePdf',controller:'result']" style="margin-bottom:0;">
+                				<g:form name="generatePdfForm" id="generatePdfForm"  method="post" enctype="multipart/form-data" url="[action:'generatePdf',controller:'result']" style="margin-bottom:0;">
 									<g:each in="${resultInstanceList}" var="resultInstance">
 										<tr>
 											<td>
@@ -117,16 +117,15 @@
 								    		<td>${resultInstance.information?.remark}</td>
 										</tr>
 									</g:each>
-									<g:submitButton name="下载报告" />
 								</g:form>
 	                		</tbody>
 	                	</table>
 	                	<%--<div>
 	            			<cbt_health:paginate total="${allRecordInstanceTotal}" params="${params}" />
 	            		</div> --%>
-	                    <%--<div style="margin-top:20px;">
+	                    <div style="margin-top:20px;">
 	                        <a href="#" id="createReport" class="btn btn-success" role="button" style="float: right;">生成报告</a>
-	                    </div>--%>
+	                    </div>
 	                </div>
 	            </div>
 	        </div>
@@ -134,9 +133,17 @@
 	    
 	    
 	    <script>
-			$("#createReport").on("click",function(){
+		    $("#createReport").on("click",function(){
+		    	var selectedRows = $(".table>tbody td").find("input[type='checkbox']:checked");
+				if(selectedRows.length === 0){
+					showMessage();
+					return;
+				}
+				$("#generatePdfForm").submit();
+		    })
+	    
+			function others(){
 				var selectedRows = $(".table>tbody td").find("input[type='checkbox']:checked");
-				console.log(selectedRows);
 				if(selectedRows.length === 0){
 					showMessage();
 					return;
@@ -148,7 +155,7 @@
 					dataArr.push(itemid);
 				});
 				postDataByAjax(serverUrl,dataArr);
-			});
+			};
 			
 			function postDataByAjax(serverUrl,params){
 				$.ajax({
@@ -167,6 +174,13 @@
                     type: "warning",
                 });
 			}
+
+			$("#selectedAll").on("click",function(){
+				$("#table-pdf input[type='checkbox']").prop("checked", $(this).prop("checked"));
+			});
+
+			
+			
 	    </script>
 	</body>
 </html>

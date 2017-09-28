@@ -67,9 +67,9 @@
 	            <div class="col-md-10">
 	                <div class="clearfix">
 	                    <ul class="nav nav-tabs">
-	                        <li role="presentation"  class="active"><a>批量上传</a></li>
+							<li role="presentation"  class="active"><a>批量上传</a></li>
 	                        <li role="presentation"><a>单个录入</a></li>
-	                        <li role="presentation"><a>上传记录</a></li>
+	                        <li role="presentation"><a>上传记录</a></li>				                    		
 	                    </ul>
 	                </div>
 	                <g:if test="${flash.message}">
