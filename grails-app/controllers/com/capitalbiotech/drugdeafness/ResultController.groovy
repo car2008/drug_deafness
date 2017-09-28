@@ -46,7 +46,8 @@ class ResultController {
 	}
 	
 	def generatePdf(){
-		def idStr  = params.jsonData.toString()
+		def outPathList = []
+		def idStr  = params.singleRow.toString()//params.jsonData.toString()
 		idStr=idStr.replace("[","")
 		idStr=idStr.replace("]","")
 		idStr=idStr.replace('"',"")
@@ -78,11 +79,14 @@ class ResultController {
 			map.put("assessor","zhangsan");
 			map.put("dateCreated","2017-9-1");
 			map.put("pdfcomment","* 本报告仅对本次送检样品负责，如有疑问，请与您的医生联系。");
-			map.put("outDir", outDir+"\\"+resultInstance.sampleNum+".pdf");
-			PDFUtil.createPDF(map)
+			map.put("outDir", outDir+"/"+resultInstance.sampleNum+".pdf");
+			outPathList.add(PDFUtil.createPDF(map))
+		}
+		def zipName = new Date().format("yyyy-MM-dd-HH-mm-ss")+"-"+UUID.randomUUID()
+		if(PDFUtil.fileToZip(outPathList,outDir,zipName)){
+			download(outDir,zipName+".zip")
 		}
 		
-		redirect(action: "index")
 	}
 	
 	def listRecord(){
@@ -295,28 +299,16 @@ class ResultController {
 		return nameArray
 	}
 	
-	def download(){
-		def fileName
-		def rootFilePath
-		def filepath
-		def realName
-		
-		def projectInstance =  Project.get(params.id)
-		fileName = projectInstance.fileName
-		
-		def webRootDir = "${grailsApplication.config.project.file.upload.path}"
-		rootFilePath = new File(webRootDir, "WEB-INF/upload")
-		if(!rootFilePath.exists()){
-			rootFilePath.mkdirs();
-		}
-		filepath = findFileSavePathByFileName(fileName,rootFilePath.toString())
-		
-		realName = fileName.substring(fileName.indexOf("_")+1);
+	def download(filePath,realName){
+		//params.filePath = "D:/shiyanshuju/pdf"
+		//params.realName = "pdfZip1.zip"
+		//def filePath = params.filePath
+		//def realName = params.realName
 		response.setHeader("Content-disposition", "attachment; filename=" + URLEncoder.encode(realName, "UTF-8"))
 		response.contentType = ""
-		
+		println filePath+"/"+realName
 		def out = response.outputStream
-		def inputStream = new FileInputStream(filepath + "/" + fileName)
+		def inputStream = new FileInputStream(filePath + "/" + realName)
 		byte[] buffer = new byte[1024]
 		int i = -1
 		while ((i = inputStream.read(buffer)) != -1) {

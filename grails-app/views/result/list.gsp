@@ -93,7 +93,7 @@
 			                	</tr>
 		                	</thead>	
 	                		<tbody>
-                				<g:form name=""  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
+                				<g:form name="generatePdfForm"  method="post" enctype="multipart/form-data" url="[action:'generatePdf',controller:'result']" style="margin-bottom:0;">
 									<g:each in="${resultInstanceList}" var="resultInstance">
 										<tr>
 											<td>
@@ -111,15 +111,16 @@
 								    		<td>${resultInstance.information?.remark}</td>
 										</tr>
 									</g:each>
+									<g:submitButton name="下载报告" />
 								</g:form>
 	                		</tbody>
 	                	</table>
 	                	<%--<div>
 	            			<cbt_health:paginate total="${allRecordInstanceTotal}" params="${params}" />
 	            		</div> --%>
-	                    <div style="margin-top:20px;">
+	                    <%--<div style="margin-top:20px;">
 	                        <a href="#" id="createReport" class="btn btn-success" role="button" style="float: right;">生成报告</a>
-	                    </div>
+	                    </div>--%>
 	                </div>
 	            </div>
 	        </div>
@@ -145,7 +146,7 @@
 					url: serverUrl,
 					data: {jsonData:JSON.stringify(params)},
 					success: function(data){
-						alert("下载中,请稍后");
+						//alert("下载中,请稍后");
 					}
 				});
 			}

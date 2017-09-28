@@ -143,7 +143,7 @@ environments {
         cbt_health.dir.root                    = "/work/cbt_health/data"
         grails.gsp.enable.reload               = true
 		project.file.upload.path               ="D:\\shiyanshuju\\bpms-project-upload"
-		project.file.pdf.path                  ="D:\\shiyanshuju\\pdf"
+		project.file.pdf.path                  ="D:/shiyanshuju/pdf"
     }
     production {
         cbt_health.dev_mode                     = false
