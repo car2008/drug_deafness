@@ -20,7 +20,6 @@
 	</head>
 	
 	<body>
-		
 	 	<nav class="navbar navbar-default nav-custom">
 	        <div class="container-custom">
 	            <div class="navbar-header">
@@ -130,13 +129,17 @@
 	    <script>
 			$("#createReport").on("click",function(){
 				var selectedRows = $(".table>tbody td").find("input[type='checkbox']:checked");
+				console.log(selectedRows);
+				if(selectedRows.length === 0){
+					showMessage();
+					return;
+				}
 				var serverUrl = "${createLink(controller: 'result', action: 'generatePdf')}";
 				var dataArr = [];
 				selectedRows.each(function(index,value){
 					var itemid = $(this).attr("value");
 					dataArr.push(itemid);
 				});
-				console.log(dataArr);
 				postDataByAjax(serverUrl,dataArr);
 			});
 			
@@ -149,6 +152,13 @@
 						//alert("下载中,请稍后");
 					}
 				});
+			}
+
+			function showMessage(){
+				swal({
+                    title: "请先选择需要导出的数据",
+                    type: "warning",
+                });
 			}
 	    </script>
 	</body>
