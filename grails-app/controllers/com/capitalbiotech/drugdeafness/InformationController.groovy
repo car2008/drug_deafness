@@ -40,6 +40,9 @@ class InformationController {
 	}
 	
 	def listRecord(){
+		if(!params.showRecords){
+			params.showRecords="showRecords"
+		}
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		
 		if (!params.offset) {
@@ -74,7 +77,7 @@ class InformationController {
 			record.save(flush: true)
 
 			flash.message = "${message(code: 'default.created.message', args: [message(code: 'Information.label', default: 'informationInstance'), ''])}"
-			redirect(action: "listRecord", id: informationInstance.id)
+			redirect(action: "listRecord", id: informationInstance.id, params: [showRecords: "showNewRecords"])
 		}else {
 			flash.error = renderErrors(bean: informationInstance, as: "list")
 			redirect(action: "listRecord", id: informationInstance.id, model: [informationInstance: informationInstance])
@@ -126,7 +129,7 @@ class InformationController {
 		def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
 		def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_INFORMATION", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime)
 		record.save(flush: true)
-		redirect(action: "index")
+		redirect(action: "listRecord",params: [showRecords: "showNewRecords"])
 	}
 	
 	public static String getStringFromXml(String fileName){
