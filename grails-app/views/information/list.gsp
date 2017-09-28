@@ -8,10 +8,11 @@
 		<meta name="author" content="CBT Bioinformatics, CapitalBio Technology" />
 		<link rel="stylesheet" href="${resource(dir:'css/bootstrap/dist/css/', file:'bootstrap.css')}"/>
 	    <link rel="stylesheet" href="${resource(dir:'css/font-awesome/css/', file:'font-awesome.min.css')}"/>
+	    <link rel="stylesheet" href="${resource(dir:'css/', file:'sweetalert.css')}">   
 	    <link rel="stylesheet" href="${resource(dir:'css/', file:'index.css')}"/>
 	    <script src="${resource(dir:'js/', file:'jquery.js')}"></script>
 	    <script src="${resource(dir:'js/', file:'bootstrap.min.js')}"></script>
-	    <link rel="stylesheet" href="${resource(dir:'css/', file:'sweetalert.css')}">   
+	    <script src="${resource(dir:'js/', file:'jquery.form.js')}"></script>
 	    <script src="${resource(dir:'js/', file:'sweetalert.min.js')}"></script>
 		<title>
 			<g:message code="drug_deafness.name" />
@@ -39,8 +40,8 @@
 		                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding:15px;color:#F96A74;">
 		                           		<g:message code="drug_deafness.user.logout.label" />
 		                           </button>
-	                          </form>
-                         </li>
+							 </form>
+                        </li>
 	                </ul>
 	            </div>
 	        </div>
@@ -120,13 +121,15 @@
 	            		</div>
 	                	<div class="clearfix">
 	                		<div style="margin-top:20px;float:left;" >
-		                		显示第 1 到第 10 条记录，总共${allInformationInstanceTotal}条记录 每页
-								<select id="pageCount" class="form-control" style="width:auto;padding:0;display:inline-block;">
-									<g:each in="${[10, 20, 50, 100]}" var="option">
-										<option value="${option}" ${params.max == option ? 'selected' : ''}>${option}</option>
-									</g:each>
-								</select>
-								条记录
+		                		<g:form id="pageForm" action="${createLink(controller: 'information', action:'list')}" >
+			                		显示第 1 到第 10 条记录，总共${allInformationInstanceTotal}条记录 每页
+									<select id="pageCount" name="max" class="form-control" style="width:auto;padding:0;display:inline-block;">
+										<g:each in="${[10, 20, 50, 100]}" var="option">
+											<option value="${option}" ${params.max == option ? 'selected' : ''}>${option}</option>
+										</g:each>
+									</select>
+									条记录
+								</g:form>
 	                		</div>
 							<ul class="pagination" style="float:right;">
 		                		<cbt_health:paginate total="${allInformationInstanceTotal}" params="${params}" />

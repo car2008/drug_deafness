@@ -9,10 +9,11 @@
 		
 		<link rel="stylesheet" href="${resource(dir:'css/bootstrap/dist/css/', file:'bootstrap.css')}"/>
 	    <link rel="stylesheet" href="${resource(dir:'css/font-awesome/css/', file:'font-awesome.min.css')}"/>
+	    <link rel="stylesheet" href="${resource(dir:'css/', file:'sweetalert.css')}"> 
 	    <link rel="stylesheet" href="${resource(dir:'css/', file:'index.css')}"/>
 	    <script src="${resource(dir:'js/', file:'jquery.js')}"></script>
 	    <script src="${resource(dir:'js/', file:'bootstrap.min.js')}"></script>
-	    <link rel="stylesheet" href="${resource(dir:'css/', file:'sweetalert.css')}">   
+	    <script src="${resource(dir:'js/', file:'jquery.form.js')}"></script>
 	    <script src="${resource(dir:'js/', file:'sweetalert.min.js')}"></script>
 		<title>
 			<g:message code="drug_deafness.name" />
@@ -40,8 +41,8 @@
 		                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding:15px;color:#F96A74;">
 		                           		<g:message code="drug_deafness.user.logout.label" />
 		                           </button>
-	                          </form>
-                         </li>
+							</form>
+                        </li>
 	                </ul>
 	            </div>
 	        </div>
@@ -213,105 +214,114 @@
 	    </div>
 	    
 	    <script>
-		    $("ul.nav-tabs").on("click","li",function () {
-	            var index = $(this).index();
-	            $(this).siblings("li").removeClass("active");
-	            $(this).addClass("active");
-	            var target = $("div.specialForm:eq("+index+")");
-	            target.show();
-	            target.siblings("div.specialForm").hide();
-	        })
-	        
-		    $("#clearBtn_multiple").on("click",function(){
-		    	$("#fileListTable tbody").empty();
-            	$("#fileList").hide();
-		    	$("#InputFile").replaceWith('<input type="file" name="InputFile" id="InputFile" class="input-sm" multiple="multiple" >');
-    		    $('#InputFile').on('change', function (e) {
-    		    	checkfile(this.id);
-    		    	selectFile(e);
-    		    });
-			})	
+	    	$(function(){
+	    		$("ul.nav-tabs").on("click","li",function () {
+		            var index = $(this).index();
+		            $(this).siblings("li").removeClass("active");
+		            $(this).addClass("active");
+		            var target = $("div.specialForm:eq("+index+")");
+		            target.show();
+		            target.siblings("div.specialForm").hide();
+		        })
+		        
+			    $("#clearBtn_multiple").on("click",function(){
+			    	$("#fileListTable tbody").empty();
+	            	$("#fileList").hide();
+			    	$("#InputFile").replaceWith('<input type="file" name="InputFile" id="InputFile" class="input-sm" multiple="multiple" >');
+	    		    $('#InputFile').on('change', function (e) {
+	    		    	checkfile(this.id);
+	    		    	selectFile(e);
+	    		    });
+				})	
+			    
+			    $("#submitBtn_multiple").on("click",function(){
+			    	/*var options = {  
+	    			   //success: alert("上传完成"),  //提交后的回调函数  
+	    			   clearForm: true,          //成功提交后，清除所有表单元素的值  
+	    			   resetForm: true,          //成功提交后，重置所有表单元素的值  
+	    			   timeout: 3000             //限制请求的时间，当请求大于3秒后，跳出请求  
+	    			}*/	  
+					$('#form-multiple').submit(); 
+			    	//$("#fileListTable tbody").empty();
+			    });
+			    $("#submitBtn_single").on("click",function(){
+					$("#form-single").submit();
+			    });
+			    
+			    $("#form-multiple").on("change","#InputFile",function(e){
+			    	checkfile(this.id);
+			    	selectFile(e);
+			    });
+					    
+			    function selectFile(e){
+			    	$("#fileListTable tbody").empty();
+			    	$("#fileList").hide();
+			    	var files = e.target.files;  //FileList Objects
+			        for (var i = 0, f; f = files[i]; i++) {
+			        	var ldot = f.name.lastIndexOf(".");
+			            var type = f.name.substring(ldot + 1);
+			            if ("csv" == type || "xls" == type || "xlsx" == type || "txt" == type || "rar" == type || "gz" == type || "zip" == type) {
+			            	$("#fileListTable tbody").append('<tr><td><label>文件名</label></td><td><label>' + f.name + '</label></td></tr>');
+			            	$("#fileList").show();
+			            } else {
+			            	$("#fileListTable tbody").empty();
+			            	$("#fileList").hide();
+			                alert("请选择正确的格式上传：csv excel或者压缩文件");
+			                //为避免type=file控件的change()只能执行一次，更换控件，重新绑定事件
+			                $("#InputFile").replaceWith('<input type="file" name="InputFile" id="InputFile" class="input-sm" multiple="multiple">');
+			                $("#form-multiple").on("change","#InputFile",function(e){
+			    		    	checkfile(this.id);
+			    		    	selectFile(e);
+			    		    });
+			    		    return;
+			            }	
+			        }
+			    }
+			    var maxsize = 2*1024*1024;//2M
+			    var errMsg = "上传的附件文件不能超过2M！！！";
+			    var tipMsg = "您的浏览器暂不支持计算上传文件的大小，确保上传文件不要超过2M，建议使用IE、FireFox、Chrome浏览器。";
+			    var  browserCfg = {};
+			    var ua = window.navigator.userAgent;
+			    if (ua.indexOf("MSIE")>=1){
+			        browserCfg.ie = true;
+			    }else if(ua.indexOf("Firefox")>=1){
+			        browserCfg.firefox = true;
+			    }else if(ua.indexOf("Chrome")>=1){
+			        browserCfg.chrome = true;
+			    }
+			    function checkfile(id){
+			        try{
+			            var obj_file = document.getElementById(id);
+			            if(obj_file.value==""){
+			                alert("请先选择上传文件");
+			                return;
+			            }
+			            var filesize = 0;
+			            if(browserCfg.firefox || browserCfg.chrome ){
+			                filesize = obj_file.files[0].size;
+			            }else if(browserCfg.ie){
+			                var obj_img = document.createElement("img");
+			                obj_img.dynsrc=obj_file.value;
+			                filesize = obj_img.fileSize;
+			            }else{
+			                alert(tipMsg);
+			                return;
+			            }
+			            if(filesize==-1){
+			                alert(tipMsg);
+			                return;
+			            }else if(filesize>maxsize){
+			                alert(errMsg);
+			                return;
+			            }else{
+			                return;
+			            }
+			        }catch(e){
+			            alert(e);
+			        }
+			    }
+	    	})
 		    
-		    $("#submitBtn_multiple").on("click",function(){
-				$("#form-multiple").submit();
-		    });
-		    $("#submitBtn_single").on("click",function(){
-				$("#form-single").submit();
-		    });
-		    
-		    $("#form-multiple").on("change","#InputFile",function(e){
-		    	checkfile(this.id);
-		    	selectFile(e);
-		    });
-
-				    
-		    function selectFile(e){
-		    	$("#fileListTable tbody").empty();
-		    	$("#fileList").hide();
-		    	var files = e.target.files;  //FileList Objects
-		        for (var i = 0, f; f = files[i]; i++) {
-		        	var ldot = f.name.lastIndexOf(".");
-		            var type = f.name.substring(ldot + 1);
-		            if ("csv" == type || "xls" == type || "xlsx" == type || "txt" == type || "rar" == type || "gz" == type || "zip" == type) {
-		            	$("#fileListTable tbody").append('<tr><td><label>文件名</label></td><td><label>' + f.name + '</label></td></tr>');
-		            	$("#fileList").show();
-		            } else {
-		            	$("#fileListTable tbody").empty();
-		            	$("#fileList").hide();
-		                alert("请选择正确的格式上传：csv excel或者压缩文件");
-		                //为避免type=file控件的change()只能执行一次，更换控件，重新绑定事件
-		                $("#InputFile").replaceWith('<input type="file" name="InputFile" id="InputFile" class="input-sm" multiple="multiple">');
-		                $("#form-multiple").on("change","#InputFile",function(e){
-		    		    	checkfile(this.id);
-		    		    	selectFile(e);
-		    		    });
-		    		    return;
-		            }	
-		        }
-		    }
-		    var maxsize = 2*1024*1024;//2M
-		    var errMsg = "上传的附件文件不能超过2M！！！";
-		    var tipMsg = "您的浏览器暂不支持计算上传文件的大小，确保上传文件不要超过2M，建议使用IE、FireFox、Chrome浏览器。";
-		    var  browserCfg = {};
-		    var ua = window.navigator.userAgent;
-		    if (ua.indexOf("MSIE")>=1){
-		        browserCfg.ie = true;
-		    }else if(ua.indexOf("Firefox")>=1){
-		        browserCfg.firefox = true;
-		    }else if(ua.indexOf("Chrome")>=1){
-		        browserCfg.chrome = true;
-		    }
-		    function checkfile(id){
-		        try{
-		            var obj_file = document.getElementById(id);
-		            if(obj_file.value==""){
-		                alert("请先选择上传文件");
-		                return;
-		            }
-		            var filesize = 0;
-		            if(browserCfg.firefox || browserCfg.chrome ){
-		                filesize = obj_file.files[0].size;
-		            }else if(browserCfg.ie){
-		                var obj_img = document.createElement("img");
-		                obj_img.dynsrc=obj_file.value;
-		                filesize = obj_img.fileSize;
-		            }else{
-		                alert(tipMsg);
-		                return;
-		            }
-		            if(filesize==-1){
-		                alert(tipMsg);
-		                return;
-		            }else if(filesize>maxsize){
-		                alert(errMsg);
-		                return;
-		            }else{
-		                return;
-		            }
-		        }catch(e){
-		            alert(e);
-		        }
-		    }
 	    </script>
 	</body>
 </html>

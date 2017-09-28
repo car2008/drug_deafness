@@ -20,6 +20,7 @@ class InformationController {
 	}
 	
 	def list(){
+		println params
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		
 		if (!params.offset) {
@@ -60,6 +61,7 @@ class InformationController {
 	}
 	
 	def uploadOne() {
+		println params
 		def startTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
 		def currentUser = springSecurityService.currentUser
 		def informationInstance = new Information(params)
