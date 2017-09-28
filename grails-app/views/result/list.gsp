@@ -117,6 +117,7 @@
 								    		<td>${resultInstance.information?.remark}</td>
 										</tr>
 									</g:each>
+								
 								</g:form>
 	                		</tbody>
 	                	</table>
@@ -131,7 +132,48 @@
 	        </div>
 	    </div>
 	    
-	    
+    	<div id="optModal" class="modal fade" aria-labelledby="optModalLabel" data-backdrop="static">
+	        <div class="modal-dialog" style="width:60%;">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    	请输入字段信息
+	                </div>
+	                <div class="modal-body">
+		                <form id="appendForm"  class="form-horizontal">
+							<div class="form-group">
+							    <label class="col-md-2 control-label">医院名称</label>
+							    <div class="col-md-4">
+							    	<input name="hospital" id="hospital" class="form-control input-sm"></input>
+							    </div>
+							    <label class="col-md-2 control-label">检验员</label>
+							    <div class="col-md-4">
+							    	<input name="testPerson" id="testPerson" class="form-control input-sm"></input>
+							    </div>
+							</div>
+							<div class="form-group">
+							    <label class="col-md-2 control-label">审核员</label>
+							    <div class="col-md-4">
+							    	<input name="checkPerson" id="checkPerson" class="form-control input-sm"></input>
+							    </div>
+							    <label class="col-md-2 control-label">备注</label>
+							    <div class=" col-md-4">
+							    	<input name="remark" id="remark" class="form-control input-sm"></input>
+							    </div>
+							</div>
+						</form>
+	                </div>
+	                <div class="modal-footer">
+	                	<button id="btn_submit" type="button" class="btn btn-success">
+                       		提交
+	                    </button>
+	                 	<button id="btn_cancel" type="button" class="btn btn-danger" data-dismiss="modal">
+                        	取消
+	                    </button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
 	    <script>
 		    $("#createReport").on("click",function(){
 		    	var selectedRows = $(".table>tbody td").find("input[type='checkbox']:checked");
@@ -139,35 +181,10 @@
 					showMessage();
 					return;
 				}
-				$("#generatePdfForm").submit();
+				$("#optModal").modal('show');
 		    })
 	    
-			function others(){
-				var selectedRows = $(".table>tbody td").find("input[type='checkbox']:checked");
-				if(selectedRows.length === 0){
-					showMessage();
-					return;
-				}
-				var serverUrl = "${createLink(controller: 'result', action: 'generatePdf')}";
-				var dataArr = [];
-				selectedRows.each(function(index,value){
-					var itemid = $(this).attr("value");
-					dataArr.push(itemid);
-				});
-				postDataByAjax(serverUrl,dataArr);
-			};
 			
-			function postDataByAjax(serverUrl,params){
-				$.ajax({
-					type: "post",
-					url: serverUrl,
-					data: {jsonData:JSON.stringify(params)},
-					success: function(data){
-						//alert("下载中,请稍后");
-					}
-				});
-			}
-
 			function showMessage(){
 				swal({
                     title: "请先选择需要导出的数据",
@@ -179,6 +196,20 @@
 				$("#table-pdf input[type='checkbox']").prop("checked", $(this).prop("checked"));
 			});
 
+			$("#table-pdf input").click(function(){
+				$("#selectedAll").prop("checked",$("#table-pdf input").length === $("#table-pdf input:checked").length);
+			});
+
+			$("#btn_submit").on("click",function(){
+			
+				$("#appendForm input").each(function(index,value){
+					var _input = $(this).clone();
+					_input.val($(this).val());
+					_input.css("display","none");
+					$("#generatePdfForm").append(_input);
+				})
+				$("#generatePdfForm").submit();
+			})
 			
 			
 	    </script>

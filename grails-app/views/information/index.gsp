@@ -66,11 +66,20 @@
 	            </div>
 	            <div class="col-md-10">
 	                <div class="clearfix">
-	                    <ul class="nav nav-tabs">
-							<li role="presentation"  class="active"><a>批量上传</a></li>
-	                        <li role="presentation"><a>单个录入</a></li>
-	                        <li role="presentation"><a>上传记录</a></li>				                    		
-	                    </ul>
+	                	<g:if test="${params.showRecords=='showRecords' }">
+	                		<ul class="nav nav-tabs">
+		                        <li role="presentation"  class="active"><a>批量上传</a></li>
+		                        <li role="presentation"><a>单个录入</a></li>
+		                        <li role="presentation"><a>上传记录</a></li>
+		                    </ul>
+	                	</g:if>
+	                    <g:if test="${params.showRecords=='showNewRecords' }">
+	                		<ul class="nav nav-tabs">
+		                        <li role="presentation"  ><a>批量上传</a></li>
+		                        <li role="presentation"><a>单个录入</a></li>
+		                        <li role="presentation"  class="active"><a>上传记录</a></li>
+		                    </ul>
+	                	</g:if>
 	                </div>
 	                <g:if test="${flash.message}">
 						<div class="alert alert-info">
@@ -214,7 +223,15 @@
 	    </div>
 	    
 	    <script>
+	    	var pageObj = {}
+	    	pageObj.initShowPage = function(){
+	    		var showIndex = $("ul.nav-tabs").find("li.active").index();
+	    		var target = $("div.specialForm:eq("+showIndex+")");
+		        target.show();
+		        target.siblings("div.specialForm").hide();
+	    	}
 	    	$(function(){
+	    		pageObj.initShowPage();
 	    		$("ul.nav-tabs").on("click","li",function () {
 		            var index = $(this).index();
 		            $(this).siblings("li").removeClass("active");
