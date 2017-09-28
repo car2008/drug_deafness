@@ -209,6 +209,7 @@
 					$("#generatePdfForm").append(_input);
 				})
 				$("#generatePdfForm").submit();
+				$("#optModal").modal('hide');
 			})
 			
 			

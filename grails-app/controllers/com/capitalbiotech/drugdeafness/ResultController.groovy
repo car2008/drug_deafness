@@ -46,6 +46,7 @@ class ResultController {
 	}
 	
 	def generatePdf(){
+		println params
 		def outPathList = []
 		def idStr  = params.singleRow.toString()//params.jsonData.toString()
 		idStr=idStr.replace("[","")
