@@ -154,39 +154,52 @@
 	                    </div>
 	                    
 	                	<div class="specialForm" style="display:none;">
-	                    	<table class="table" id="table-result" style="margin-bottom:0px;">
-	                			<thead>
-									<tr>
-										<th>
-											<input type="checkbox" name="selectedAll" id="selectedAll">
-										</th>
-										<th>上传人</th>
-										<th>上传文件名称</th>
-										<th>上传成功(条)</th>
-										<th>上传失败(条)</th>
-										<th>上传日期</th>
-				                	</tr>
-			                	</thead>	
-		                		<tbody>
-	                				<g:form name="recordForm"  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
-										<g:each in="${recordInstanceList}" var="recordInstance">
-											<tr>
-												<td>
-													<input type="checkbox" name="singleRow" id="singleRow">
-												</td>
-									    		<td>${recordInstance?.uploadUser.name}</td>
-									    		<td>${recordInstance?.recordName}</td>
-									    		<td>${recordInstance?.successNum}</td>
-									    		<td>${recordInstance?.failedNum}</td>
-									    		<td><g:formatDate format="yyyy-MM-dd" date="${recordInstance?.startTime}" /></td>
-											</tr>
+	                		<div class="table-container">
+		                    	<table class="table" id="table-result" style="margin-bottom:0px;">
+		                			<thead>
+										<tr>
+											<th>
+												<input type="checkbox" name="selectedAll" id="selectedAll">
+											</th>
+											<th>上传人</th>
+											<th>上传文件名称</th>
+											<th>上传成功(条)</th>
+											<th>上传失败(条)</th>
+											<th>上传日期</th>
+					                	</tr>
+				                	</thead>	
+			                		<tbody>
+		                				<g:form name="recordForm"  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
+											<g:each in="${recordInstanceList}" var="recordInstance">
+												<tr>
+													<td>
+														<input type="checkbox" name="singleRow" id="singleRow">
+													</td>
+										    		<td>${recordInstance?.uploadUser.name}</td>
+										    		<td>${recordInstance?.recordName}</td>
+										    		<td>${recordInstance?.successNum}</td>
+										    		<td>${recordInstance?.failedNum}</td>
+										    		<td><g:formatDate format="yyyy-MM-dd" date="${recordInstance?.startTime}" /></td>
+												</tr>
+											</g:each>
+										</g:form>
+			                		</tbody>
+			                	</table>
+		                	</div>
+		                	<div class="clearfix">
+	                			<div style="margin-top:20px;float:left;" >
+			                		显示第 1 到第${params.max}条记录，总共${allRecordInstanceTotal}条记录 每页
+									<select id="pageCount" class="form-control" style="width:auto;padding:0;display:inline-block;">
+										<g:each in="${[10, 20, 50, 100]}" var="option">
+											<option value="${option}" ${params.max == option ? 'selected' : ''}>${option}</option>
 										</g:each>
-									</g:form>
-		                		</tbody>
-		                	</table>
-		                	<ul class="pagination">
-		            			<cbt_health:paginate total="${allRecordInstanceTotal}" params="${params}" />
-		            		</ul>
+									</select>
+									条记录
+		                		</div>
+								<ul class="pagination" style="float:right;">
+			                		<cbt_health:paginate total="${allRecordInstanceTotal}" params="${params}" />
+			                	</ul>
+							</div>
          		    	</div>
 	                </div>
 	            </div>
@@ -202,6 +215,32 @@
 		   	}
 		   	$(function(){
 		   		pageObj.initShowPage();
+
+		   		$("#pageCount").on("change",function(){
+					var maxValue = $("#pageCount>option:selected").html();
+					var serverUrl="${createLink(controller: 'result', action:params.action)}"; 
+					var params={max:maxValue};
+					passParamsByPost(serverUrl,params);
+		        });
+			    function passParamsByPost(url,params) {
+					var temp = document.createElement("form");
+					$(document.body).append(temp);
+					temp.action = url;
+					temp.method = "POST";
+					temp.style.display = "none";
+					if(params != null){
+						for(var x in params) {
+							var opt = document.createElement("input");
+							opt.name = x;
+							opt.type = 'hidden';
+							opt.value = params[x];
+							temp.appendChild(opt);
+						}
+					}
+					temp.submit();
+					$(document.body).remove(temp);
+				}
+
 			    $("ul.nav-tabs").on("click","li",function () {
 		            var index = $(this).index();
 		            $(this).siblings("li").removeClass("active");

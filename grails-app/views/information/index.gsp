@@ -214,8 +214,19 @@
 		                		</tbody>
 		                	</table>
 	            		</div>
-	            		<ul class="pagination">
-	            			<cbt_health:paginate total="${allRecordInstanceTotal}" params="${params}" />
+	            		<div class="clearfix">
+	                		<%--<div style="margin-top:20px;float:left;" >
+		                		显示第 1 到第${params.max}条记录，总共${allInformationInstanceTotal}条记录 每页
+								<select id="pageCount" class="form-control" style="width:auto;padding:0;display:inline-block;">
+									<g:each in="${[10, 20, 50, 100]}" var="option">
+										<option value="${option}" ${params.max == option ? 'selected' : ''}>${option}</option>
+									</g:each>
+								</select>
+								条记录
+	                		</div>--%>
+		            		<ul class="pagination" style="float:right;">
+		            			<cbt_health:paginate total="${allRecordInstanceTotal}" params="${params}" />
+		            		</ul>
 	            		</div>
                    	</div>
 	            </div>
@@ -231,7 +242,32 @@
 		        target.siblings("div.specialForm").hide();
 	    	}
 	    	$(function(){
-	    		pageObj.initShowPage();
+	    		pageObj.initShowPage();//设置默认显示页面
+	    		//选择显示页数
+	    		$("#pageCount").on("change",function(){
+					var maxValue = $("#pageCount>option:selected").html();
+					var serverUrl="${createLink(controller: 'information', action:params.action)}"; 
+					var params={max:maxValue};
+					passParamsByPost(serverUrl,params);
+		        });
+			    function passParamsByPost(url,params) {
+					var temp = document.createElement("form");
+					$(document.body).append(temp);
+					temp.action = url;
+					temp.method = "POST";
+					temp.style.display = "none";
+					if(params != null){
+						for(var x in params) {
+							var opt = document.createElement("input");
+							opt.name = x;
+							opt.type = 'hidden';
+							opt.value = params[x];
+							temp.appendChild(opt);
+						}
+					}
+					temp.submit();
+					$(document.body).remove(temp);
+				}
 	    		$("ul.nav-tabs").on("click","li",function () {
 		            var index = $(this).index();
 		            $(this).siblings("li").removeClass("active");

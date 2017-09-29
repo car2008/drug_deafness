@@ -81,50 +81,63 @@
 					            </form>
 					       </div> 
 					   	</div>
-	                	<table class="table" id="table-pdf" >
-                			<thead>
-								<tr>
-									<th>
-										<input type="checkbox" name="selectedAll" id="selectedAll">
-									</th>
-									<th>样本编号</th>
-									<th>姓名</th>
-									<th>性别</th>
-									<th>年龄</th>
-									<th>FAM Ct</th>
-									<th>VIC Ct</th>
-									<th>NED Ct</th>
-									<th>检测结果</th>
-									<th>备注</th>
-			                	</tr>
-		                	</thead>	
-	                		<tbody>
-                				<g:form name="generatePdfForm" id="generatePdfForm"  method="post" enctype="multipart/form-data" url="[action:'generatePdf',controller:'result']" style="margin-bottom:0;">
-									<g:each in="${resultInstanceList}" var="resultInstance">
-										<tr>
-											<td>
-												<input type="checkbox" name="singleRow" id="singleRow" value="${resultInstance.id}">
-												<%-- <input type="hidden" name="id" >--%>
-											</td>
-								    		<td>${resultInstance.information?.sampleNum}</td>
-								    		<td>${resultInstance.information?.patientName}</td>
-								    		<td>${resultInstance.information?.gender}</td>
-								    		<td>${resultInstance.information?.age}</td>
-								    		<td>${resultInstance.famCt}</td>
-								    		<td>${resultInstance.vicCt}</td>
-								    		<td>${resultInstance.nedCt}</td>
-								    		<td>${resultInstance.detectedResult}</td>
-								    		<td>${resultInstance.information?.remark}</td>
-										</tr>
+					   	<div class="table-container">
+		                	<table class="table" id="table-pdf" >
+	                			<thead>
+									<tr>
+										<th>
+											<input type="checkbox" name="selectedAll" id="selectedAll">
+										</th>
+										<th>样本编号</th>
+										<th>姓名</th>
+										<th>性别</th>
+										<th>年龄</th>
+										<th>FAM Ct</th>
+										<th>VIC Ct</th>
+										<th>NED Ct</th>
+										<th>检测结果</th>
+										<th>备注</th>
+				                	</tr>
+			                	</thead>	
+		                		<tbody>
+	                				<g:form name="generatePdfForm" id="generatePdfForm"  method="post" enctype="multipart/form-data" url="[action:'generatePdf',controller:'result']" style="margin-bottom:0;">
+										<g:each in="${resultInstanceList}" var="resultInstance">
+											<tr>
+												<td>
+													<input type="checkbox" name="singleRow" id="singleRow" value="${resultInstance.id}">
+													<%-- <input type="hidden" name="id" >--%>
+												</td>
+									    		<td>${resultInstance.information?.sampleNum}</td>
+									    		<td>${resultInstance.information?.patientName}</td>
+									    		<td>${resultInstance.information?.gender}</td>
+									    		<td>${resultInstance.information?.age}</td>
+									    		<td>${resultInstance.famCt}</td>
+									    		<td>${resultInstance.vicCt}</td>
+									    		<td>${resultInstance.nedCt}</td>
+									    		<td>${resultInstance.detectedResult}</td>
+									    		<td>${resultInstance.information?.remark}</td>
+											</tr>
+										</g:each>
+									
+									</g:form>
+		                		</tbody>
+		                	</table>
+	                	</div>
+	                	<div class="clearfix">
+                			<div style="margin-top:20px;float:left;" >
+		                		显示第 1 到第${params.max}条记录，总共${allResultInstanceTotal}条记录 每页
+								<select id="pageCount" class="form-control" style="width:auto;padding:0;display:inline-block;">
+									<g:each in="${[10, 20, 50, 100]}" var="option">
+										<option value="${option}" ${params.max == option ? 'selected' : ''}>${option}</option>
 									</g:each>
-								
-								</g:form>
-	                		</tbody>
-	                	</table>
-	                	<%--<div>
-	            			<cbt_health:paginate total="${allRecordInstanceTotal}" params="${params}" />
-	            		</div> --%>
-	                    <div style="margin-top:20px;">
+								</select>
+								条记录
+	                		</div>
+							<ul class="pagination" style="float:right;">
+		                		<cbt_health:paginate total="${allResultInstanceTotal}" params="${params}" />
+		                	</ul>
+						</div>
+	                    <div>
 	                        <a href="#" id="createReport" class="btn btn-success" role="button" style="float: right;">生成报告</a>
 	                    </div>
 	                </div>
@@ -212,7 +225,31 @@
 				$("#optModal").modal('hide');
 			})
 			
-			
+			$("#pageCount").on("change",function(){
+				var maxValue = $("#pageCount>option:selected").html();
+				var serverUrl="${createLink(controller: 'result', action:params.action)}"; 
+				var params={max:maxValue};
+				passParamsByPost(serverUrl,params);
+	        });
+	        
+		    function passParamsByPost(url,params) {
+				var temp = document.createElement("form");
+				$(document.body).append(temp);
+				temp.action = url;
+				temp.method = "POST";
+				temp.style.display = "none";
+				if(params != null){
+					for(var x in params) {
+						var opt = document.createElement("input");
+						opt.name = x;
+						opt.type = 'hidden';
+						opt.value = params[x];
+						temp.appendChild(opt);
+					}
+				}
+				temp.submit();
+				$(document.body).remove(temp);
+			}
 	    </script>
 	</body>
 </html>
