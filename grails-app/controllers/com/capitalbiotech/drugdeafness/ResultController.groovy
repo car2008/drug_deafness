@@ -234,6 +234,46 @@ class ResultController {
 		}
 	}
 	
+	def update = {
+		params.max = Math.min(params.max ? params.int('max') : 10, 100)
+		
+		if (!params.offset) {
+			params.offset = 0
+		}
+		if (!params.order) {
+			params.order = 'asc'
+		}
+		if (!params.sort) {
+			params.sort = 'dateCreated'
+		}
+		def sort = params.sort
+		def order = params.order
+		def offset = params.offset
+		def max = params.max
+		def resultInstance = Result.get(params.id)
+		if (resultInstance) {
+			if (params.version) {
+				def version = params.version.toLong()
+				if (resultInstance.version > version) {
+					resultInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'message.label', default: 'Message')] as Object[], "Another user has updated this Message while you were editing")
+					return
+				}
+			}
+			resultInstance.properties = params
+			
+			if (!resultInstance.hasErrors() && resultInstance.save(flush: true)) {
+				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'topic.label', default: 'resultInstance'),resultInstance.id])}"
+			}
+			else {
+				flash.message = "${message(code: 'default.not.updated.message', args: [message(code: 'topic.label', default: 'resultInstance'),resultInstance.id])}"
+			}
+		}else {
+			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'message.label', default: 'Message'), params.id])}"
+		}
+		redirect(action:"list",params:[sort:sort,order:order,max:max,offset:offset])
+	}
+
+	
 	public static String getStringFromXml(String fileName){
 		StringBuffer sb = new StringBuffer();
 		boolean isE2007 = false;    //判断是否是excel2007格式
