@@ -142,7 +142,7 @@ class CloudTagLib {
         if (attrs.total == null) {
             throwTagError("Tag [paginate] is missing required attribute [total]")
         }
-
+		params.showRecords = 'showNewRecords'
         def total = attrs.int('total') ?: 0
         //log.debug(total)
         def action = (attrs.action ? attrs.action : (params.action ? params.action : "list"))

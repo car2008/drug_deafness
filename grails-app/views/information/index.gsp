@@ -68,16 +68,16 @@
 	                <div class="clearfix">
 	                	<g:if test="${params.showRecords=='showRecords' }">
 	                		<ul class="nav nav-tabs">
-		                        <li role="presentation"  class="active"><a>批量上传</a></li>
+		                        <li role="presentation" class="active"><a>批量上传</a></li>
 		                        <li role="presentation"><a>单个录入</a></li>
 		                        <li role="presentation"><a>上传记录</a></li>
 		                    </ul>
 	                	</g:if>
 	                    <g:if test="${params.showRecords=='showNewRecords' }">
 	                		<ul class="nav nav-tabs">
-		                        <li role="presentation"  ><a>批量上传</a></li>
+		                        <li role="presentation"><a>批量上传</a></li>
 		                        <li role="presentation"><a>单个录入</a></li>
-		                        <li role="presentation"  class="active"><a>上传记录</a></li>
+		                        <li role="presentation" class="active"><a>上传记录</a></li>
 		                    </ul>
 	                	</g:if>
 	                </div>
@@ -288,14 +288,7 @@
 				})	
 			    
 			    $("#submitBtn_multiple").on("click",function(){
-			    	/*var options = {  
-	    			   //success: alert("上传完成"),  //提交后的回调函数  
-	    			   clearForm: true,          //成功提交后，清除所有表单元素的值  
-	    			   resetForm: true,          //成功提交后，重置所有表单元素的值  
-	    			   timeout: 3000             //限制请求的时间，当请求大于3秒后，跳出请求  
-	    			}*/	  
-					$('#form-multiple').submit(); 
-			    	//$("#fileListTable tbody").empty();
+					$('#form-multiple').submit();
 			    });
 			    $("#submitBtn_single").on("click",function(){
 					$("#form-single").submit();
