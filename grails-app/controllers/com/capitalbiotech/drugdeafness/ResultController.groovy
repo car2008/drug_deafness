@@ -58,6 +58,10 @@ class ResultController {
 								"vicCt":resultInstance.vicCt,
 								"nedCt":resultInstance.nedCt,
 								"detectedResult":resultInstance.detectedResult,
+								"resulttitle":resultInstance.resulttitle,
+								"checker":resultInstance.checker,
+								"assessor":resultInstance.assessor,
+								"pdfcomment":resultInstance.pdfcomment,
 								"remark":resultInstance.information?.remark,
 								]
 							}
