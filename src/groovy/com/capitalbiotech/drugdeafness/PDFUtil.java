@@ -484,49 +484,93 @@ public class PDFUtil {
 		ph1.add(c63);
 		p1.add(ph1);
 		doc.add(p1);
-
-		p1 = new Paragraph();
-		ph1 = new Phrase();
-		//Chunk c65 = new Chunk(hand, 0, 0);
-		Chunk c66 = new Chunk(leftPad("   本次送检样本为1494 C > T突变型。", 1), fourthTitleFont);
-		//ph1.add(c65);
-		ph1.add(c66);
-		p1.add(ph1);
-		doc.add(p1);
 		
-		p1 = new Paragraph();
-		ph1 = new Phrase();
-		//Chunk c65 = new Chunk(hand, 0, 0);
-		Chunk c67 = new Chunk(leftPad("   药物性耳聋敏感个体。", 1), fourthTitleFont);
-		//ph1.add(c65);
-		ph1.add(c67);
-		p1.add(ph1);
-		doc.add(p1);
+		if(map.get("detectedResult").contains("突变型")){
+			p1 = new Paragraph();
+			ph1 = new Phrase();
+			//Chunk c65 = new Chunk(hand, 0, 0);
+			Chunk c66 = new Chunk(leftPad(map.get("detectedResult").contains("1555")?printBlank(5)+"本次送检样本为1555 A > G突变型。":printBlank(5)+"本次送检样本为1494 C > T突变型。", 1), fourthTitleFont);
+			//ph1.add(c65);
+			ph1.add(c66);
+			p1.add(ph1);
+			doc.add(p1);
+			
+			p1 = new Paragraph();
+			ph1 = new Phrase();
+			//Chunk c65 = new Chunk(hand, 0, 0);
+			Chunk c67 = new Chunk(leftPad(printBlank(5)+"药物性耳聋敏感个体。", 1), fourthTitleFont);
+			//ph1.add(c65);
+			ph1.add(c67);
+			p1.add(ph1);
+			doc.add(p1);
+			
+			p1 = new Paragraph();
+			ph1 = new Phrase();
+			//Chunk c65 = new Chunk(hand, 0, 0);
+			Chunk c68 = new Chunk(leftPad(printBlank(5)+"提示服用耳毒性药物会导致耳聋，应终生禁用耳毒性药物。", 1), fourthTitleFont);
+			//ph1.add(c65);
+			ph1.add(c68);
+			p1.add(ph1);
+			doc.add(p1);
+			
+			p1 = new Paragraph();
+			ph1 = new Phrase();
+			//Chunk c65 = new Chunk(hand, 0, 0);
+			Chunk c69 = new Chunk(leftPad(printBlank(5)+"建议被检者亲属进行基因检测，以确认其是否为遗传性耳聋或遗传性耳聋基因突变携带者。", 1), fourthTitleFont);
+			//ph1.add(c65);
+			ph1.add(c69);
+			p1.add(ph1);
+			doc.add(p1);
+		}
 		
-		p1 = new Paragraph();
-		ph1 = new Phrase();
-		//Chunk c65 = new Chunk(hand, 0, 0);
-		Chunk c68 = new Chunk(leftPad("   提示服用耳毒性药物会导致耳聋，应终生禁用耳毒性药物。", 1), fourthTitleFont);
-		//ph1.add(c65);
-		ph1.add(c68);
-		p1.add(ph1);
-		doc.add(p1);
+		if(map.get("detectedResult").contains("野生型")){
+			p1 = new Paragraph();
+			ph1 = new Phrase();
+			//Chunk c65 = new Chunk(hand, 0, 0);
+			Chunk c67 = new Chunk(leftPad(printBlank(5)+"本次送检样本为野生型。", 1), fourthTitleFont);
+			//ph1.add(c65);
+			ph1.add(c67);
+			p1.add(ph1);
+			doc.add(p1);
+			
+			p1 = new Paragraph();
+			ph1 = new Phrase();
+			//Chunk c65 = new Chunk(hand, 0, 0);
+			Chunk c68 = new Chunk(leftPad(printBlank(5)+"在目前进行的2个位点检测的技术条件下，未发现您携带药物性耳聋基因突变。", 1), fourthTitleFont);
+			//ph1.add(c65);
+			ph1.add(c68);
+			p1.add(ph1);
+			doc.add(p1);
+		}
 		
-		p1 = new Paragraph();
-		ph1 = new Phrase();
-		//Chunk c65 = new Chunk(hand, 0, 0);
-		Chunk c69 = new Chunk(leftPad("   建议被检者亲属进行基因检测，以确认其是否为遗传性耳聋或遗传性耳聋基因突变携带者。", 1), fourthTitleFont);
-		//ph1.add(c65);
-		ph1.add(c69);
-		p1.add(ph1);
-		doc.add(p1);
+		if(map.get("detectedResult").contains("NED质控异常")){
+			p1 = new Paragraph();
+			ph1 = new Phrase();
+			//Chunk c65 = new Chunk(hand, 0, 0);
+			Chunk c67 = new Chunk(leftPad(printBlank(5)+"本次送检样本为NED质控异常，需重新检测。", 1), fourthTitleFont);
+			//ph1.add(c65);
+			ph1.add(c67);
+			p1.add(ph1);
+			doc.add(p1);
+		}
+		
+		if(map.get("detectedResult").contains("检测异常")){
+			p1 = new Paragraph();
+			ph1 = new Phrase();
+			//Chunk c65 = new Chunk(hand, 0, 0);
+			Chunk c67 = new Chunk(leftPad(printBlank(5)+"本次送检样本为检测异常，需重新检测。", 1), fourthTitleFont);
+			//ph1.add(c65);
+			ph1.add(c67);
+			p1.add(ph1);
+			doc.add(p1);
+		}
 		
 		p1 = new Paragraph();
 		p1.setSpacingBefore(20);
 		p1.setSpacingAfter(10);
 		ph1 = new Phrase();
 		//Chunk c65 = new Chunk(hand, 0, 0);
-		Chunk c70 = new Chunk(printBlank(150)+leftPad("检验员  "+map.get("checker")+" 审核员  "+map.get("assessor")+"  检验日期 "+map.get("dateCreated")+" ",1), fourthTitleFont);
+		Chunk c70 = new Chunk(printBlank(150)+leftPad("检验员：  "+map.get("checker")+" 审核员：  "+map.get("assessor")+"  检验日期： "+map.get("dateCreated")+" ",1), fourthTitleFont);
 		//ph1.add(c65);
 		ph1.add(c70);
 		p1.add(ph1);

@@ -29,7 +29,7 @@ class InformationController {
 			params.order = 'desc'
 		}
 		if (!params.sort) {
-			params.sort = 'dateCreated'
+			params.sort = 'sampleNum'
 		}
 
 		def informationInstanceList = Information.list(params)
