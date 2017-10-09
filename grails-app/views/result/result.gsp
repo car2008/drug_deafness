@@ -261,11 +261,33 @@
 				})	
 			    
 			    $("#submitBtn_multiple").on("click",function(){
-					$("#form-multiple").submit();
+					var xhr = new XMLHttpRequest();
+				    var data = new FormData(document.getElementById("form-multiple"));
+				    var url="${createLink(controller: 'information', action:'uploadBatch')}";
+				    xhr.open("POST",url,true);
+				    xhr.onreadystatechange=function(){
+				        if(xhr.readyState==4 && xhr.status==200){  //判断状态到4了并且返回状态码是200时才做操作
+				            alert(xhr.readyState);
+				            alert(xhr.status);
+				            console.log(xhr.responseText);
+				        }
+				    };
+				    xhr.send(data);
 			    });
 			    
 			    $("#submitBtn_single").on("click",function(){
-					$("#form-single").submit();
+					var xhr = new XMLHttpRequest();
+				    var data = new FormData(document.getElementById("form-single"));
+				    var url="${createLink(controller: 'information', action:'uploadOne')}";
+				    xhr.open("POST",url,true);
+				    xhr.onreadystatechange=function(){
+				        if(xhr.readyState==4 && xhr.status==200){  //判断状态到4了并且返回状态码是200时才做操作
+				            alert(xhr.readyState);
+				            alert(xhr.status);
+				            console.log(xhr.responseText);
+				        }
+				    };
+				    xhr.send(data);
 			    });
 			    
 			    $("#form-multiple").on("change","#InputFile",function(e){

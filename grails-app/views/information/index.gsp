@@ -92,7 +92,7 @@
 						</div>
 					</g:if>
 	                <div class="specialForm">
-	                    <g:form id="form-multiple" class="form-horizontal optForm"  enctype="multipart/form-data" url="[action:'uploadBatch',controller:'information']" method="post">
+	                    <g:form id="form-multiple" class="form-horizontal optForm" enctype="multipart/form-data" method="post">
 	                        <div class="form-group">
 	                            <label class="col-md-2 control-label" for="InputFile">文件上传</label>
 	                            <div class="col-md-4">
@@ -113,7 +113,7 @@
 	                </div>
 
 	                <div class="specialForm" style="display:none;">
-	                    <g:form id="form-single" class="form-horizontal optForm" url="[action:'uploadOne',controller:'information']" method="post" enctype="multipart/form-data">
+	                    <g:form id="form-single" class="form-horizontal optForm" enctype="multipart/form-data" method="post">
 	                        <div class="form-group">
 	                            <label class="col-md-2 col-md-offset-1 control-label">样本编号</label>
 	                            <div class="col-md-3">
@@ -288,10 +288,32 @@
 				})	
 			    
 			    $("#submitBtn_multiple").on("click",function(){
-					$('#form-multiple').submit();
+				    var xhr = new XMLHttpRequest();
+				    var data = new FormData(document.getElementById("form-multiple"));
+				    var url="${createLink(controller: 'information', action:'uploadBatch')}";
+				    xhr.open("POST",url,true);
+				    xhr.onreadystatechange=function(){
+				        if(xhr.readyState==4 && xhr.status==200){  //判断状态到4了并且返回状态码是200时才做操作
+				            alert(xhr.readyState);
+				            alert(xhr.status);
+				            console.log(xhr.responseText);
+				        }
+				    };
+				    xhr.send(data);
 			    });
 			    $("#submitBtn_single").on("click",function(){
-					$("#form-single").submit();
+			    	var xhr = new XMLHttpRequest();
+				    var data = new FormData(document.getElementById("form-single"));
+				    var url="${createLink(controller: 'information', action:'uploadOne')}";
+				    xhr.open("POST",url,true);
+				    xhr.onreadystatechange=function(){
+				        if(xhr.readyState==4 && xhr.status==200){  //判断状态到4了并且返回状态码是200时才做操作
+				            alert(xhr.readyState);
+				            alert(xhr.status);
+				            console.log(xhr.responseText);
+				        }
+				    };
+				    xhr.send(data);
 			    });
 			    
 			    $("#form-multiple").on("change","#InputFile",function(e){

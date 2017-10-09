@@ -218,7 +218,8 @@ class InformationController {
 		def originalFileName
 		def fileName
 		def filePath
-		def f = request.getFile('InputFile')
+		def f = request.getFile("InputFile")
+		//def f = request.getFile('InputFile') 
 		String[] nameArray = new String[2]
 		if(!f.empty) {
 			 def webRootDir = "${grailsApplication.config.project.file.upload.path}"

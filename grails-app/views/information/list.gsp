@@ -7,12 +7,14 @@
 		<meta name="renderer" content="webkit" />
 		<meta name="author" content="CBT Bioinformatics, CapitalBio Technology" />
 		<link rel="stylesheet" href="${resource(dir:'css/bootstrap/dist/css/', file:'bootstrap.css')}"/>
+		<link rel="stylesheet" href="${resource(dir:'css/', file:'bootstrap-table.css')}"/>
 	    <link rel="stylesheet" href="${resource(dir:'css/font-awesome/css/', file:'font-awesome.min.css')}"/>
-	    <link rel="stylesheet" href="${resource(dir:'css/', file:'sweetalert.css')}">   
+	    <link rel="stylesheet" href="${resource(dir:'css/', file:'sweetalert.css')}">  
 	    <link rel="stylesheet" href="${resource(dir:'css/', file:'index.css')}"/>
 	    <script src="${resource(dir:'js/', file:'jquery.js')}"></script>
 	    <script src="${resource(dir:'js/', file:'bootstrap.min.js')}"></script>
-	    <script src="${resource(dir:'js/', file:'jquery.form.js')}"></script>
+	    <script src="${resource(dir:'js/', file:'bootstrap-table.js')}"></script>
+	    <script src="${resource(dir:'js/', file:'bootstrap-table-zh-CN.js')}"></script>
 	    <script src="${resource(dir:'js/', file:'sweetalert.min.js')}"></script>
 		<title>
 			<g:message code="drug_deafness.name" />
@@ -36,11 +38,11 @@
 	                <ul class="nav navbar-nav navbar-right">
 	                    <li><a href="#" style="color:#563d7c;">欢迎${loggedInUser?.name}用户</a></li>
 	                    <li>
-	                         <form method="post" action="${createLink(controller: 'logout', action: 'index')}">
-		                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding:15px;color:#F96A74;">
-		                           		<g:message code="drug_deafness.user.logout.label" />
-		                           </button>
-							 </form>
+							<form method="post" action="${createLink(controller: 'logout', action: 'index')}">
+	                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding:15px;color:#F96A74;">
+	                           		<g:message code="drug_deafness.user.logout.label" />
+	                           </button>
+							</form>
                         </li>
 	                </ul>
 	            </div>

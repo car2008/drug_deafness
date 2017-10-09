@@ -8,12 +8,14 @@
 		<meta name="author" content="CBT Bioinformatics, CapitalBio Technology" />
 		
 		<link rel="stylesheet" href="${resource(dir:'css/bootstrap/dist/css/', file:'bootstrap.css')}"/>
+		<link rel="stylesheet" href="${resource(dir:'css/', file:'bootstrap-table.css')}"/>
 	    <link rel="stylesheet" href="${resource(dir:'css/font-awesome/css/', file:'font-awesome.min.css')}"/>
-	    	    <link rel="stylesheet" href="${resource(dir:'css/', file:'sweetalert.css')}">  
+	    <link rel="stylesheet" href="${resource(dir:'css/', file:'sweetalert.css')}">  
 	    <link rel="stylesheet" href="${resource(dir:'css/', file:'index.css')}"/>
 	    <script src="${resource(dir:'js/', file:'jquery.js')}"></script>
 	    <script src="${resource(dir:'js/', file:'bootstrap.min.js')}"></script>
-	    <script src="${resource(dir:'js/', file:'jquery.form.js')}"></script>
+	    <script src="${resource(dir:'js/', file:'bootstrap-table.js')}"></script>
+	    <script src="${resource(dir:'js/', file:'bootstrap-table-zh-CN.js')}"></script>
 	    <script src="${resource(dir:'js/', file:'sweetalert.min.js')}"></script>
 		<title>
 			<g:message code="drug_deafness.name" />
@@ -37,10 +39,10 @@
 	                <ul class="nav navbar-nav navbar-right">
 	                    <li><a href="#" style="color:#563d7c;">欢迎XXX用户</a></li>
 	                    <li>
-	                         <form method="post" action="${createLink(controller: 'logout', action: 'index')}">
-		                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding:15px;color:#F96A74;">
-		                           		<g:message code="drug_deafness.user.logout.label" />
-		                           </button>
+	                        <form method="post" action="${createLink(controller: 'logout', action: 'index')}">
+	                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding:15px;color:#F96A74;">
+	                           		<g:message code="drug_deafness.user.logout.label" />
+	                           </button>
 							</form>
                         </li>
 	                </ul>
@@ -72,6 +74,10 @@
 					               <div class="form-group" style="margin-bottom:0px;">
 						                <label class="control-label col-sm-1">编号</label> 
 						                <div class="col-sm-2"> 
+						                    <input type="text" class="form-control input-sm" id="search_sampleNum"> 
+						                </div> 
+						                <label class="control-label col-sm-1">姓名</label> 
+						                <div class="col-sm-2"> 
 						                    <input type="text" class="form-control input-sm" id="search_name"> 
 						                </div> 
 						                <div class="col-sm-1" style="text-align:left;"> 
@@ -81,7 +87,14 @@
 					            </form>
 					       </div> 
 					   	</div>
-					   	<div class="table-container">
+					   	
+					   	<table class="table" id="table-pdf"></table>
+					   	
+					   	<div>
+	                        <a href="#" id="createReport" class="btn btn-success" role="button" style="float: right;">生成报告</a>
+	                    </div>
+					   	
+					   	<%--<div class="table-container">
 		                	<table class="table" id="table-pdf" >
 	                			<thead>
 									<tr>
@@ -105,7 +118,7 @@
 											<tr>
 												<td>
 													<input type="checkbox" name="singleRow" id="singleRow" value="${resultInstance.id}">
-													<%-- <input type="hidden" name="id" >--%>
+													<input type="hidden" name="id">
 												</td>
 									    		<td>${resultInstance.information?.sampleNum}</td>
 									    		<td>${resultInstance.information?.patientName}</td>
@@ -140,6 +153,7 @@
 	                    <div>
 	                        <a href="#" id="createReport" class="btn btn-success" role="button" style="float: right;">生成报告</a>
 	                    </div>
+	                    --%>
 	                </div>
 	            </div>
 	        </div>
@@ -188,68 +202,8 @@
 	        </div>
 	    </div>
 	    <script>
-		    $("#createReport").on("click",function(){
-		    	var selectedRows = $(".table>tbody td").find("input[type='checkbox']:checked");
-				if(selectedRows.length === 0){
-					showMessage();
-					return;
-				}
-				$("#optModal").modal('show');
-		    })
-	    
-			
-			function showMessage(){
-				swal({
-                    title: "请先选择需要导出的数据",
-                    type: "warning",
-                });
-			}
-
-			$("#selectedAll").on("click",function(){
-				$("#table-pdf input[type='checkbox']").prop("checked", $(this).prop("checked"));
-			});
-
-			$("#table-pdf input").click(function(){
-				$("#selectedAll").prop("checked",$("#table-pdf input").length === $("#table-pdf input:checked").length);
-			});
-
-			$("#btn_submit").on("click",function(){
-			
-				$("#appendForm input").each(function(index,value){
-					var _input = $(this).clone();
-					_input.val($(this).val());
-					_input.css("display","none");
-					$("#generatePdfForm").append(_input);
-				})
-				$("#generatePdfForm").submit();
-				$("#optModal").modal('hide');
-			})
-			
-			$("#pageCount").on("change",function(){
-				var maxValue = $("#pageCount>option:selected").html();
-				var serverUrl="${createLink(controller: 'result', action:params.action)}"; 
-				var params={max:maxValue};
-				passParamsByPost(serverUrl,params);
-	        });
-	        
-		    function passParamsByPost(url,params) {
-				var temp = document.createElement("form");
-				$(document.body).append(temp);
-				temp.action = url;
-				temp.method = "POST";
-				temp.style.display = "none";
-				if(params != null){
-					for(var x in params) {
-						var opt = document.createElement("input");
-						opt.name = x;
-						opt.type = 'hidden';
-						opt.value = params[x];
-						temp.appendChild(opt);
-					}
-				}
-				temp.submit();
-				$(document.body).remove(temp);
-			}
+	    	
+		   
 	    </script>
 	</body>
 </html>
