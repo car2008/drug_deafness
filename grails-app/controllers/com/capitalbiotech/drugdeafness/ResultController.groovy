@@ -12,6 +12,7 @@ import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import grails.converters.JSON
 
 @Secured(['ROLE_USER'])
 class ResultController {
@@ -42,7 +43,29 @@ class ResultController {
 		
 		def resultInstanceTotal = Result.count()
 		def allResultInstanceTotal = resultInstanceTotal
-		render view: 'list', model: [resultInstanceList: resultInstanceList,allResultInstanceTotal:allResultInstanceTotal,]
+		//render view: 'list', model: [resultInstanceList: resultInstanceList,allResultInstanceTotal:allResultInstanceTotal,]
+		if(params.json=="json"){
+			render ([
+					"total":allResultInstanceTotal,
+					"rows":
+							resultInstanceList.collect {  resultInstance ->
+								["id":resultInstance.id,
+								"sampleNum":resultInstance.information?.sampleNum,
+								"patientName":resultInstance.information?.patientName,
+								"gender":resultInstance.information?.gender,
+								"age":resultInstance.information?.age,
+								"famCt":resultInstance.famCt,
+								"vicCt":resultInstance.vicCt,
+								"nedCt":resultInstance.nedCt,
+								"detectedResult":resultInstance.detectedResult,
+								"remark":resultInstance.information?.remark,
+								]
+							}
+				] as JSON)
+		}else{
+			return
+		}
+
 	}
 	
 	def generatePdf(){
@@ -67,7 +90,7 @@ class ResultController {
 		def outDir = "${grailsApplication.config.project.file.pdf.path}".toString()
 		resultInstanceList.each{ resultInstance ->
 			HashMap map = new LinkedHashMap<String,String>();
-			map.put("医院", params.hospital);
+			map.put("医院", params.hospital.toString());
 			map.put("姓名",resultInstance.information.patientName);
 			map.put("性别",resultInstance.information.gender);
 			map.put("年龄",resultInstance.information.age);
@@ -82,15 +105,20 @@ class ResultController {
 			map.put("famCt",resultInstance.famCt);
 			map.put("vicCt",resultInstance.vicCt);
 			map.put("nedCt",resultInstance.nedCt);
-			map.put("famCtResult","阴性");
-			map.put("vicCtResult","阴性");
-			map.put("nedCtResult","阴性");
+			map.put("famCtResult",resultInstance.famCt.contains("--")?"阴性（-）":"阳性（+）");
+			map.put("vicCtResult",resultInstance.vicCt.contains("--")?"阴性（-）":"阳性（+）");
+			map.put("nedCtResult",resultInstance.nedCt.contains("--")?"阴性（-）":"阳性（+）");
+			map.put("detectedResult",resultInstance.detectedResult);
 			map.put("resultcomment",resultInstance.comment==null?"":resultInstance.comment);
-			map.put("resultpictureUrl","web-app\\images\\detected_pic\\0001-检测异常.bmp");
-			map.put("checker",params.checker);
-			map.put("assessor",params.assessor);
+			if(resultInstance.detectedResult.contains("检测异常"))map.put("resultpictureUrl","web-app\\images\\detected_pic\\0001-检测异常.bmp");
+			if(resultInstance.detectedResult.contains("1555"))map.put("resultpictureUrl","web-app\\images\\detected_pic\\0002-1555突变.bmp");
+			if(resultInstance.detectedResult.contains("野生型"))map.put("resultpictureUrl","web-app\\images\\detected_pic\\0003-野生型.bmp");
+			if(resultInstance.detectedResult.contains("1494"))map.put("resultpictureUrl","web-app\\images\\detected_pic\\0004-1494突变.bmp");
+			if(resultInstance.detectedResult.contains("NED质控异常"))map.put("resultpictureUrl","web-app\\images\\detected_pic\\0005-质控异常.bmp");
+			map.put("checker",params.checker.toString());
+			map.put("assessor",params.assessor.toString());
 			map.put("dateCreated","2017-9-1");
-			map.put("pdfcomment",params.pdfcomment);
+			map.put("pdfcomment",params.pdfcomment.toString());
 			map.put("outDir", outDir+"/"+resultInstance.sampleNum+".pdf");
 			outPathList.add(PDFUtil.createPDF(map))
 		}
