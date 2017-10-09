@@ -78,14 +78,14 @@ class ResultController {
 			map.put("送检医生",resultInstance.information.inspectionDoctor);
 			map.put("送检样本",resultInstance.information.inspectionSample);
 			map.put("送检时间",resultInstance.information.inspectionTime);
-			map.put("备注",resultInstance.information.remark);
+			map.put("备注",resultInstance.information.remark==null?"":resultInstance.information.remark);
 			map.put("famCt",resultInstance.famCt);
 			map.put("vicCt",resultInstance.vicCt);
 			map.put("nedCt",resultInstance.nedCt);
 			map.put("famCtResult","阴性");
 			map.put("vicCtResult","阴性");
 			map.put("nedCtResult","阴性");
-			map.put("resultcomment",resultInstance.comment+"beizhu");
+			map.put("resultcomment",resultInstance.comment==null?"":resultInstance.comment);
 			map.put("resultpictureUrl","web-app\\images\\detected_pic\\0001-检测异常.bmp");
 			map.put("checker",params.checker);
 			map.put("assessor",params.assessor);
