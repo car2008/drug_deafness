@@ -20,7 +20,6 @@ class InformationController {
 	}
 	
 	def list(){
-		println params
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		
 		if (!params.offset) {
@@ -30,7 +29,7 @@ class InformationController {
 			params.order = 'desc'
 		}
 		if (!params.sort) {
-			params.sort = 'dateCreated'
+			params.sort = 'sampleNum'
 		}
 
 		def informationInstanceList = Information.list(params)

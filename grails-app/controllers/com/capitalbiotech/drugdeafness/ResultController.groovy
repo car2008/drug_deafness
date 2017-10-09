@@ -35,7 +35,7 @@ class ResultController {
 			params.order = 'desc'
 		}
 		if (!params.sort) {
-			params.sort = 'dateCreated'
+			params.sort = 'sampleNum'
 		}
 
 		def resultInstanceList = Result.list(params)
