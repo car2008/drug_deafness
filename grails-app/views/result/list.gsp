@@ -171,7 +171,7 @@
 							    </div>
 							    <label class="col-md-2 control-label">备注</label>
 							    <div class=" col-md-4">
-							    	<input name="pdfcomment" id="pdfcomment" class="form-control input-sm"></input>
+							    	<textarea name="pdfcomment" id="pdfcomment" class="form-control" rows="3" style="resize:none;margin:0 auto;"></textarea>
 							    </div>
 							</div>
 						</form>
