@@ -50,7 +50,7 @@
 	            </div>
 	        </div>
 	    </nav>
-		
+		<g:layoutBody />
 	    <footer class="footer text-right">
             <div class="container">
                 <div class="row">
