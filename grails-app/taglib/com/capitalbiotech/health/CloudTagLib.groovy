@@ -106,6 +106,15 @@ class CloudTagLib {
 		}
 	}
 	
+	def maybeEmpty = { attrs ->
+		if (attrs.value == null || String.valueOf(attrs.value).trim() == "") {
+			out << '-'
+		}
+		else {
+			out << attrs.value
+		}
+	}
+	
     def ifLoggedIn = { attrs, body ->
         if (attrs.var == null) {
             throwTagError("Tag [ifUserLoggedIn] is missing required attribute [var]")

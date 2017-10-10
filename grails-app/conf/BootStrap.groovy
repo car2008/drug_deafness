@@ -5,8 +5,6 @@ import javax.script.ScriptEngineFactory
 import javax.script.ScriptEngineManager
 
 import grails.plugin.springsecurity.SpringSecurityUtils
-
-
 import com.capitalbiotech.drugdeafness.Role
 import com.capitalbiotech.drugdeafness.User
 import com.capitalbiotech.drugdeafness.Utils;
@@ -23,6 +21,7 @@ class BootStrap {
     
         if (0 == User.count()) {
             initializeDatabase()
+			//createUsersAndRoles()
         }
         
         updateDatabase()
@@ -67,6 +66,44 @@ class BootStrap {
 		UserRole.create(user1, staffRole, true)
 		UserRole.create(user1, adminRole, true)
     }
+	
+	def createUsersAndRoles(){
+		log.info "Creating default users and roles"
+		
+		def authorityRoleMap = [:]
+		def propertiesList = readRawFile("roles")
+		propertiesList?.each { properties ->
+			def roleInstance = new Role(properties)
+			if (roleInstance.hasErrors() || !roleInstance.save(flush: true)) {
+				roleInstance.errors?.each { error ->
+					log.error error
+				}
+			}
+			
+			authorityRoleMap[(roleInstance?.authority)] = roleInstance
+		}
+		
+		propertiesList = readRawFile("users")
+		propertiesList?.each { properties ->
+			properties['password'] = springSecurityService.encodePassword(properties['password'])
+			
+			def userInstance = new User(properties)
+			if (userInstance.hasErrors() || !userInstance.save(flush: true)) {
+				userInstance.errors?.each { error ->
+					log.error error
+				}
+			}
+			
+			properties['roles'].split(",")?.each { authority ->
+				if (authorityRoleMap[authority] != null) {
+					UserRole.create(userInstance, authorityRoleMap[authority], true)
+				}
+				else {
+					log.error "Role not found: ${authority}"
+				}
+			}
+		}
+	}
 	
 	def readRawFile(fileName) {
 		def rawLines = new File(BootStrap.class.getResource("raw/${fileName}").getFile()).readLines()
