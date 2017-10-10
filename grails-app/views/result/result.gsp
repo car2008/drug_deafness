@@ -207,7 +207,7 @@
 			    $("#submitBtn_multiple").on("click",function(){
 					var xhr = new XMLHttpRequest();
 				    var data = new FormData(document.getElementById("form-multiple"));
-				    var url="${createLink(controller: 'information', action:'uploadBatch')}";
+				    var url="${createLink(controller: 'result', action:'uploadBatch')}";
 				    xhr.open("POST",url,true);
 				    xhr.onreadystatechange=function(){
 				        if(xhr.readyState==4 && xhr.status==200){  //判断状态到4了并且返回状态码是200时才做操作
@@ -222,7 +222,7 @@
 			    $("#submitBtn_single").on("click",function(){
 					var xhr = new XMLHttpRequest();
 				    var data = new FormData(document.getElementById("form-single"));
-				    var url="${createLink(controller: 'information', action:'uploadOne')}";
+				    var url="${createLink(controller: 'result', action:'uploadOne')}";
 				    xhr.open("POST",url,true);
 				    xhr.onreadystatechange=function(){
 				        if(xhr.readyState==4 && xhr.status==200){  //判断状态到4了并且返回状态码是200时才做操作

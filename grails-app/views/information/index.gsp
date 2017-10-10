@@ -97,7 +97,7 @@
 						</div>
 					</g:if>
 	                <div class="specialForm">
-	                    <g:form id="form-multiple" class="form-horizontal optForm" enctype="multipart/form-data" method="post">
+	                    <g:form id="form-multiple" class="form-horizontal optForm" enctype="multipart/form-data" method="post" url="[action:'uploadBatch',controller:'information']">
 	                        <div class="form-group">
 	                            <label class="col-md-2 control-label" for="InputFile">文件上传</label>
 	                            <div class="col-md-4">
@@ -118,7 +118,7 @@
 	                </div>
 
 	                <div class="specialForm" style="display:none;">
-	                    <g:form id="form-single" class="form-horizontal optForm" enctype="multipart/form-data" method="post">
+	                    <g:form id="form-single" class="form-horizontal optForm" enctype="multipart/form-data" method="post" url="[action:'uploadOne',controller:'information']">
 	                        <div class="form-group">
 	                            <label class="col-md-2 col-md-offset-1 control-label">样本编号</label>
 	                            <div class="col-md-3">
