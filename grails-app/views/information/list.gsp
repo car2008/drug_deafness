@@ -199,6 +199,12 @@
 	                    },{
 	                        field: 'remark',
 	                        title: '备注',
+	                    },{
+	                        field: 'status',
+	                        title: '状态',
+	                        formatter:function(value,row,index){ 
+		                        //value === "有"? return '<span class="label label-success">'+value+'</span>':'<span class="label label-danger">'+value+'</span>';
+	                        }
 	                    }]
 	                });
 	            };
