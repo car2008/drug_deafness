@@ -206,6 +206,8 @@ class ResultController {
 	}
 	
 	def uploadBatch() {
+		StringBuffer failedsb=new StringBuffer()
+		StringBuffer sucessedsb=new StringBuffer()
 		def nameArray=upload()
 		def currentUser = springSecurityService.currentUser
 		def startTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
@@ -230,12 +232,15 @@ class ResultController {
 				def informationInstance = Information.findBySampleNum(properties["sampleNum"])
 				if(Result.findBySampleNum(properties["sampleNum"])){
 					failedNum++
+					failedsb.append(","+properties["sampleNum"])
 				}else if(!Result.findBySampleNum(properties["sampleNum"]) && !informationInstance){
 					failedNum++
+					failedsb.append(","+properties["sampleNum"])
 				}else if(!Result.findBySampleNum(properties["sampleNum"]) && informationInstance){
 					def resultInstance = new Result(properties)
 					if (resultInstance.hasErrors() || !resultInstance.save(flush: true)) {
 						failedNum++
+						failedsb.append(","+properties["sampleNum"])
 						resultInstance.errors?.each { error ->
 							log.error error
 						}
@@ -244,13 +249,15 @@ class ResultController {
 						informationInstance.results.add(resultInstance)
 						informationInstance.save(flush: true)
 						successNum++
+						sucessedsb.append(","+properties["sampleNum"])
 					}
 				}
 			}
 			def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
-			def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_RESULT", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime)
+			def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_RESULT", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime,successedSample:sucessedsb.toString().replaceFirst("\\,", ""),failedSample:failedsb.toString().replaceFirst("\\,", ""))
 			record.save(flush: true)
-			redirect(action: "listRecord", params: [showRecords: "showNewRecords"])
+			render failedsb.toString().replaceFirst("\\,", "")+"###"+sucessedsb.toString().replaceFirst("\\,", "")
+			//redirect(action: "listRecord", params: [showRecords: "showNewRecords"])
 		}
 	}
 	

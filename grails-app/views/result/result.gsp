@@ -189,6 +189,7 @@
 				    xhr.open("POST",url,true);
 				    xhr.onreadystatechange=function(){
 				        if(xhr.readyState==4 && xhr.status==200){  //判断状态到4了并且返回状态码是200时才做操作
+				        	alert(xhr.responseText);
 				        	$("div.specialForm:eq(2)").show();
 					        $("div.specialForm:eq(2)").siblings("div.specialForm").hide();
 					        $("ul.nav-tabs>li:eq(2)").addClass("active");
