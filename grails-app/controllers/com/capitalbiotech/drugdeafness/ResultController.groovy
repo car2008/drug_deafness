@@ -163,6 +163,8 @@ class ResultController {
 								"recordName":resultInstance.recordName,
 								"successNum":resultInstance.successNum,
 								"failedNum":resultInstance.failedNum,
+								"successedSample":resultInstance.successedSample,
+								"failedSample":resultInstance.failedSample,
 								"startTime":resultInstance.startTime
 								]
 							}

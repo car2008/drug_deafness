@@ -58,6 +58,7 @@ class InformationController {
 								"inspectionTime":informationInstance.inspectionTime,
 								"phoneNum":informationInstance.phoneNum,
 								"remark":informationInstance.remark,
+								"hasResult":informationInstance.results.size()>0?"是":"否"
 								]
 							}
 				] as JSON)
@@ -97,6 +98,8 @@ class InformationController {
 								"recordName":resultInstance.recordName,
 								"successNum":resultInstance.successNum,
 								"failedNum":resultInstance.failedNum,
+								"successedSample":resultInstance.successedSample,
+								"failedSample":resultInstance.failedSample,
 								"startTime":resultInstance.startTime
 								]
 							}
