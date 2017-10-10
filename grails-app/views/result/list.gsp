@@ -82,9 +82,14 @@
 						                <label class="control-label col-sm-1">姓名</label> 
 						                <div class="col-sm-2"> 
 						                    <input type="text" class="form-control input-sm" id="search_name"> 
-						                </div> 
+						                </div>
+									    <div class="col-sm-3">
+											<label class="radio-inline"><input name="testResult" value="positive" type="radio">阳性</label>
+										    <label class="radio-inline"><input name="testResult" value="negative" type="radio">阴性</label>
+										    <label class="radio-inline"><input name="testResult" value="abnormal" type="radio">检测异常</label>
+									    </div>
 						                <div class="col-sm-1" style="text-align:left;"> 
-						                    <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary btn-sm">查询</button> 
+						                    <button type="button" id="btn_query" class="btn btn-primary btn-sm">查询</button> 
 						                </div> 
 						            </div> 
 					            </form>
@@ -242,8 +247,10 @@
   					offset:"", 
   					num:$("#search_sampleNum").val(),
 	                name:$("#search_name").val(),
+	                testResult:$("input[name='testResult']:checked").val(),
   	           } 
   	        };
+  	        
 			function getIdSelections() {
 		        return $.map($table.bootstrapTable('getSelections'), function (row) {
 		            return row.id
@@ -261,6 +268,7 @@
 				pageInfo['query']['offset'] = (tableOptions['pageNumber'] - 1) * tableOptions['pageSize']; 
 				pageInfo['query']['num'] = $("#search_sampleNum").val(); 
 				pageInfo['query']['name'] = $("#search_name").val(); 
+				pageInfo['query']['testResult'] = $("input[name='testResult']:checked").val();
 			}
 			
 	        var TableInit = function () {
@@ -346,13 +354,14 @@
 	                    offset: params.offset,  //页码
 	                    num:$("#search_sampleNum").val(),
 	                    name:$("#search_name").val(),
+	                    testResult:$("input[name='testResult']:checked").val(),
 	                };
 	                return temp;
 	            };
 	
 	            return oTableInit;
 	        };
-	        
+	        //表格行编辑按钮
 	        $(document).on("click",".td_edit",function(){
 				var arrselections = $table.bootstrapTable('getSelections');
             	var selectedRows = arrselections[0];
@@ -378,11 +387,9 @@
 
 				//获取并重新设置查询参数
 				setPageInfo();   
-				               
-                //url = 'save';//设置后台地址
 			});
 			
-			//Form表单的保存按钮
+			//表格行编辑更新按钮
             $("#btn_update").click(function(){
                 $('#editModal').modal('hide');
                 var form = new FormData(document.getElementById("editForm"));
@@ -401,6 +408,7 @@
 					}
 	         	});
             });
+            //生成报告按钮
             $("#createReport").on("click", function () {
 		        var arrselections = $table.bootstrapTable('getSelections');
 		        if (arrselections.length <= 0) {
@@ -412,6 +420,7 @@
                 }
 		        $("#optModal").modal('show');
 		    })
+		    //生成报告下载按钮
 		    $("#btn_submit").on("click",function(){
 		    	var arrselections = $table.bootstrapTable('getSelections');
             	
@@ -428,7 +437,10 @@
 		        
             	$("#optModal").modal('hide');
 		    })
-            
+            //查询按钮
+            $("#btn_query").on("click",function(){
+            	$table.bootstrapTable('refresh');
+            });
 	    </script>
 	</body>
 </html>

@@ -186,50 +186,7 @@
 	            	
 	            	<div class="specialForm" style="display:none;">
 	            		<div class="table-container">
-	            			<table class="table" id="table-info" style="margin-bottom:0px;">
-	                			<thead>
-									<tr>
-										<th>
-											<input type="checkbox" name="selectedAll" id="selectedAll">
-										</th>
-										<th>上传人</th>
-										<th>上传文件名称</th>
-										<th>上传成功(条)</th>
-										<th>上传失败(条)</th>
-										<th>上传日期</th>
-				                	</tr>
-			                	</thead>	
-		                		<tbody>
-	                				<g:form name="recordForm"  method="post" enctype="multipart/form-data" action="" style="margin-bottom:0;">
-										<g:each in="${recordInstanceList}" var="recordInstance">
-											<tr>
-												<td>
-													<input type="checkbox" name="singleRow" id="singleRow">
-												</td>
-									    		<td>${recordInstance?.uploadUser.name}</td>
-									    		<td>${recordInstance?.recordName}</td>
-									    		<td>${recordInstance?.successNum}</td>
-									    		<td>${recordInstance?.failedNum}</td>
-									    		<td><g:formatDate format="yyyy-MM-dd" date="${recordInstance?.startTime}" /></td>
-											</tr>
-										</g:each>
-									</g:form>
-		                		</tbody>
-		                	</table>
-	            		</div>
-	            		<div class="clearfix">
-	                		<%--<div style="margin-top:20px;float:left;" >
-		                		显示第 1 到第${params.max}条记录，总共${allInformationInstanceTotal}条记录 每页
-								<select id="pageCount" class="form-control" style="width:auto;padding:0;display:inline-block;">
-									<g:each in="${[10, 20, 50, 100]}" var="option">
-										<option value="${option}" ${params.max == option ? 'selected' : ''}>${option}</option>
-									</g:each>
-								</select>
-								条记录
-	                		</div>--%>
-		            		<ul class="pagination" style="float:right;">
-		            			<cbt_health:paginate total="${allRecordInstanceTotal}" params="${params}" />
-		            		</ul>
+	            			<table class="table table-no-bordered" id="table-info"></table>
 	            		</div>
                    	</div>
 	            </div>
@@ -237,6 +194,8 @@
 	    </div>
 	    
 	    <script>
+	    	var $table = $("#table-info");
+	    	
 	    	var pageObj = {}
 	    	pageObj.initShowPage = function(){
 	    		var showIndex = $("ul.nav-tabs").find("li.active").index();
@@ -246,31 +205,7 @@
 	    	}
 	    	$(function(){
 	    		pageObj.initShowPage();//设置默认显示页面
-	    		//选择显示页数
-	    		$("#pageCount").on("change",function(){
-					var maxValue = $("#pageCount>option:selected").html();
-					var serverUrl="${createLink(controller: 'information', action:params.action)}"; 
-					var params={max:maxValue};
-					passParamsByPost(serverUrl,params);
-		        });
-			    function passParamsByPost(url,params) {
-					var temp = document.createElement("form");
-					$(document.body).append(temp);
-					temp.action = url;
-					temp.method = "POST";
-					temp.style.display = "none";
-					if(params != null){
-						for(var x in params) {
-							var opt = document.createElement("input");
-							opt.name = x;
-							opt.type = 'hidden';
-							opt.value = params[x];
-							temp.appendChild(opt);
-						}
-					}
-					temp.submit();
-					$(document.body).remove(temp);
-				}
+	    		//顶部导航
 	    		$("ul.nav-tabs").on("click","li",function () {
 		            var index = $(this).index();
 		            $(this).siblings("li").removeClass("active");
@@ -279,7 +214,7 @@
 		            target.show();
 		            target.siblings("div.specialForm").hide();
 		        })
-		        
+		        //清空按钮 重置表单
 			    $("#clearBtn_multiple").on("click",function(){
 			    	$("#fileListTable tbody").empty();
 	            	$("#fileList").hide();
@@ -289,7 +224,7 @@
 	    		    	selectFile(e);
 	    		    });
 				})	
-			    
+			    //提交按钮 批量上传
 			    $("#submitBtn_multiple").on("click",function(){
 				    var xhr = new XMLHttpRequest();
 				    var data = new FormData(document.getElementById("form-multiple"));
@@ -304,6 +239,7 @@
 				    };
 				    xhr.send(data);
 			    });
+			    //提交按钮 单个录入
 			    $("#submitBtn_single").on("click",function(){
 			    	var xhr = new XMLHttpRequest();
 				    var data = new FormData(document.getElementById("form-single"));
@@ -319,6 +255,7 @@
 				    xhr.send(data);
 			    });
 			    
+			    //文件上传
 			    $("#form-multiple").on("change","#InputFile",function(e){
 			    	checkfile(this.id);
 			    	selectFile(e);
@@ -393,6 +330,98 @@
 			    }
 	    	})
 		    
+		    
+		    var TableInit = function () {
+	            var oTableInit = new Object();
+	            //初始化Table
+	            oTableInit.Init = function () {
+	                $table.bootstrapTable({
+	                    url: '<g:createLink controller="infomation" action="list" params="[json: 'json']"/>',         //请求后台的URL（*）
+	                    method: 'get',                      //请求方式（*）
+	                    toolbar: '',                        //工具按钮用哪个容器
+	                    striped: false,                      //是否显示行间隔色
+	                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+	                    pagination: true,                   //是否显示分页（*）
+	                    sortable: false,                    //是否启用排序
+	                    sortOrder: "asc",                   //排序方式
+	                    queryParams: oTableInit.queryParams,//传递参数（*）
+	                    sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+	                    pageNumber:1,                       //初始化加载第一页，默认第一页
+	                    pageSize: 10,                       //每页的记录行数（*）
+	                    pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+	                    search: false,                      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+	                    strictSearch: true,
+	                    showColumns: false,                 //是否显示所有的列
+	                    showRefresh: false,                  //是否显示刷新按钮
+	                    minimumCountColumns: 2,             //最少允许的列数
+	                    clickToSelect: true,                //是否启用点击选中行
+	                    singleSelect:false,					//是否启用点击选中行
+	                    height: 492,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+	                    uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+	                    showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
+	                    cardView: false,                    //是否显示详细视图
+	                    detailView: false,                   //是否显示父子表
+	                    columns: [{
+	                        checkbox: true
+	                    },{
+	                        field: 'sampleNum',
+	                        title: '样本编号',
+	                    }, {
+	                        field: 'patientName',
+	                        title: '姓名',
+	                    }, {
+	                        field: 'gender',
+	                        title: '性别'
+	                    }, {
+	                        field: 'age',
+	                        title: '年龄'
+	                    }, {
+	                        field: 'hospital',
+	                        title: '医院/单位'
+	                    }, {
+	                        field: 'patientNum',
+	                        title: '门诊号/住院号'
+	                    }, {
+	                        field: 'wardBed',
+	                        title: '病房/床位'
+	                    },{
+	                        field: 'inspectionDepartment',
+	                        title: '送检科室',
+	                    },{
+	                        field: 'inspectionDoctor',
+	                        title: '送检医生',
+	                    },{
+	                        field: 'inspectionSample',
+	                        title: '送检样本',
+	                    },{
+	                        field: 'inspectionTime',
+	                        title: '送检时间',
+	                    },{
+	                        field: 'phoneNum',
+	                        title: '联系电话',
+	                    },{
+	                        field: 'remark',
+	                        title: '备注',
+	                    },{
+	                        field: 'status',
+	                        title: '状态',
+	                    }]
+	                });
+	            };
+	
+	            //得到查询的参数
+	            oTableInit.queryParams = function (params) {
+	                var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+	                    max: params.limit,   //页面大小
+	                    offset: params.offset,  //页码
+	                    num:$("#search_sampleNum").val(),
+	                    name:$("#search_name").val(),
+	                };
+	                return temp;
+	            };
+	
+	            return oTableInit;
+	        };
 	    </script>
 	</body>
 </html>
