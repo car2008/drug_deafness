@@ -88,104 +88,134 @@
 					       </div> 
 					   	</div>
 					   	
-					   	<table class="table" id="table-pdf"></table>
+					   	<table class="table table-no-bordered" id="table-pdf"></table>
 					   	
 					   	<div>
 	                        <a href="#" id="createReport" class="btn btn-success" role="button" style="float: right;">生成报告</a>
 	                    </div>
 					   	
-					   	<%--<div class="table-container">
-		                	<table class="table" id="table-pdf" >
-	                			<thead>
-									<tr>
-										<th>
-											<input type="checkbox" name="selectedAll" id="selectedAll">
-										</th>
-										<th>样本编号</th>
-										<th>姓名</th>
-										<th>性别</th>
-										<th>年龄</th>
-										<th>FAM Ct</th>
-										<th>VIC Ct</th>
-										<th>NED Ct</th>
-										<th>检测结果</th>
-										<th>备注</th>
-				                	</tr>
-			                	</thead>	
-		                		<tbody>
-	                				<g:form name="generatePdfForm" id="generatePdfForm"  method="post" enctype="multipart/form-data" url="[action:'generatePdf',controller:'result']" style="margin-bottom:0;">
-										<g:each in="${resultInstanceList}" var="resultInstance">
-											<tr>
-												<td>
-													<input type="checkbox" name="singleRow" id="singleRow" value="${resultInstance.id}">
-													<input type="hidden" name="id">
-												</td>
-									    		<td>${resultInstance.information?.sampleNum}</td>
-									    		<td>${resultInstance.information?.patientName}</td>
-									    		<td>${resultInstance.information?.gender}</td>
-									    		<td>${resultInstance.information?.age}</td>
-									    		<td>${resultInstance.famCt}</td>
-									    		<td>${resultInstance.vicCt}</td>
-									    		<td>${resultInstance.nedCt}</td>
-									    		<td>${resultInstance.detectedResult}</td>
-									    		<td>${resultInstance.information?.remark}</td>
-											</tr>
-										</g:each>
-									
-									</g:form>
-		                		</tbody>
-		                	</table>
-	                	</div>
-	                	<div class="clearfix">
-                			<div style="margin-top:20px;float:left;" >
-		                		显示第 1 到第${params.max}条记录，总共${allResultInstanceTotal}条记录 每页
-								<select id="pageCount" class="form-control" style="width:auto;padding:0;display:inline-block;">
-									<g:each in="${[10, 20, 50, 100]}" var="option">
-										<option value="${option}" ${params.max == option ? 'selected' : ''}>${option}</option>
-									</g:each>
-								</select>
-								条记录
-	                		</div>
-							<ul class="pagination" style="float:right;">
-		                		<cbt_health:paginate total="${allResultInstanceTotal}" params="${params}" />
-		                	</ul>
-						</div>
-	                    <div>
-	                        <a href="#" id="createReport" class="btn btn-success" role="button" style="float: right;">生成报告</a>
-	                    </div>
-	                    --%>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+	     <div id="editModal" class="modal fade" aria-labelledby="editModalLabel" data-backdrop="static">
+	        <div class="modal-dialog"  style="width:60%;">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	                    <h4 class="modal-title" id="editModal">Modal title</h4>
+	                </div>
+	                <div class="modal-body">
+	                    <form id="editForm" class="form-horizontal" method="post">
+	                        <div class="modal-body">
+	                            <input name="id" id="id" type="hidden" class="form-control input-sm">
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label">样本编号</label>
+	                                <div class="col-sm-4">
+	                                	<input name="sampleNum" id="sampleNum" class="form-control input-sm"></input>
+	                                </div>
+	                                <label class="col-sm-2 control-label">姓名</label>
+	                                <div class=" col-sm-4">
+	                                	<input name="patientName" id="patientName" class="form-control input-sm"></input>
+	                                </div>
+	                            </div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label">性别</label>
+	                                <div class="col-sm-4">
+	                                    <input name="gender" id="gender" type="text" class="form-control input-sm">
+	                                </div>
+	                                <label class="col-sm-2 control-label" style="font-size: 13px;">年龄</label>
+	                                <div class="col-sm-4">
+	                                    <input name="age" id="age" type="text" class="form-control input-sm">
+	                                </div>
+	                            </div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label">FAM_Ct</label>
+	                                <div class="col-sm-4">
+	                                    <input name="famCt" id="famCt" type="text" class="form-control input-sm">
+	                                </div>
+	                                <label class="col-sm-2 control-label">VIC_Ct</label>
+	                                <div class="col-sm-4">
+	                                    <input name="vicCt" id="vicCt" type="text" class="form-control input-sm">
+	                                </div>
+	                           </div>
+	                           <div class="form-group">
+	                                <label class="col-sm-2 control-label">NED Ct</label>
+	                                <div class="col-sm-4">
+	                                    <input name="nedCt" id="nedCt" type="text" class="form-control input-sm">
+	                                </div>
+	                                <label class="col-sm-2 control-label">检测结果</label>
+	                                <div class="col-sm-4">
+	                                    <input name="detectedResult" id="detectedResult" type="text" class="form-control input-sm">
+	                                </div>
+	                            </div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label">报告台头</label>
+	                                <div class="col-sm-4">
+	                                    <input name="resulttitle" id="resulttitle" type="text" class="form-control input-sm">
+	                                </div>
+	                                <label class="col-sm-2 control-label">检验员</label>
+	                                <div class="col-sm-4">
+	                                    <input name="checker" id="detectedResult" type="text" class="form-control input-sm">
+	                                </div>
+	                            </div>
+                               <div class="form-group">
+                               		<label class="col-sm-2 control-label">审核员</label>
+	                                <div class="col-sm-4">
+	                                    <input name="detectedResult" id="detectedResult" type="text" class="form-control input-sm">
+	                                </div>
+	                                <label class="col-sm-2 control-label">备注</label>
+	                                <div class="col-sm-4">
+	                                    <input name="pdfcomment" id="pdfcomment" type="text" class="form-control input-sm">
+	                                </div>
+	                            </div>
+	                        </div>
+                        </form>
+	                </div>
+	                <div class="modal-footer">
+	                    <button id="btn_update" type="button" class="btn btn-success">
+	                        <span class="glyphicon glyphicon-ok">保存修改</span>
+	                    </button>
+	                    <button id="btn_cancel" type="button" class="btn btn-danger" data-dismiss="modal">
+	                        <span class="glyphicon glyphicon-remove">取消</span>
+	                    </button>
 	                </div>
 	            </div>
 	        </div>
 	    </div>
 	    
     	<div id="optModal" class="modal fade" aria-labelledby="optModalLabel" data-backdrop="static">
-	        <div class="modal-dialog" style="width:60%;">
+	        <div class="modal-dialog" >
 	            <div class="modal-content">
 	                <div class="modal-header">
 	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    	请输入字段信息
+                    	<h4>请补充报告信息</h4>
 	                </div>
 	                <div class="modal-body">
-		                <form id="appendForm"  class="form-horizontal">
+		                <form id="appendForm"  class="form-horizontal" >
 							<div class="form-group">
-							    <label class="col-md-2 control-label">医院名称</label>
-							    <div class="col-md-4">
+							    <label class="col-md-offset-1 col-md-2 control-label">报告台头</label>
+							    <div class="col-md-8">
 							    	<input name="hospital" id="hospital" class="form-control input-sm"></input>
 							    </div>
-							    <label class="col-md-2 control-label">检验员</label>
-							    <div class="col-md-4">
-							    	<input name=checker id="checker" class="form-control input-sm"></input>
+						    </div>
+						    <div class="form-group">
+						    	<label class="col-md-offset-1 col-md-2 control-label">审核员</label>
+							    <div class="col-md-8">
+							    	<input name="assessor" id="assessor" class="form-control input-sm"></input>
 							    </div>
 							</div>
 							<div class="form-group">
-							    <label class="col-md-2 control-label">审核员</label>
-							    <div class="col-md-4">
-							    	<input name="assessor" id="assessor" class="form-control input-sm"></input>
+								<label class="col-md-offset-1 col-md-2 control-label">检验员</label>
+							    <div class="col-md-8">
+							    	<input name="checker" id="checker" class="form-control input-sm"></input>
 							    </div>
-							    <label class="col-md-2 control-label">备注</label>
-							    <div class=" col-md-4">
-							    	<textarea name="pdfcomment" id="pdfcomment" class="form-control" rows="3" style="resize:none;margin:0 auto;"></textarea>
+							</div>
+							<div class="form-group">
+							    <label class="col-md-offset-1 col-md-2 control-label">备注</label>
+							    <div class="col-md-8">
+							    	<textarea name="pdfcomment" id="pdfcomment" class="form-control" rows="4" style="resize:none;margin:0 auto;"></textarea>
 							    </div>
 							</div>
 						</form>
@@ -202,8 +232,200 @@
 	        </div>
 	    </div>
 	    <script>
-	    	
-		   
+	  		var $table = $("#table-pdf");
+	  		var pageInfo = { 
+  	           query:{ 
+  					max:"", 
+  					offset:"", 
+  					num:$("#search_sampleNum").val(),
+	                name:$("#search_name").val(),
+  	           } 
+  	        };
+			function getIdSelections() {
+		        return $.map($table.bootstrapTable('getSelections'), function (row) {
+		            return row.id
+		        });
+		    }
+	        $(function () {
+	            //1.初始化Table
+	            var oTable = new TableInit();
+	            oTable.Init();
+	        });
+	        
+	        function setPageInfo(){ 
+				var tableOptions = $table.bootstrapTable('getOptions'); 
+	            pageInfo['query']['max'] = tableOptions['pageSize']; 
+				pageInfo['query']['offset'] = (tableOptions['pageNumber'] - 1) * tableOptions['pageSize']; 
+				pageInfo['query']['num'] = $("#search_sampleNum").val(); 
+				pageInfo['query']['name'] = $("#search_name").val(); 
+			}
+			
+	        var TableInit = function () {
+	            var oTableInit = new Object();
+	            //初始化Table
+	            oTableInit.Init = function () {
+	                $table.bootstrapTable({
+	                    url: '<g:createLink controller="result" action="list" params="[json: 'json']"/>',         //请求后台的URL（*）
+	                    method: 'get',                      //请求方式（*）
+	                    toolbar: '',                        //工具按钮用哪个容器
+	                    striped: false,                      //是否显示行间隔色
+	                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+	                    pagination: true,                   //是否显示分页（*）
+	                    sortable: false,                    //是否启用排序
+	                    sortOrder: "asc",                   //排序方式
+	                    queryParams: oTableInit.queryParams,//传递参数（*）
+	                    sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+	                    pageNumber:1,                       //初始化加载第一页，默认第一页
+	                    pageSize: 10,                       //每页的记录行数（*）
+	                    pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+	                    search: false,                      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+	                    strictSearch: true,
+	                    showColumns: false,                 //是否显示所有的列
+	                    showRefresh: false,                  //是否显示刷新按钮
+	                    minimumCountColumns: 2,             //最少允许的列数
+	                    clickToSelect: true,                //是否启用点击选中行
+	                    singleSelect:false,					//是否启用点击选中行
+	                    height: 492,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+	                    uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+	                    showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
+	                    cardView: false,                    //是否显示详细视图
+	                    detailView: false,                   //是否显示父子表
+	                    columns: [{
+	                        checkbox: true
+	                    },{
+	                        field: 'sampleNum',
+	                        title: '样本编号',
+	                        formatter:function(value,row,index){
+	                            var _a = '<a href="#" class="td_edit">'+value+'</a>';
+	                            return _a;
+	                        }
+	                    }, {
+	                        field: 'patientName',
+	                        title: '姓名',
+	                    }, {
+	                        field: 'gender',
+	                        title: '性别'
+	                    }, {
+	                        field: 'age',
+	                        title: '年龄'
+	                    }, {
+	                        field: 'famCt',
+	                        title: 'FAM Ct'
+	                    }, {
+	                        field: 'vicCt',
+	                        title: 'VIC Ct'
+	                    }, {
+	                        field: 'nedCt',
+	                        title: 'NED Ct'
+	                    },{
+	                        field: 'detectedResult',
+	                        title: '检测结果',
+	                    },{
+	                        field: 'resulttitle',
+	                        title: '医院名称',
+	                    },{
+	                        field: 'checker',
+	                        title: '检验员',
+	                    },{
+	                        field: 'assessor',
+	                        title: '审核员',
+	                    },{
+	                        field: 'pdfcomment',
+	                        title: '备注',
+	                    }]
+	                });
+	            };
+	
+	            //得到查询的参数
+	            oTableInit.queryParams = function (params) {
+	                var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+	                    max: params.limit,   //页面大小
+	                    offset: params.offset,  //页码
+	                    num:$("#search_sampleNum").val(),
+	                    name:$("#search_name").val(),
+	                };
+	                return temp;
+	            };
+	
+	            return oTableInit;
+	        };
+	        
+	        $(document).on("click",".td_edit",function(){
+				var arrselections = $table.bootstrapTable('getSelections');
+            	var selectedRows = arrselections[0];
+            	
+                $("#editModalLabel").text("编辑");
+                
+                $("#id").val(selectedRows.id);
+                $("#sampleNum").val(selectedRows.sampleNum);
+                $("#patientName").val(selectedRows.patientName);
+                $("#gender").val(selectedRows.gender);
+                $("#age").val(selectedRows.age);
+                $("#famCt").val(selectedRows.famCt);
+                $("#vicCt").val(selectedRows.vicCt);
+                $("#nedCt").val(selectedRows.nedCt);
+                $("#detectedResult").val(selectedRows.detectedResult);
+                $("#resulttitle").val(selectedRows.resulttitle);
+                $("#checker").val(selectedRows.checker);
+                $("#assessor").val(selectedRows.assessor);
+         		$("#pdfcomment").val(selectedRows.pdfcomment);
+         		
+				$table.bootstrapTable('uncheckAll');
+				$('#editModal').modal('show');
+
+				//获取并重新设置查询参数
+				setPageInfo();   
+				               
+                //url = 'save';//设置后台地址
+			});
+			
+			//Form表单的保存按钮
+            $("#btn_update").click(function(){
+                $('#editModal').modal('hide');
+                var form = new FormData(document.getElementById("editForm"));
+                
+                $.ajax({
+					url:'<g:createLink controller="result" action="update" params="[json: 'json']"/>',
+					type:"post",
+					data:form,
+					processData:false,
+					contentType:false,
+					success:function(data){
+					    $table.bootstrapTable('refresh',pageInfo);  
+					},
+					error:function(e){
+					     
+					}
+	         	});
+            });
+            $("#createReport").on("click", function () {
+		        var arrselections = $table.bootstrapTable('getSelections');
+		        if (arrselections.length <= 0) {
+                    swal({
+                        title: "请先选择需要修改的行",
+                        type: "warning",
+                    });
+                    return;
+                }
+		        $("#optModal").modal('show');
+		    })
+		    $("#btn_submit").on("click",function(){
+		    	var arrselections = $table.bootstrapTable('getSelections');
+            	
+            	$.each(arrselections,function (index, singleRow) {
+		            var _input = $("<input name='id'>");
+		            _input.val(singleRow.id);
+		            _input.css("display", "none");
+		            $("#appendForm").append(_input);
+		        })
+		       
+            	$("#appendForm")[0].action = '<g:createLink controller="result" action="generatePdf"/>';
+        		$("#appendForm")[0].method = "POST";
+		        $("#appendForm")[0].submit();
+		        
+            	$("#optModal").modal('hide');
+		    })
+            
 	    </script>
 	</body>
 </html>

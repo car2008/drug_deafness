@@ -86,7 +86,7 @@ class ResultController {
 			params.pdfcomment = "* 本报告仅对本次送检样品负责，如有疑问，请与您的医生联系。"
 		}
 		def outPathList = []
-		def idStr  = params.singleRow.toString()//params.jsonData.toString()
+		def idStr  = params.id.toString()//params.jsonData.toString()
 		idStr=idStr.replace("[","")
 		idStr=idStr.replace("]","")
 		idStr=idStr.replace('"',"")
@@ -130,7 +130,6 @@ class ResultController {
 		if(PDFUtil.fileToZip(outPathList,outDir,zipName)){
 			download(outDir,zipName+".zip")
 		}
-		
 	}
 	
 	def listRecord(){
