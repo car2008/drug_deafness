@@ -1,4 +1,6 @@
 package com.capitalbiotech.drugdeafness
+
+import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -36,7 +38,32 @@ class InformationController {
 		
 		def informationInstanceTotal = Information.count()
 		def allInformationInstanceTotal = informationInstanceTotal
-		render view: 'list', model: [informationInstanceList: informationInstanceList,allInformationInstanceTotal:allInformationInstanceTotal,]
+		//render view: 'list', model: [informationInstanceList: informationInstanceList,allInformationInstanceTotal:allInformationInstanceTotal,]
+		if(params.json=="json"){
+			render ([
+					"total":allInformationInstanceTotal,
+					"rows":
+							informationInstanceList.collect {  informationInstance ->
+								["id":informationInstance.id,
+								"sampleNum":informationInstance.sampleNum,
+								"patientName":informationInstance.patientName,
+								"gender":informationInstance.gender,
+								"age":informationInstance.age,
+								"hospital":informationInstance.hospital,
+								"patientNum":informationInstance.patientNum,
+								"wardBed":informationInstance.wardBed,
+								"inspectionDepartment":informationInstance.inspectionDepartment,
+								"inspectionDoctor":informationInstance.inspectionDoctor,
+								"inspectionSample":informationInstance.inspectionSample,
+								"inspectionTime":informationInstance.inspectionTime,
+								"phoneNum":informationInstance.phoneNum,
+								"remark":informationInstance.remark,
+								]
+							}
+				] as JSON)
+		}else{
+			return
+		}
 	}
 	
 	def listRecord(){
@@ -59,7 +86,23 @@ class InformationController {
 		
 		def recordInstanceTotal = Record.countByRecordCatagrory("CATAGRORY_INFORMATION")
 		def allRecordInstanceTotal = recordInstanceTotal
-		render view: 'index', model: [recordInstanceList: recordInstanceList,allRecordInstanceTotal:allRecordInstanceTotal,]
+		//render view: 'index', model: [recordInstanceList: recordInstanceList,allRecordInstanceTotal:allRecordInstanceTotal,]
+		if(params.json=="json"){
+			render ([
+					"total":allRecordInstanceTotal,
+					"rows":
+							recordInstanceList.collect {  resultInstance ->
+								["id":resultInstance.id,
+								"name":resultInstance.uploadUser.name,
+								"recordName":resultInstance.recordName,
+								"successNum":resultInstance.successNum,
+								"failedNum":resultInstance.failedNum,
+								]
+							}
+				] as JSON)
+		}else{
+			return
+		}
 	}
 	
 	def uploadOne() {

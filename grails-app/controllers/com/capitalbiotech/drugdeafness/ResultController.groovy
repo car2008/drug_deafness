@@ -152,7 +152,23 @@ class ResultController {
 		
 		def recordInstanceTotal = Record.countByRecordCatagrory("CATAGRORY_RESULT")
 		def allRecordInstanceTotal = recordInstanceTotal
-		render view: 'result', model: [recordInstanceList: recordInstanceList,allRecordInstanceTotal:allRecordInstanceTotal,]
+		//render view: 'result', model: [recordInstanceList: recordInstanceList,allRecordInstanceTotal:allRecordInstanceTotal,]
+		if(params.json=="json"){
+			render ([
+					"total":allRecordInstanceTotal,
+					"rows":
+							recordInstanceList.collect {  resultInstance ->
+								["id":resultInstance.id,
+								"name":resultInstance.uploadUser.name,
+								"recordName":resultInstance.recordName,
+								"successNum":resultInstance.successNum,
+								"failedNum":resultInstance.failedNum,
+								]
+							}
+				] as JSON)
+		}else{
+			return
+		}
 	}
 	
 	def uploadOne() {
