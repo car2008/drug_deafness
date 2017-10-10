@@ -133,7 +133,7 @@
 	            //初始化Table
 	            oTableInit.Init = function () {
 	                $table.bootstrapTable({
-	                    url: '<g:createLink controller="infomation" action="list" params="[json: 'json']"/>',         //请求后台的URL（*）
+	                    url: '<g:createLink controller="information" action="list" params="[json: 'json']"/>',         //请求后台的URL（*）
 	                    method: 'get',                      //请求方式（*）
 	                    toolbar: '',                        //工具按钮用哪个容器
 	                    striped: false,                      //是否显示行间隔色
@@ -208,8 +208,6 @@
 	                var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
 	                    max: params.limit,   //页面大小
 	                    offset: params.offset,  //页码
-	                    num:$("#search_sampleNum").val(),
-	                    name:$("#search_name").val(),
 	                };
 	                return temp;
 	            };

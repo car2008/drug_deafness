@@ -8,12 +8,14 @@
 		<meta name="author" content="CBT Bioinformatics, CapitalBio Technology" />
 		
 		<link rel="stylesheet" href="${resource(dir:'css/bootstrap/dist/css/', file:'bootstrap.css')}"/>
+		<link rel="stylesheet" href="${resource(dir:'css/', file:'bootstrap-table.css')}"/>
 	    <link rel="stylesheet" href="${resource(dir:'css/font-awesome/css/', file:'font-awesome.min.css')}"/>
-	    <link rel="stylesheet" href="${resource(dir:'css/', file:'sweetalert.css')}"> 
+	    <link rel="stylesheet" href="${resource(dir:'css/', file:'sweetalert.css')}">  
 	    <link rel="stylesheet" href="${resource(dir:'css/', file:'index.css')}"/>
 	    <script src="${resource(dir:'js/', file:'jquery.js')}"></script>
 	    <script src="${resource(dir:'js/', file:'bootstrap.min.js')}"></script>
-	    <script src="${resource(dir:'js/', file:'jquery.form.js')}"></script>
+	    <script src="${resource(dir:'js/', file:'bootstrap-table.js')}"></script>
+	    <script src="${resource(dir:'js/', file:'bootstrap-table-zh-CN.js')}"></script>
 	    <script src="${resource(dir:'js/', file:'sweetalert.min.js')}"></script>
 		<title>
 			<g:message code="drug_deafness.name" />
@@ -185,7 +187,7 @@
 	                </div>
 	            	
 	            	<div class="specialForm" style="display:none;">
-	            		<div class="table-container">
+	            		<div class="">
 	            			<table class="table table-no-bordered" id="table-info"></table>
 	            		</div>
                    	</div>
@@ -205,6 +207,12 @@
 	    	}
 	    	$(function(){
 	    		pageObj.initShowPage();//设置默认显示页面
+
+
+	    		var oTable = new TableInit();
+	            oTable.Init();
+
+	    		
 	    		//顶部导航
 	    		$("ul.nav-tabs").on("click","li",function () {
 		            var index = $(this).index();
@@ -336,7 +344,7 @@
 	            //初始化Table
 	            oTableInit.Init = function () {
 	                $table.bootstrapTable({
-	                    url: '<g:createLink controller="infomation" action="list" params="[json: 'json']"/>',         //请求后台的URL（*）
+	                    url: '<g:createLink controller="information" action="listRecord" params="[json: 'json']"/>',         //请求后台的URL（*）
 	                    method: 'get',                      //请求方式（*）
 	                    toolbar: '',                        //工具按钮用哪个容器
 	                    striped: false,                      //是否显示行间隔色
@@ -361,50 +369,23 @@
 	                    showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
 	                    cardView: false,                    //是否显示详细视图
 	                    detailView: false,                   //是否显示父子表
-	                    columns: [{
+	                     columns: [{
 	                        checkbox: true
 	                    },{
-	                        field: 'sampleNum',
-	                        title: '样本编号',
+	                        field: 'name',
+	                        title: '上传人',
 	                    }, {
-	                        field: 'patientName',
-	                        title: '姓名',
+	                        field: 'recordName',
+	                        title: '上传文件名称',
 	                    }, {
-	                        field: 'gender',
-	                        title: '性别'
+	                        field: 'successNum',
+	                        title: '上传成功(条)'
 	                    }, {
-	                        field: 'age',
-	                        title: '年龄'
-	                    }, {
-	                        field: 'hospital',
-	                        title: '医院/单位'
-	                    }, {
-	                        field: 'patientNum',
-	                        title: '门诊号/住院号'
-	                    }, {
-	                        field: 'wardBed',
-	                        title: '病房/床位'
+	                        field: 'failedNum',
+	                        title: '上传失败(条)'
 	                    },{
-	                        field: 'inspectionDepartment',
-	                        title: '送检科室',
-	                    },{
-	                        field: 'inspectionDoctor',
-	                        title: '送检医生',
-	                    },{
-	                        field: 'inspectionSample',
-	                        title: '送检样本',
-	                    },{
-	                        field: 'inspectionTime',
-	                        title: '送检时间',
-	                    },{
-	                        field: 'phoneNum',
-	                        title: '联系电话',
-	                    },{
-	                        field: 'remark',
-	                        title: '备注',
-	                    },{
-	                        field: 'status',
-	                        title: '状态',
+	                        field: 'startTime',
+	                        title: '上传日期'
 	                    }]
 	                });
 	            };

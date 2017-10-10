@@ -97,11 +97,12 @@ class InformationController {
 								"recordName":resultInstance.recordName,
 								"successNum":resultInstance.successNum,
 								"failedNum":resultInstance.failedNum,
+								"startTime":resultInstance.startTime
 								]
 							}
 				] as JSON)
 		}else{
-			return
+			render view: 'index'
 		}
 	}
 	

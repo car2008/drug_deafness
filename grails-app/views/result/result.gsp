@@ -10,12 +10,14 @@
 		<meta name="author" content="CBT Bioinformatics, CapitalBio Technology" />
 		
 		<link rel="stylesheet" href="${resource(dir:'css/bootstrap/dist/css/', file:'bootstrap.css')}"/>
+		<link rel="stylesheet" href="${resource(dir:'css/', file:'bootstrap-table.css')}"/>
 	    <link rel="stylesheet" href="${resource(dir:'css/font-awesome/css/', file:'font-awesome.min.css')}"/>
-	    <link rel="stylesheet" href="${resource(dir:'css/', file:'sweetalert.css')}">   
+	    <link rel="stylesheet" href="${resource(dir:'css/', file:'sweetalert.css')}">  
 	    <link rel="stylesheet" href="${resource(dir:'css/', file:'index.css')}"/>
 	    <script src="${resource(dir:'js/', file:'jquery.js')}"></script>
 	    <script src="${resource(dir:'js/', file:'bootstrap.min.js')}"></script>
-		<script src="${resource(dir:'js/', file:'jquery.form.js')}"></script>
+	    <script src="${resource(dir:'js/', file:'bootstrap-table.js')}"></script>
+	    <script src="${resource(dir:'js/', file:'bootstrap-table-zh-CN.js')}"></script>
 	    <script src="${resource(dir:'js/', file:'sweetalert.min.js')}"></script>
 		<title>
 			<g:message code="drug_deafness.name" />
@@ -157,7 +159,7 @@
 	                    </div>
 	                    
 	                	<div class="specialForm" style="display:none;">
-	                		<div class="table-container">
+	                		<div class="">
 	                		
 	                			<table class="table table-no-bordered" id="table-result"></table>
 		                    	
@@ -179,6 +181,9 @@
 		   	$(function(){
 		   		pageObj.initShowPage();
 
+		   		var oTable = new TableInit();
+	            oTable.Init();
+	            
 				//顶部导航
 			    $("ul.nav-tabs").on("click","li",function () {
 		            var index = $(this).index();
@@ -310,7 +315,7 @@
 	            //初始化Table
 	            oTableInit.Init = function () {
 	                $table.bootstrapTable({
-	                    url: '<g:createLink controller="result" action="list" params="[json: 'json']"/>',         //请求后台的URL（*）
+	                    url: '<g:createLink controller="result" action="listRecord" params="[json: 'json']"/>',         //请求后台的URL（*）
 	                    method: 'get',                      //请求方式（*）
 	                    toolbar: '',                        //工具按钮用哪个容器
 	                    striped: false,                      //是否显示行间隔色
@@ -349,6 +354,9 @@
 	                    }, {
 	                        field: 'failedNum',
 	                        title: '上传失败(条)'
+	                    }, {
+	                        field: 'startTime',
+	                        title: '上传日期'
 	                    }]
 	                });
 	            };
