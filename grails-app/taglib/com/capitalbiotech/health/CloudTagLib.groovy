@@ -13,7 +13,7 @@ import java.text.DecimalFormat
 
 class CloudTagLib {
 
-    static namespace       = 'cbt_health'
+    static namespace       = 'drug_deafness'
     static defaultEncodeAs = [taglib: 'text']
     
     def utilsService
@@ -97,6 +97,15 @@ class CloudTagLib {
         out << g.resource(dir: attrs.dir, file: file)
     }
     
+	def setLoggedInUser = { attrs ->
+		if (springSecurityService.loggedIn) {
+			
+			if (attrs?.var != null) {
+				this.pageScope."${attrs.var}" = springSecurityService.currentUser
+			}
+		}
+	}
+	
     def ifLoggedIn = { attrs, body ->
         if (attrs.var == null) {
             throwTagError("Tag [ifUserLoggedIn] is missing required attribute [var]")

@@ -38,7 +38,10 @@
 	            </div>
 	            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	                <ul class="nav navbar-nav navbar-right">
-	                    <li><a href="#" style="color:#563d7c;">欢迎XXX用户</a></li>
+	                    <sec:ifLoggedIn>
+	                		<drug_deafness:setLoggedInUser var="loggedInUser" />
+	                		<li><a href="#" style="color:#563d7c;">欢迎${loggedInUser?.name}用户</a></li>
+	                	</sec:ifLoggedIn>
 	                    <li>
 	                         <form method="post" action="${createLink(controller: 'logout', action: 'index')}">
 		                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding:15px;color:#F96A74;">
@@ -197,8 +200,8 @@
 									条记录
 		                		</div>
 								<ul class="pagination" style="float:right;">
-			                		<cbt_health:paginate total="${allRecordInstanceTotal}" params="${params}" />
-			                	</ul>
+			                		<%--<cbt_health:paginate total="${allRecordInstanceTotal}" params="${params}" />
+			                	--%></ul>
 							</div>
          		    	</div>
 	                </div>
