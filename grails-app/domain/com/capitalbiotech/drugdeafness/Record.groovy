@@ -12,6 +12,8 @@ class Record {
 	Date endTime
 	Integer successNum
 	Integer failedNum
+	String successedSample
+	String failedSample
 	String recordLog
 	String comment
 	Date dateCreated
@@ -34,6 +36,8 @@ class Record {
 		failedNum blank: true,nullable: true
 		recordLog blank: true,nullable: true
 		comment  blank: true,nullable: true
+		successedSample blank: true,nullable: true
+		failedSample blank: true,nullable: true
     }
 	
 	static mapping = {

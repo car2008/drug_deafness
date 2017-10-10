@@ -71,33 +71,14 @@
 	            </div>
 	            <div class="col-md-10">
 	                <div class="clearfix">
-	                	<g:if test="${params.showRecords=='showRecords' }">
-	                		<ul class="nav nav-tabs">
-		                        <li role="presentation" class="active"><a>批量上传</a></li>
-		                        <li role="presentation"><a>单个录入</a></li>
-		                        <li role="presentation"><a>上传记录</a></li>
-		                    </ul>
-	                	</g:if>
-	                    <g:if test="${params.showRecords=='showNewRecords' }">
-	                		<ul class="nav nav-tabs">
-		                        <li role="presentation"><a>批量上传</a></li>
-		                        <li role="presentation"><a>单个录入</a></li>
-		                        <li role="presentation" class="active"><a>上传记录</a></li>
-		                    </ul>
-	                	</g:if>
+                		<ul class="nav nav-tabs">
+	                        <li role="presentation" class="active"><a>批量上传</a></li>
+	                        <li role="presentation"><a>单个录入</a></li>
+	                        <li role="presentation"><a>上传记录</a></li>
+	                    </ul>
 	                </div>
-	                <g:if test="${flash.message}">
-						<div class="alert alert-info">
-							${flash.message}
-						</div>
-					</g:if>
-					<g:if test="${flash.error}">
-						<div class="alert alert-error">
-							${flash.error}
-						</div>
-					</g:if>
 	                <div class="specialForm">
-	                    <g:form id="form-multiple" class="form-horizontal optForm" enctype="multipart/form-data" method="post" url="[action:'uploadBatch',controller:'information']">
+	                    <g:form id="form-multiple" class="form-horizontal optForm" enctype="multipart/form-data" url="[action:'uploadBatch',controller:'information']" method="post">
 	                        <div class="form-group">
 	                            <label class="col-md-2 control-label" for="InputFile">文件上传</label>
 	                            <div class="col-md-4">
@@ -187,9 +168,7 @@
 	                </div>
 	            	
 	            	<div class="specialForm" style="display:none;">
-	            		<div class="">
-	            			<table class="table table-no-bordered" id="table-info"></table>
-	            		</div>
+            			<table class="table table-no-bordered" id="table-info"></table>
                    	</div>
 	            </div>
 	        </div>
@@ -240,12 +219,23 @@
 				    xhr.open("POST",url,true);
 				    xhr.onreadystatechange=function(){
 				        if(xhr.readyState==4 && xhr.status==200){  //判断状态到4了并且返回状态码是200时才做操作
-				            alert(xhr.readyState);
-				            alert(xhr.status);
-				            console.log(xhr.responseText);
+							alert(xhr.responseText);
+				        	$("div.specialForm:eq(2)").show();
+					        $("div.specialForm:eq(2)").siblings("div.specialForm").hide();
+					        $("ul.nav-tabs>li:eq(2)").addClass("active");
+					        $("ul.nav-tabs>li:eq(2)").siblings("li").removeClass("active");
+				        	$table.bootstrapTable('refresh');
 				        }
 				    };
 				    xhr.send(data);
+					//清空信息
+				    $("#fileListTable tbody").empty();
+	            	$("#fileList").hide();
+			    	$("#InputFile").replaceWith('<input type="file" name="InputFile" id="InputFile" class="input-sm" multiple="multiple" >');
+	    		    $('#InputFile').on('change', function (e) {
+	    		    	checkfile(this.id);
+	    		    	selectFile(e);
+	    		    });
 			    });
 			    //提交按钮 单个录入
 			    $("#submitBtn_single").on("click",function(){
@@ -255,9 +245,11 @@
 				    xhr.open("POST",url,true);
 				    xhr.onreadystatechange=function(){
 				        if(xhr.readyState==4 && xhr.status==200){  //判断状态到4了并且返回状态码是200时才做操作
-				            alert(xhr.readyState);
-				            alert(xhr.status);
-				            console.log(xhr.responseText);
+				           $("div.specialForm:eq(2)").show();
+					        $("div.specialForm:eq(2)").siblings("div.specialForm").hide();
+					        $("ul.nav-tabs>li:eq(2)").addClass("active");
+					        $("ul.nav-tabs>li:eq(2)").siblings("li").removeClass("active");
+				        	$table.bootstrapTable('refresh');
 				        }
 				    };
 				    xhr.send(data);
@@ -280,6 +272,7 @@
 			            	$("#fileListTable tbody").append('<tr><td><label>文件名</label></td><td><label>' + f.name + '</label></td></tr>');
 			            	$("#fileList").show();
 			            } else {
+			            	console.log("不执行？？");
 			            	$("#fileListTable tbody").empty();
 			            	$("#fileList").hide();
 			                alert("请选择正确的格式上传：csv excel或者压缩文件");
@@ -395,8 +388,6 @@
 	                var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
 	                    max: params.limit,   //页面大小
 	                    offset: params.offset,  //页码
-	                    num:$("#search_sampleNum").val(),
-	                    name:$("#search_name").val(),
 	                };
 	                return temp;
 	            };

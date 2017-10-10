@@ -73,31 +73,13 @@
                     </ul>
 	            </div>
 	            <div class="col-md-10">
-	                <div class="clearfix">
-	                    <g:if test="${params.showRecords=='showRecords' }">
+		                <div class="clearfix">
 	                		<ul class="nav nav-tabs">
 		                        <li role="presentation"  class="active"><a>批量上传</a></li>
 		                        <li role="presentation"><a>单个录入</a></li>
 		                        <li role="presentation"><a>上传记录</a></li>
 		                    </ul>
-	                	</g:if>
-	                    <g:if test="${params.showRecords=='showNewRecords' }">
-	                		<ul class="nav nav-tabs">
-		                        <li role="presentation"  ><a>批量上传</a></li>
-		                        <li role="presentation"><a>单个录入</a></li>
-		                        <li role="presentation"  class="active"><a>上传记录</a></li>
-		                    </ul>
-	                	</g:if>
-	                    <g:if test="${flash.message}">
-							<div class="alert alert-info">
-								${flash.message}
-							</div>
-						</g:if>
-						<g:if test="${flash.error}">
-							<div class="alert alert-error">
-								${flash.error}
-							</div>
-						</g:if>
+	                    </div>
 	                    <div class="specialForm">
 		                    <g:form id="form-multiple" class="form-horizontal optForm" method="post" enctype="multipart/form-data" url="[action:'uploadBatch',controller:'result']" >
 		                        <div class="form-group">
@@ -159,11 +141,7 @@
 	                    </div>
 	                    
 	                	<div class="specialForm" style="display:none;">
-	                		<div class="">
-	                		
-	                			<table class="table table-no-bordered" id="table-result"></table>
-		                    	
-		                	</div>
+                			<table class="table table-no-bordered" id="table-result"></table>
          		    	</div>
 	                </div>
 	            </div>
@@ -211,12 +189,23 @@
 				    xhr.open("POST",url,true);
 				    xhr.onreadystatechange=function(){
 				        if(xhr.readyState==4 && xhr.status==200){  //判断状态到4了并且返回状态码是200时才做操作
-				            alert(xhr.readyState);
-				            alert(xhr.status);
-				            console.log(xhr.responseText);
+				        	alert(xhr.responseText);
+				        	$("div.specialForm:eq(2)").show();
+					        $("div.specialForm:eq(2)").siblings("div.specialForm").hide();
+					        $("ul.nav-tabs>li:eq(2)").addClass("active");
+					        $("ul.nav-tabs>li:eq(2)").siblings("li").removeClass("active");
+				        	$table.bootstrapTable('refresh');
 				        }
 				    };
 				    xhr.send(data);
+				 	//清空信息
+				    $("#fileListTable tbody").empty();
+	            	$("#fileList").hide();
+			    	$("#InputFile").replaceWith('<input type="file" name="InputFile" id="InputFile" class="input-sm" multiple="multiple" >');
+	    		    $('#InputFile').on('change', function (e) {
+	    		    	checkfile(this.id);
+	    		    	selectFile(e);
+	    		    });
 			    });
 			    //提交按钮 单个录入
 			    $("#submitBtn_single").on("click",function(){
@@ -226,13 +215,16 @@
 				    xhr.open("POST",url,true);
 				    xhr.onreadystatechange=function(){
 				        if(xhr.readyState==4 && xhr.status==200){  //判断状态到4了并且返回状态码是200时才做操作
-				            alert(xhr.readyState);
-				            alert(xhr.status);
-				            console.log(xhr.responseText);
+				            $("div.specialForm:eq(2)").show();
+					        $("div.specialForm:eq(2)").siblings("div.specialForm").hide();
+					        $("ul.nav-tabs>li:eq(2)").addClass("active");
+					        $("ul.nav-tabs>li:eq(2)").siblings("li").removeClass("active");
+				        	$table.bootstrapTable('refresh');
 				        }
 				    };
 				    xhr.send(data);
 			    });
+			    
 			    //选择文件
 			    $("#form-multiple").on("change","#InputFile",function(e){
 			    	checkfile(this.id);

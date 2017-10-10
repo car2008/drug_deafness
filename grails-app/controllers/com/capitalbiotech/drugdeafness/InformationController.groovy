@@ -160,25 +160,25 @@ class InformationController {
 			//println Integer.parseInt(s)
 			if(Information.findBySampleNum(properties["sampleNum"])){
 				failedNum++
-				failedsb.append("，"+properties["sampleNum"])
+				failedsb.append(","+properties["sampleNum"])
 			}else{
 				def informationInstance = new Information(properties)
 				if (informationInstance.hasErrors() || !informationInstance.save(flush: true)) {
 					failedNum++
-					failedsb.append("，"+properties["sampleNum"])
+					failedsb.append(","+properties["sampleNum"])
 					informationInstance.errors?.each { error ->
 						log.error error
 					}
 				}else{
 					successNum++
-					sucessedsb.append("，"+properties["sampleNum"])
+					sucessedsb.append(","+properties["sampleNum"])
 				}
 			}
 		}
 		def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
-		def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_INFORMATION", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime)
+		def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_INFORMATION", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime,successedSample:sucessedsb.toString().replaceFirst("\\,", ""),failedSample:failedsb.toString().replaceFirst("\\,", ""))
 		record.save(flush: true)
-		render failedsb.toString().replaceFirst("\\，", "")+"###"+sucessedsb.toString().replaceFirst("\\，", "")
+		render failedsb.toString().replaceFirst("\\,", "")+"###"+sucessedsb.toString().replaceFirst("\\,", "")
 		//redirect(action: "listRecord",params: [showRecords: "showNewRecords"])
 	}
 	
