@@ -70,40 +70,39 @@
                     </ul>
 	            </div>
 	            <div class="col-md-10">
-	                <div class="clearfix">
-	                    <ul class="nav nav-tabs">
-	                        <li role="presentation"  class="active"><a>信息列表</a></li>
-	                    </ul>
-	                </div>
-
-	            	<div class="specialForm">
-	            		<div class="panel panel-default"> 
-					       <div class="panel-body"> 
-					            <form id="formSearch" class="form-horizontal" >
-					               <div class="form-group" style="margin-bottom:0px;">
-						                <label class="control-label col-sm-1">编号</label> 
-						                <div class="col-sm-2"> 
-						                    <input type="text" class="form-control input-sm" id="search_sampleNum"> 
-						                </div> 
-						                <label class="control-label col-sm-1">姓名</label> 
-						                <div class="col-sm-2"> 
-						                    <input type="text" class="form-control input-sm" id="search_name"> 
-						                </div>
-						                <div class="col-sm-2">
-											<label class="radio-inline"><input value="true" name="hasResult" type="radio">有</label>
-											<label class="radio-inline"><input value="false" name="hasResult" type="radio">无</label>
-									    </div>
-						                <div class="col-sm-1" style="text-align:left;"> 
-						                    <button type="button" id="btn_query" class="btn btn-primary btn-sm">查询</button> 
-						                </div> 
-						            </div> 
-					            </form>
-					       </div> 
-					   	</div>
-					   	
-	            		<table class="table table-no-bordered" id="table-infoList"></table>
-	            		
-					</div>
+	            	<div class="table-container">
+	            		<div class="clearfix">
+		                    <ul class="nav nav-tabs">
+		                        <li role="presentation"  class="active"><a>信息列表</a></li>
+		                    </ul>
+		                    <div class="specialForm">
+			            		<div class="panel panel-default"> 
+							        <div class="panel-body"> 
+										<form id="formSearch" class="form-horizontal" >
+							                <div class="form-group" style="margin-bottom:0px;">
+								                <label class="control-label col-sm-1">编号</label> 
+								                <div class="col-sm-2"> 
+								                    <input type="text" class="form-control input-sm" id="search_sampleNum"> 
+								                </div> 
+								                <label class="control-label col-sm-1">姓名</label> 
+								                <div class="col-sm-2"> 
+								                    <input type="text" class="form-control input-sm" id="search_name"> 
+								                </div>
+								                <div class="col-sm-2">
+													<label class="radio-inline"><input value="true" name="hasResult" type="radio">有</label>
+													<label class="radio-inline"><input value="false" name="hasResult" type="radio">无</label>
+											    </div>
+								                <div class="col-sm-1" style="text-align:left;"> 
+								                    <button type="button" id="btn_query" class="btn btn-primary btn-sm">查询</button> 
+								                </div> 
+								            </div> 
+							            </form>
+							       </div> 
+							   	</div>
+			            		<table class="table table-no-bordered" id="table-infoList"></table>
+							</div>
+	            		</div>
+            		</div>
 	            </div>
 	        </div>
 	    </div>
@@ -234,6 +233,9 @@
 	        $("#btn_query").on("click",function(){
             	$table.bootstrapTable('refresh');
             });
+
+
+            
 	    </script>
 	</body>
 </html>

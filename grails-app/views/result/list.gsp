@@ -89,6 +89,14 @@
 										    <label class="checkbox-inline"><input value="negative" id="negative" type="checkbox">阴性</label>
 										    <label class="checkbox-inline"><input value="abnormal" id="abnormal" type="checkbox">检测异常</label>
 									    </div>
+									    <div class="col-sm-2">
+					                       	<select class="form-control input-sm" id="area-select">
+								    			<option value="" selected></option>
+								    			<g:each in="${InstanceList}" var="Instance">
+													<option value="${Instance?.code}">${analysisInstance?.title}</option>
+												</g:each>
+								    		</select>
+									    </div>
 						                <div class="col-sm-1" style="text-align:left;"> 
 						                    <button type="button" id="btn_query" class="btn btn-primary btn-sm">查询</button> 
 						                </div> 
@@ -250,7 +258,8 @@
 	                name:$("#search_name").val(),
 	                positive:$("#positive").is(':checked'),
                     negative:$("#negative").is(':checked'),
-                    abnormal:$("#abnormal").is(':checked')
+                    abnormal:$("#abnormal").is(':checked'),
+                    district:$("#area-select").find("option:selected").val()
   	           } 
   	        };
   	        
@@ -274,6 +283,7 @@
 				pageInfo['query']['positive'] = $("#positive").is(':checked');
 				pageInfo['query']['negative'] = $("#negative").is(':checked');
 				pageInfo['query']['abnormal'] = $("#abnormal").is(':checked');
+				pageInfo['query']['district'] = $("#area-select").find("option:selected").val();
 			}
 			
 	        var TableInit = function () {
@@ -360,7 +370,8 @@
 	                    name:$("#search_name").val(),
 	                    positive:$("#positive").is(':checked'),
 	                    negative:$("#negative").is(':checked'),
-	                    abnormal:$("#abnormal").is(':checked')
+	                    abnormal:$("#abnormal").is(':checked'),
+	                    district:$("#area-select").find("option:selected").val()
 	                };
 	                return temp;
 	            };

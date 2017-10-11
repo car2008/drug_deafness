@@ -11,6 +11,7 @@ ul{
 }
 a{
     text-decoration: none;
+    cursor:pointer;
 }
 /*header样式*/
 .nav-custom{
@@ -95,6 +96,5 @@ div.examination_info>ul>li{
 }
 /*表格容器*/
 div.table-container{
-	height:450px;
-	overflow-y:auto;
+	
 }

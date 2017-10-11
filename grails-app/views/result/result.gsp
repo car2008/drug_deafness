@@ -150,15 +150,7 @@
 	    </div>
 	   <script>
 	   		var $table = $("#table-result");
-			var pageObj = {}
-		   	pageObj.initShowPage = function(){
-		   		var showIndex = $("ul.nav-tabs").find("li.active").index();
-		   		var target = $("div.specialForm:eq("+showIndex+")");
-			        target.show();
-			        target.siblings("div.specialForm").hide();
-		   	}
 		   	$(function(){
-		   		pageObj.initShowPage();
 
 		   		var oTable = new TableInit();
 	            oTable.Init();

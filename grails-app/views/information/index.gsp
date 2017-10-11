@@ -178,17 +178,7 @@
 	    <script>
 	    	var $table = $("#table-info");
 	    	
-	    	var pageObj = {}
-	    	pageObj.initShowPage = function(){
-	    		var showIndex = $("ul.nav-tabs").find("li.active").index();
-	    		var target = $("div.specialForm:eq("+showIndex+")");
-		        target.show();
-		        target.siblings("div.specialForm").hide();
-	    	}
 	    	$(function(){
-	    		pageObj.initShowPage();//设置默认显示页面
-
-
 	    		var oTable = new TableInit();
 	            oTable.Init();
 
