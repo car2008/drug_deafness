@@ -57,7 +57,7 @@ class ResultController {
 			if(q6){
 				stringBuf.append("LEFT JOIN result.district district ")
 			}
-			if((beginSearchDate && endSearchDate)||(num||name||positive||negative||q6)){
+			if((beginSearchDate && endSearchDate)||(num||name||positive=="true"||negative=="true"||abnormal=="true"||q6)){
 				stringBuf.append("WHERE ")
 			}
 			if(beginSearchDate && endSearchDate){
@@ -161,7 +161,7 @@ class ResultController {
 		def outDir = "${grailsApplication.config.project.file.pdf.path}".toString()
 		resultInstanceList.each{ resultInstance ->
 			HashMap map = new LinkedHashMap<String,String>();
-			map.put("医院", params.hospital.toString());
+			map.put("医院", resultInstance.resulttitle?resultInstance.resulttitle:params.hospital.toString());
 			map.put("姓名",resultInstance.information.patientName);
 			map.put("性别",resultInstance.information.gender);
 			map.put("年龄",resultInstance.information.age);
@@ -176,9 +176,9 @@ class ResultController {
 			map.put("famCt",resultInstance.famCt);
 			map.put("vicCt",resultInstance.vicCt);
 			map.put("nedCt",resultInstance.nedCt);
-			map.put("famCtResult",resultInstance.famCt.contains("--")?"阴性（-）":"阳性（+）");
-			map.put("vicCtResult",resultInstance.vicCt.contains("--")?"阴性（-）":"阳性（+）");
-			map.put("nedCtResult",resultInstance.nedCt.contains("--")?"阴性（-）":"阳性（+）");
+			map.put("famCtResult",resultInstance.famCt?.contains("--")?"阴性（-）":"阳性（+）");
+			map.put("vicCtResult",resultInstance.vicCt?.contains("--")?"阴性（-）":"阳性（+）");
+			map.put("nedCtResult",resultInstance.nedCt?.contains("--")?"阴性（-）":"阳性（+）");
 			map.put("detectedResult",resultInstance.detectedResult);
 			map.put("resultcomment",resultInstance.comment==null?"":resultInstance.comment);
 			if(resultInstance.detectedResult.contains("检测异常"))map.put("resultpictureUrl","web-app\\images\\detected_pic\\0001-检测异常.bmp");
@@ -186,16 +186,16 @@ class ResultController {
 			if(resultInstance.detectedResult.contains("野生型"))map.put("resultpictureUrl","web-app\\images\\detected_pic\\0003-野生型.bmp");
 			if(resultInstance.detectedResult.contains("1494"))map.put("resultpictureUrl","web-app\\images\\detected_pic\\0004-1494突变.bmp");
 			if(resultInstance.detectedResult.contains("NED质控异常"))map.put("resultpictureUrl","web-app\\images\\detected_pic\\0005-质控异常.bmp");
-			map.put("checker",params.checker.toString());
-			map.put("assessor",params.assessor.toString());
+			map.put("checker",resultInstance.checker?resultInstance.checker:params.checker.toString());
+			map.put("assessor",resultInstance.assessor?resultInstance.assessor:params.assessor.toString());
 			map.put("dateCreated","2017-9-1");
-			map.put("pdfcomment",params.pdfcomment.toString());
+			map.put("pdfcomment",resultInstance.pdfcomment?resultInstance.pdfcomment:params.pdfcomment.toString());
 			map.put("outDir", outDir+"/"+resultInstance.sampleNum+".pdf");
 			outPathList.add(PDFUtil.createPDF(map));
-			resultInstance.resulttitle=params.hospital.toString();
-			resultInstance.checker=params.checker.toString();
-			resultInstance.assessor=params.assessor.toString();
-			resultInstance.pdfcomment=params.pdfcomment.toString();
+			if(!resultInstance.resulttitle)resultInstance.resulttitle=params.hospital.toString();
+			if(!resultInstance.checker)resultInstance.checker=params.checker.toString();
+			if(!resultInstance.assessor)resultInstance.assessor=params.assessor.toString();
+			if(!resultInstance.pdfcomment)resultInstance.pdfcomment=params.pdfcomment.toString();
 			resultInstance.save(flush: true);
 		}
 		def zipName = new Date().format("yyyy-MM-dd-HH-mm-ss")+"-"+UUID.randomUUID()
@@ -249,11 +249,24 @@ class ResultController {
 	def uploadOne() {
 		def startTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
 		def currentUser = springSecurityService.currentUser
+		if(!params.famCt){
+			params.famCt="--"
+		}
+		if(!params.vicCt){
+			params.vicCt="--"
+		}
+		if(!params.nedCt){
+			params.nedCt="--"
+		}
+		if(!params.detectedResult){
+			params.detectedResult="--"
+		}
 		def resultInstance = new Result(params)
 		def informationInstance = Information.findBySampleNum(params.sampleNum)
 		if(informationInstance && !Result.findBySampleNum(params.sampleNum)) {
 			resultInstance.information = informationInstance
 			informationInstance.result = resultInstance
+			informationInstance.hasResult=true
 			informationInstance.save(flush: true)
 		}else if(informationInstance && Result.findBySampleNum(params.sampleNum)){
 			flash.message = "${message(code: 'result.information.found.message', args: [message(code: 'result.label', default: 'resultInstance'), params.sampleNum])}"
@@ -321,6 +334,7 @@ class ResultController {
 					}else{
 						resultInstance.information = informationInstance
 						informationInstance.result=resultInstance
+						informationInstance.hasResult=true
 						informationInstance.save(flush: true)
 						successNum++
 						sucessedsb.append(","+properties["sampleNum"])

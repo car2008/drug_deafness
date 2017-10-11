@@ -30,8 +30,8 @@
 					<dd>${userInstance?.name}</dd>
 					<dt><g:message code="user.enabled.label" /></dt>
 					<dd>${userInstance?.enabled==true?'在职':'离职'}</dd>
-					<dt><g:message code="user.name.label" /></dt>
-					<dd>${userInstance?.name}</dd>
+					<dt><g:message code="district.label" /></dt>
+					<dd>${userInstance?.district.title}</dd>
 					<dt><g:message code="user.roles.label" /></dt>
 					<dd>
 						<g:each in="${userInstance?.getAuthorities()}" var="role" status="i">

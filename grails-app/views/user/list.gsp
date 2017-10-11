@@ -94,7 +94,7 @@
 										</g:each>
 									</td>
 									<td>
-										${userInstance?.username}
+										${userInstance?.district?.title}
 									</td>
 									<td>
 										<sec:ifAnyGranted roles="ROLE_ADMIN">

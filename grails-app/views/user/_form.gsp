@@ -21,6 +21,16 @@
 					<g:textField name="name" value="${userInstance?.name}" />
 			</div>
 		</div>
+		<div class="control-group ${hasErrors(bean: userInstance, field: 'district', 'error')}">
+			<label class="control-label" for="district"><g:message code="district.label" /><span class="help-inline">*</span></label>
+			<div class="controls">
+				<select id="district" name="district" multiple data-placeholder=" ">
+					<g:each in="${districtInstanceList}" var="districtInstance">
+						<option value="${districtInstance?.id}" ${userInstance?.district?.collect{it.id}?.contains(districtInstance.id) ? 'selected' : ''}  >${districtInstance?.title}</option>
+					</g:each>
+				</select>
+			</div>
+		</div>
 		<g:if test="${params.action=='create'||params.action=='save' }">
 			<div class="control-group ${hasErrors(bean: userInstance, field: 'password', 'error')}">
 				<label class="control-label" for="password"><g:message code="user.password.label" /><span class="help-inline">*</span></label>
@@ -65,4 +75,8 @@
 		</div>
 
 <script type="text/javascript">
+$(function(){
+	$("#district").chosen({});
+});
+
 </script>
