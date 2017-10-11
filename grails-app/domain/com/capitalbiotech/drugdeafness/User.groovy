@@ -19,7 +19,7 @@ class User implements Serializable {
 	boolean passwordExpired
     
     String name
-	Location location
+	District district
 
 	User(String username, String password) {
 		this()
@@ -51,10 +51,10 @@ class User implements Serializable {
 		username blank: false, unique: true, email: true
 		password blank: false
         name     blank: false
-		location blank: true,nullable: true
+		district blank: true,nullable: true
 	}
 	
-	static belongsTo =[Location]
+	static belongsTo =[District]
 	
 	static mapping = {
 		password column: '`password`'

@@ -5,6 +5,7 @@ import javax.script.ScriptEngineFactory
 import javax.script.ScriptEngineManager
 
 import grails.plugin.springsecurity.SpringSecurityUtils
+import com.capitalbiotech.drugdeafness.District
 import com.capitalbiotech.drugdeafness.Role
 import com.capitalbiotech.drugdeafness.User
 import com.capitalbiotech.drugdeafness.Utils;
@@ -19,11 +20,15 @@ class BootStrap {
         //we save time always in Asia/Shanghai timezone
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"))
     
-        if (0 == User.count()) {
-            initializeDatabase()
+		if (0 == District.count()) {
+			createDistrict()
+		}
+		
+		if (0 == User.count()) {
+			initializeDatabase()
 			//createUsersAndRoles()
-        }
-        
+		}
+		
         updateDatabase()
     }
     
@@ -51,7 +56,8 @@ class BootStrap {
         def admin = new User(
             username: 'bioinfo@capitalbiotech.com',
             password: '123456',
-            name: 'admin'
+            name: 'admin',
+			district:District.findByCode("BEI_JING")
         ).save(flush: true)
         UserRole.create(admin, userRole, true)
         UserRole.create(admin, staffRole, true)
@@ -60,7 +66,8 @@ class BootStrap {
         def user1 = new User(
             username: 'jundong@capitalbiotech.com',
             password: '123456',
-            name: 'user'
+            name: 'user',
+			district:District.findByCode("BEI_JING")
         ).save(flush: true)
         UserRole.create(user1, userRole, true)
 		UserRole.create(user1, staffRole, true)
@@ -104,6 +111,35 @@ class BootStrap {
 			}
 		}
 	}
+	
+	def createDistrict(){
+		log.info "Creating sample district"
+		
+		def propertiesList = readRawFile("district")
+		propertiesList?.each { properties ->
+			if (!Utils.isEmpty(properties['dateCreated'])) {
+				properties['dateCreated'] = Utils.parseSimpleDateTime(properties['dateCreated'])
+			}
+			else {
+				properties['dateCreated'] = null
+			}
+			
+			if (!Utils.isEmpty(properties['lastUpdated'])) {
+				properties['lastUpdated'] = Utils.parseSimpleDateTime(properties['lastUpdated'])
+			}
+			else {
+				properties['lastUpdated'] = null
+			}
+
+			def districtInstance = new District(properties)
+			if (districtInstance.hasErrors() || !districtInstance.save(flush: true)) {
+				districtInstance.errors?.each { error ->
+					log.error error
+				}
+			}
+		}
+	}
+
 	
 	def readRawFile(fileName) {
 		def rawLines = new File(BootStrap.class.getResource("raw/${fileName}").getFile()).readLines()

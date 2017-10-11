@@ -1,6 +1,6 @@
 package com.capitalbiotech.drugdeafness
 
-class Location {
+class District {
 
     String code
 	String title
