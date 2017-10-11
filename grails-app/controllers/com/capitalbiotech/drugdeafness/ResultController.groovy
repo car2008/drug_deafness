@@ -41,13 +41,14 @@ class ResultController {
 		def resultInstanceList
 		def resultInstanceTotal
 		def projectInstanceTotalList
-		if(params.num||params.name){
+		if(params.num||params.name||params.positive=="true"||params.negative=="true"||params.abnormal=="true"){
 			def beginSearchDate=params.beginSearchDate
 			def endSearchDate=params.endSearchDate
 			def num = params.num
 			def name = params.name
-			def q4 = params.q4
-			def q5 = params.q5
+			def positive = params.positive
+			def negative = params.negative
+			def abnormal = params.abnormal
 			def q6 = params.q6
 			def stringBuf=new StringBuffer()
 			def paramMap1=[:]
@@ -56,7 +57,7 @@ class ResultController {
 			if(q6){
 				stringBuf.append("LEFT JOIN result.district district ")
 			}
-			if((beginSearchDate && endSearchDate)||(num||name||q4||q5||q6)){
+			if((beginSearchDate && endSearchDate)||(num||name||positive||negative||q6)){
 				stringBuf.append("WHERE ")
 			}
 			if(beginSearchDate && endSearchDate){
@@ -64,8 +65,9 @@ class ResultController {
 			}
 			stringBuf.append(num?"AND sampleNum like '%"+num+"%' ":"")
 			stringBuf.append(name?"AND result.information.patientName like '%"+name+"%' ":"")
-			stringBuf.append(q4?"AND level like '%"+q4+"%' ":"")
-			stringBuf.append(q5?"AND status like '%"+q5+"%' ":"")
+			stringBuf.append(positive=="true"?"OR detectedResult like '%突变型%' ":"")
+			stringBuf.append(negative=="true"?"OR detectedResult like '%野生型%' ":"")
+			stringBuf.append(abnormal=="true"?"OR detectedResult like '%重新检测%' ":"")
 			if(q6){
 				def district=District.findByCode(q6)
 				stringBuf.append("AND district = :district ")
@@ -73,6 +75,9 @@ class ResultController {
 			}
 			
 			def s1=stringBuf.toString()
+			if(s1.contains("OR detectedResult")){
+				s1=s1.replaceFirst("OR","AND")
+			}
 			if(s1.contains("WHERE AND")){
 				s1=s1.replaceFirst("AND","")
 			}
@@ -81,6 +86,9 @@ class ResultController {
 			}
 			stringBuf.append("ORDER BY result.${params.sort} ${params.order}")
 			def s2=stringBuf.toString()
+			if(s2.contains("OR detectedResult")){
+				s2=s2.replaceFirst("OR","AND")
+			}
 			if(s2.contains("WHERE AND")){
 				s2=s2.replaceFirst("AND","")
 			}
