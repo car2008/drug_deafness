@@ -136,7 +136,7 @@
 	                            </div>
 	                        </g:form>
 	                        <div style="margin-top:30px;">
-		                        <button class="btn btn-default">清空</button>
+		                        <button id="clearBtn_single" class="btn btn-default">清空</button>
 		                        <button id="submitBtn_single" class="btn btn-success" style="float: right;">提交</button>
 	                        </div>
 	                    </div>
@@ -226,8 +226,14 @@
 				    };
 				    xhr.send(data);
 			    });
+			    //清空按钮
+			    $("#clearBtn_single").on("click",function(){
+			    	
+			    	
+			    	
+			    });
 			    
-			    //选择文件
+		    	//选择文件
 			    $("#form-multiple").on("change","#InputFile",function(e){
 			    	checkfile(this.id);
 			    	selectFile(e);

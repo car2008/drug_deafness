@@ -85,9 +85,9 @@
 						                    <input type="text" class="form-control input-sm" id="search_name" name="search_name"> 
 						                </div>
 									    <div class="col-sm-3">
-											<label class="radio-inline"><input name="testResult" value="positive" type="radio">阳性</label>
-										    <label class="radio-inline"><input name="testResult" value="negative" type="radio">阴性</label>
-										    <label class="radio-inline"><input name="testResult" value="abnormal" type="radio">检测异常</label>
+											<label class="checkbox-inline"><input value="positive" id="positive" type="checkbox">阳性</label>
+										    <label class="checkbox-inline"><input value="negative" id="negative" type="checkbox">阴性</label>
+										    <label class="checkbox-inline"><input value="abnormal" id="abnormal" type="checkbox">检测异常</label>
 									    </div>
 						                <div class="col-sm-1" style="text-align:left;"> 
 						                    <button type="button" id="btn_query" class="btn btn-primary btn-sm">查询</button> 
@@ -122,21 +122,21 @@
 	                            <div class="form-group">
 	                                <label class="col-sm-2 control-label">样本编号</label>
 	                                <div class="col-sm-4">
-	                                	<input name="sampleNum" id="sampleNum" class="form-control input-sm"></input>
+	                                	<input name="sampleNum" id="sampleNum" class="form-control input-sm" readonly>
 	                                </div>
 	                                <label class="col-sm-2 control-label">姓名</label>
 	                                <div class=" col-sm-4">
-	                                	<input name="patientName" id="patientName" class="form-control input-sm"></input>
+	                                	<input name="patientName" id="patientName" class="form-control input-sm" readonly>
 	                                </div>
 	                            </div>
 	                            <div class="form-group">
 	                                <label class="col-sm-2 control-label">性别</label>
 	                                <div class="col-sm-4">
-	                                    <input name="gender" id="gender" type="text" class="form-control input-sm">
+	                                    <input name="gender" id="gender" type="text" class="form-control input-sm" readonly>
 	                                </div>
 	                                <label class="col-sm-2 control-label" style="font-size: 13px;">年龄</label>
 	                                <div class="col-sm-4">
-	                                    <input name="age" id="age" type="text" class="form-control input-sm">
+	                                    <input name="age" id="age" type="text" class="form-control input-sm" readonly>
 	                                </div>
 	                            </div>
 	                            <div class="form-group">
@@ -248,7 +248,9 @@
   					offset:"", 
   					num:$("#search_sampleNum").val(),
 	                name:$("#search_name").val(),
-	                testResult:$("input[name='testResult']:checked").val(),
+	                positive:$("#positive").is(':checked'),
+                    negative:$("#negative").is(':checked'),
+                    abnormal:$("#abnormal").is(':checked')
   	           } 
   	        };
   	        
@@ -269,7 +271,9 @@
 				pageInfo['query']['offset'] = (tableOptions['pageNumber'] - 1) * tableOptions['pageSize']; 
 				pageInfo['query']['num'] = $("#search_sampleNum").val(); 
 				pageInfo['query']['name'] = $("#search_name").val(); 
-				pageInfo['query']['testResult'] = $("input[name='testResult']:checked").val();
+				pageInfo['query']['positive'] = $("#positive").is(':checked');
+				pageInfo['query']['negative'] = $("#negative").is(':checked');
+				pageInfo['query']['abnormal'] = $("#abnormal").is(':checked');
 			}
 			
 	        var TableInit = function () {
@@ -354,7 +358,9 @@
 	                    offset: params.offset,  //页码
 	                    num:$("#search_sampleNum").val(),
 	                    name:$("#search_name").val(),
-	                    testResult:$("input[name='testResult']:checked").val(),
+	                    positive:$("#positive").is(':checked'),
+	                    negative:$("#negative").is(':checked'),
+	                    abnormal:$("#abnormal").is(':checked')
 	                };
 	                return temp;
 	            };
@@ -413,7 +419,7 @@
 		        var arrselections = $table.bootstrapTable('getSelections');
 		        if (arrselections.length <= 0) {
                     swal({
-                        title: "请先选择需要修改的行",
+                        title: "请先选择需要导出的数据",
                         type: "warning",
                     });
                     return;
