@@ -60,7 +60,7 @@ class InformationController {
 								"inspectionTime":informationInstance.inspectionTime,
 								"phoneNum":informationInstance.phoneNum,
 								"remark":informationInstance.remark,
-								"hasResult":informationInstance.results.size()>0?"有":"无"
+								"hasResult":informationInstance.result==null?"无":"有"
 								]
 							}
 				] as JSON)
@@ -115,6 +115,7 @@ class InformationController {
 		def startTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
 		def currentUser = springSecurityService.currentUser
 		def informationInstance = new Information(params)
+		informationInstance.district = currentUser.district
 		if(Information.findBySampleNum(params.sampleNum)) {
 			flash.message = "${message(code: 'result.information.found.message', args: [message(code: 'information.label', default: 'informationInstance'), params.sampleNum])}"
 			render view:'index'
@@ -168,6 +169,7 @@ class InformationController {
 				failedsb.append(","+properties["sampleNum"])
 			}else{
 				def informationInstance = new Information(properties)
+				informationInstance.district = currentUser.district
 				if (informationInstance.hasErrors() || !informationInstance.save(flush: true)) {
 					failedNum++
 					failedsb.append(","+properties["sampleNum"])

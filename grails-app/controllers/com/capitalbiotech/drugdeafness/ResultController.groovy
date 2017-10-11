@@ -245,7 +245,7 @@ class ResultController {
 		def informationInstance = Information.findBySampleNum(params.sampleNum)
 		if(informationInstance && !Result.findBySampleNum(params.sampleNum)) {
 			resultInstance.information = informationInstance
-			informationInstance.results.add(resultInstance)
+			informationInstance.result = resultInstance
 			informationInstance.save(flush: true)
 		}else if(informationInstance && Result.findBySampleNum(params.sampleNum)){
 			flash.message = "${message(code: 'result.information.found.message', args: [message(code: 'result.label', default: 'resultInstance'), params.sampleNum])}"
@@ -294,7 +294,7 @@ class ResultController {
 			str=str.replaceFirst("备注","comment");
 			def propertiesList = readPropFromString(str)
 			propertiesList?.each { properties ->
-				properties["sampleNum"] = properties["sampleNum"].contains(".0")?properties["sampleNum"].substring(0,properties["sampleNum"].indexOf(".0")):properties["sampleNum"]
+				properties["sampleNum"] = properties["sampleNum"].toString().contains(".0")?properties["sampleNum"].toString().substring(0,properties["sampleNum"].toString().indexOf(".0")):properties["sampleNum"]
 				def informationInstance = Information.findBySampleNum(properties["sampleNum"])
 				if(Result.findBySampleNum(properties["sampleNum"])){
 					failedNum++
@@ -312,7 +312,7 @@ class ResultController {
 						}
 					}else{
 						resultInstance.information = informationInstance
-						informationInstance.results.add(resultInstance)
+						informationInstance.result=resultInstance
 						informationInstance.save(flush: true)
 						successNum++
 						sucessedsb.append(","+properties["sampleNum"])

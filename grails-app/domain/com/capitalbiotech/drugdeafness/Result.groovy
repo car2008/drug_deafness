@@ -19,11 +19,9 @@ class Result {
 	String pdfcomment
 	Date dateCreated
 	Date lastUpdated
-	District district
 	
     static constraints = {
 		 sampleNum blank: false,nullable: false
-		 district blank: true,nullable: true
 		 location blank: true,nullable: true
 		 sampleBelong blank: true,nullable: true
 		 famCt blank: true,nullable: true
@@ -44,5 +42,5 @@ class Result {
 		comment type:'text'
 	}
 	
-	static belongsTo = [information:Information,district:District]
+	static belongsTo = [information:Information]
 }

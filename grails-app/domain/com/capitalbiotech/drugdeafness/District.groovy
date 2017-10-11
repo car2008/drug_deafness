@@ -8,7 +8,7 @@ class District {
 	Date dateCreated
 	Date lastUpdated
 	Set<User> users
-	Set<Result> results
+	Set<Information> informations
 	
 	static constraints = {
 		code blank: false, unique: true
@@ -16,7 +16,7 @@ class District {
 		description nullable: true
 	}
 	
-	static hasMany = [users: User,results: Result]
+	static hasMany = [users: User,informations: Information]
 	
 	static mapping = {
 		description type:'text'

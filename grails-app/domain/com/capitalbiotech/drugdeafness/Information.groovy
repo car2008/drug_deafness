@@ -18,9 +18,10 @@ class Information {
 	String inspectionTime
 	String phoneNum
 	String remark
-	Set<Result> results
+	Result result
 	Date dateCreated
 	Date lastUpdated
+	District district
 	
     static constraints = {
 		sampleNum blank: false,nullable: false
@@ -34,15 +35,14 @@ class Information {
 		inspectionTime blank: true,nullable: true
 		phoneNum blank: true,nullable: true
 		remark blank: true,nullable: true
-		results blank: true,nullable: true
+		result blank: true,nullable: true
 		hospital blank: true,nullable: true
 		inspectionDepartment blank: true,nullable: true
+		district blank: true,nullable: true
     }
 	
 	static mapping = {
 		remark type:'text'
 	}
-	
-	static hasMany = [results: Result]
 
 }
