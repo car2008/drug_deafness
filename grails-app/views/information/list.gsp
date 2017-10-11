@@ -89,6 +89,10 @@
 						                <div class="col-sm-2"> 
 						                    <input type="text" class="form-control input-sm" id="search_name"> 
 						                </div>
+						                <div class="col-sm-2">
+											<label class="radio-inline"><input value="true" name="hasResult" type="radio">有</label>
+											<label class="radio-inline"><input value="false" name="hasResult" type="radio">无</label>
+									    </div>
 						                <div class="col-sm-1" style="text-align:left;"> 
 						                    <button type="button" id="btn_query" class="btn btn-primary btn-sm">查询</button> 
 						                </div> 
@@ -116,7 +120,6 @@
 	        
 	        var $table = $("#table-infoList");
 	  		
-  	        
 			function getIdSelections() {
 		        return $.map($table.bootstrapTable('getSelections'), function (row) {
 		            return row.id
@@ -218,13 +221,19 @@
 	                var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
 	                    max: params.limit,   //页面大小
 	                    offset: params.offset,  //页码
+	                    num:$("#search_sampleNum").val(),
+		                name:$("#search_name").val(),
+		               	hasResult:$("input[name='hasResult']:checked").val()
 	                };
 	                return temp;
 	            };
 	
 	            return oTableInit;
 	        };
-	        
+
+	        $("#btn_query").on("click",function(){
+            	$table.bootstrapTable('refresh');
+            });
 	    </script>
 	</body>
 </html>
