@@ -19,9 +19,10 @@ class UserController {
 
 	//@Secured(['ROLE_ADMIN'])
 	def create = {
+		def districtInstanceList = District.list()
 		def userInstance = new User()
 		userInstance.properties = params
-		return [userInstance: userInstance]
+		return [userInstance: userInstance,districtInstanceList:districtInstanceList]
 	}
 
 	//@Secured(['ROLE_ADMIN'])
@@ -35,10 +36,10 @@ class UserController {
 		else if (!authorities.contains('ROLE_USER')) {
 			authorities << 'ROLE_USER'
 		}
-
-		if (userInstance.password != null && !userInstance.password.equals("")) {
+		//在新建userInstance实例时已经加密了（可在User类里找到）
+		/*if (userInstance.password != null && !userInstance.password.equals("")) {
 			userInstance.password =  springSecurityService.encodePassword(userInstance.password)
-		}
+		}*/
 		if (!userInstance.hasErrors() && userInstance.save(flush: true)) {
 			authorities.each{authority ->
 				def role = Role.findByAuthority(authority)
@@ -93,6 +94,7 @@ class UserController {
 
 	//@Secured(['ROLE_USER'])
 	def edit = {
+		def districtInstanceList = District.list()
 		def self = true
 		def uid = springSecurityService.currentUser.id
 		if(params.id != null){
@@ -104,7 +106,7 @@ class UserController {
 		def userInstance = User.get(uid)
 		if (userInstance) {
 			def authorities = userInstance.getAuthorities()?.collect {it.authority}
-			[userInstance: userInstance, authorities: authorities, self: self]
+			[userInstance: userInstance, authorities: authorities, self: self,districtInstanceList:districtInstanceList]
 		}
 		else {
 			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), uid])}"
@@ -207,6 +209,7 @@ class UserController {
 					return
 				}
 			}
+			userInstance.district=null
 			params.password=userInstance.password
 			userInstance.properties = params
 			/*userInstance.name = params.name

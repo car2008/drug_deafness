@@ -57,7 +57,7 @@ class ResultController {
 			if(q6){
 				stringBuf.append("LEFT JOIN result.district district ")
 			}
-			if((beginSearchDate && endSearchDate)||(num||name||positive||negative||q6)){
+			if((beginSearchDate && endSearchDate)||(num||name||positive=="true"||negative=="true"||abnormal=="true"||q6)){
 				stringBuf.append("WHERE ")
 			}
 			if(beginSearchDate && endSearchDate){
@@ -254,6 +254,7 @@ class ResultController {
 		if(informationInstance && !Result.findBySampleNum(params.sampleNum)) {
 			resultInstance.information = informationInstance
 			informationInstance.result = resultInstance
+			informationInstance.hasResult=true
 			informationInstance.save(flush: true)
 		}else if(informationInstance && Result.findBySampleNum(params.sampleNum)){
 			flash.message = "${message(code: 'result.information.found.message', args: [message(code: 'result.label', default: 'resultInstance'), params.sampleNum])}"
@@ -321,6 +322,7 @@ class ResultController {
 					}else{
 						resultInstance.information = informationInstance
 						informationInstance.result=resultInstance
+						informationInstance.hasResult=true
 						informationInstance.save(flush: true)
 						successNum++
 						sucessedsb.append(","+properties["sampleNum"])

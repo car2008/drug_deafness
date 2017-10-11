@@ -22,6 +22,7 @@ class Information {
 	Date dateCreated
 	Date lastUpdated
 	District district
+	boolean hasResult
 	
     static constraints = {
 		sampleNum blank: false,nullable: false
@@ -39,6 +40,7 @@ class Information {
 		hospital blank: true,nullable: true
 		inspectionDepartment blank: true,nullable: true
 		district blank: true,nullable: true
+		hasResult blank: true,nullable: true
     }
 	
 	static mapping = {

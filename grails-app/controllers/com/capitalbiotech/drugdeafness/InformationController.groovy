@@ -33,19 +33,76 @@ class InformationController {
 		if (!params.sort) {
 			params.sort = 'dateCreated'
 		}
-
-		//def informationInstanceList = Information.list(params)
-		def informationInstanceList = Information.list(params)
-		def informationInstanceTotal = Information.count()
-		def allInformationInstanceTotal = informationInstanceTotal
+		
+		def informationInstanceList
+		def informationInstanceTotal
+		def projectInstanceTotalList
+		if(params.num||params.name||params.hasResult){
+			def beginSearchDate=params.beginSearchDate
+			def endSearchDate=params.endSearchDate
+			def num = params.num
+			def name = params.name
+			def hasResult = params.hasResult
+			def q6 = params.q6
+			def stringBuf=new StringBuffer()
+			def paramMap1=[:]
+			
+			stringBuf.append("SELECT DISTINCT information FROM Information information ")
+			if(q6){
+				stringBuf.append("LEFT JOIN information.district district ")
+			}
+			if((beginSearchDate && endSearchDate)||(num||name||hasResult||q6)){
+				stringBuf.append("WHERE ")
+			}
+			if(beginSearchDate && endSearchDate){
+				stringBuf.append("information.dateCreated BETWEEN '"+beginSearchDate+"' AND '"+endSearchDate+"' ")
+			}
+			stringBuf.append(num?"AND sampleNum like '%"+num+"%' ":"")
+			stringBuf.append(name?"AND patientName like '%"+name+"%' ":"")
+			stringBuf.append(hasResult=="true"?"AND hasResult=true ":"")
+			stringBuf.append(hasResult=="false"?"AND hasResult=false ":"")
+			if(q6){
+				def district=District.findByCode(q6)
+				stringBuf.append("AND district = :district ")
+				paramMap1.put("district", district)
+			}
+			
+			def s1=stringBuf.toString()
+			if(s1.contains("WHERE AND")){
+				s1=s1.replaceFirst("AND","")
+			}
+			if(s1.endsWith("WHERE ")){
+				s1=s1.replaceFirst("WHERE","")
+			}
+			stringBuf.append("ORDER BY information.${params.sort} ${params.order}")
+			def s2=stringBuf.toString()
+			if(s2.contains("WHERE AND")){
+				s2=s2.replaceFirst("AND","")
+			}
+			
+			if(paramMap1){
+				projectInstanceTotalList = Result.executeQuery(s1,paramMap1)
+				paramMap1.put("offset",params.offset)
+				paramMap1.put("max",params.max)
+				informationInstanceList = Result.executeQuery(s2,paramMap1)
+			}else{
+				projectInstanceTotalList = Result.executeQuery(s1)
+				paramMap1.put("offset",params.offset)
+				paramMap1.put("max",params.max)
+				informationInstanceList = Result.executeQuery(s2,paramMap1)
+			}
+			informationInstanceTotal = projectInstanceTotalList.size()
+		}else{
+			informationInstanceList = Information.list(params)
+			informationInstanceTotal = Information.count()
+		}
+		
 		//render view: 'list', model: [informationInstanceList: informationInstanceList,allInformationInstanceTotal:allInformationInstanceTotal,]
 		if(params.json=="json"){
 			render ([
-					"total":allInformationInstanceTotal,
+					"total":informationInstanceTotal,
 					"rows":
-							informationInstanceList/*?.sort{ a,b ->
-								return a.sampleNum.compareTo(b.sampleNum)
-							}*/.collect {  informationInstance ->
+							informationInstanceList.collect {  informationInstance ->
 								["id":informationInstance.id,
 								"sampleNum":informationInstance.sampleNum,
 								"patientName":informationInstance.patientName,
@@ -60,7 +117,7 @@ class InformationController {
 								"inspectionTime":informationInstance.inspectionTime,
 								"phoneNum":informationInstance.phoneNum,
 								"remark":informationInstance.remark,
-								"hasResult":informationInstance.result==null?"无":"有"
+								"hasResult":informationInstance.hasResult==true?"有":"无"
 								]
 							}
 				] as JSON)
