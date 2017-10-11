@@ -38,10 +38,11 @@ class ResultController {
 		if (!params.sort) {
 			params.sort = 'dateCreated'
 		}
+		def districtInstanceList = District.list()
 		def resultInstanceList
 		def resultInstanceTotal
 		def projectInstanceTotalList
-		if(params.num||params.name||params.positive=="true"||params.negative=="true"||params.abnormal=="true"){
+		if(params.num||params.name||params.positive=="true"||params.negative=="true"||params.abnormal=="true"||params.district){
 			def beginSearchDate=params.beginSearchDate
 			def endSearchDate=params.endSearchDate
 			def num = params.num
@@ -49,15 +50,15 @@ class ResultController {
 			def positive = params.positive
 			def negative = params.negative
 			def abnormal = params.abnormal
-			def q6 = params.q6
+			def district = params.district
 			def stringBuf=new StringBuffer()
 			def paramMap1=[:]
 			
 			stringBuf.append("SELECT DISTINCT result FROM Result result ")
-			if(q6){
-				stringBuf.append("LEFT JOIN result.district district ")
+			if(district){
+				stringBuf.append("LEFT JOIN result.information.district district ")
 			}
-			if((beginSearchDate && endSearchDate)||(num||name||positive=="true"||negative=="true"||abnormal=="true"||q6)){
+			if((beginSearchDate && endSearchDate)||(num||name||positive=="true"||negative=="true"||abnormal=="true"||district)){
 				stringBuf.append("WHERE ")
 			}
 			if(beginSearchDate && endSearchDate){
@@ -65,17 +66,17 @@ class ResultController {
 			}
 			stringBuf.append(num?"AND sampleNum like '%"+num+"%' ":"")
 			stringBuf.append(name?"AND result.information.patientName like '%"+name+"%' ":"")
-			stringBuf.append(positive=="true"?"OR detectedResult like '%突变型%' ":"")
-			stringBuf.append(negative=="true"?"OR detectedResult like '%野生型%' ":"")
-			stringBuf.append(abnormal=="true"?"OR detectedResult like '%重新检测%' ":"")
-			if(q6){
-				def district=District.findByCode(q6)
+			stringBuf.append(positive=="true"?"OR detected_result like '%突变型%' ":"")
+			stringBuf.append(negative=="true"?"OR detected_result like '%野生型%' ":"")
+			stringBuf.append(abnormal=="true"?"OR detected_result like '%重新检测%' ":"")
+			if(district){
+				def districtInstance=District.findByCode(district)
 				stringBuf.append("AND district = :district ")
-				paramMap1.put("district", district)
+				paramMap1.put("district", districtInstance)
 			}
 			
 			def s1=stringBuf.toString()
-			if(s1.contains("OR detectedResult")){
+			if(s1.contains("OR detected_result")){
 				s1=s1.replaceFirst("OR","AND")
 			}
 			if(s1.contains("WHERE AND")){
@@ -86,7 +87,7 @@ class ResultController {
 			}
 			stringBuf.append("ORDER BY result.${params.sort} ${params.order}")
 			def s2=stringBuf.toString()
-			if(s2.contains("OR detectedResult")){
+			if(s2.contains("OR detected_result")){
 				s2=s2.replaceFirst("OR","AND")
 			}
 			if(s2.contains("WHERE AND")){
@@ -130,11 +131,12 @@ class ResultController {
 								"assessor":resultInstance.assessor,
 								"pdfcomment":resultInstance.pdfcomment,
 								"remark":resultInstance.information?.remark,
+								"district":resultInstance.information?.district.title
 								]
 							}
 				] as JSON)
 		}else{
-			return
+			return [districtInstanceList:districtInstanceList]
 		}
 
 	}

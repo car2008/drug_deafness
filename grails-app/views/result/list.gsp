@@ -92,8 +92,8 @@
 									    <div class="col-sm-2">
 					                       	<select class="form-control input-sm" id="area-select">
 								    			<option value="" selected></option>
-								    			<g:each in="${InstanceList}" var="Instance">
-													<option value="${Instance?.code}">${analysisInstance?.title}</option>
+								    			<g:each in="${districtInstanceList}" var="districtInstance">
+													<option value="${districtInstance?.code}">${districtInstance?.title}</option>
 												</g:each>
 								    		</select>
 									    </div>
@@ -357,7 +357,11 @@
 	                    },{
 	                        field: 'pdfcomment',
 	                        title: '备注',
-	                    }]
+	                    },{
+	                        field: 'district',
+	                        title: '地区',
+	                    }
+	                    ]
 	                });
 	            };
 	
