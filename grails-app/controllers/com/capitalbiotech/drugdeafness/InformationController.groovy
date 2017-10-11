@@ -58,7 +58,7 @@ class InformationController {
 								"inspectionTime":informationInstance.inspectionTime,
 								"phoneNum":informationInstance.phoneNum,
 								"remark":informationInstance.remark,
-								"hasResult":informationInstance.results.size()>0?"是":"否"
+								"hasResult":informationInstance.results.size()>0?"有":"无"
 								]
 							}
 				] as JSON)

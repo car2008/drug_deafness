@@ -62,10 +62,11 @@
 	        <div class="row">
 	            <div class="col-md-2">
                     <ul id="nav-page" class="nav">
-                    	<li><a class="current" href="#">信息列表</a></li>
+                    	<li><a class="current" href="${createLink(controller: 'information', action: 'list')}">信息列表</a></li>
                         <li><a href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
                         <li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
                         <li><a href="${createLink(controller: 'result', action: 'list')}">导出pdf报告</a></li>
+                        <li><a href="${createLink(controller: 'user', action: 'list')}">用户管理</a></li>
                     </ul>
 	            </div>
 	            <div class="col-md-10">
@@ -135,7 +136,6 @@
 	                $table.bootstrapTable({
 	                    url: '<g:createLink controller="information" action="list" params="[json: 'json']"/>',         //请求后台的URL（*）
 	                    method: 'get',                      //请求方式（*）
-	                    toolbar: '',                        //工具按钮用哪个容器
 	                    striped: false,                      //是否显示行间隔色
 	                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
 	                    pagination: true,                   //是否显示分页（*）
@@ -200,10 +200,14 @@
 	                        field: 'remark',
 	                        title: '备注',
 	                    },{
-	                        field: 'status',
-	                        title: '状态',
+	                        field: 'hasResult',
+	                        title: '有无结果',
 	                        formatter:function(value,row,index){ 
-		                        //value === "有"? return '<span class="label label-success">'+value+'</span>':'<span class="label label-danger">'+value+'</span>';
+		                        if( value === "有"){
+		                        	 return '<span class="label label-success">'+value+'</span>';
+		                        }else{
+									return '<span class="label label-danger">'+value+'</span>';
+		                        }
 	                        }
 	                    }]
 	                });

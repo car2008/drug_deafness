@@ -70,6 +70,7 @@
                         <li><a href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
                         <li><a class="current" href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
                         <li><a href="${createLink(controller: 'result', action: 'list')}">导出pdf报告</a></li>
+                        <li><a href="${createLink(controller: 'user', action: 'list')}">用户管理</a></li>
                     </ul>
 	            </div>
 	            <div class="col-md-10">
@@ -189,12 +190,13 @@
 				    xhr.open("POST",url,true);
 				    xhr.onreadystatechange=function(){
 				        if(xhr.readyState==4 && xhr.status==200){  //判断状态到4了并且返回状态码是200时才做操作
-				        	alert(xhr.responseText);
+				        	
 				        	$("div.specialForm:eq(2)").show();
 					        $("div.specialForm:eq(2)").siblings("div.specialForm").hide();
 					        $("ul.nav-tabs>li:eq(2)").addClass("active");
 					        $("ul.nav-tabs>li:eq(2)").siblings("li").removeClass("active");
 				        	$table.bootstrapTable('refresh');
+				        	alert(xhr.responseText);
 				        }
 				    };
 				    xhr.send(data);
@@ -309,7 +311,6 @@
 	                $table.bootstrapTable({
 	                    url: '<g:createLink controller="result" action="listRecord" params="[json: 'json']"/>',         //请求后台的URL（*）
 	                    method: 'get',                      //请求方式（*）
-	                    toolbar: '',                        //工具按钮用哪个容器
 	                    striped: false,                      //是否显示行间隔色
 	                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
 	                    pagination: true,                   //是否显示分页（*）
@@ -331,7 +332,26 @@
 	                    uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
 	                    showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
 	                    cardView: false,                    //是否显示详细视图
-	                    detailView: false,                   //是否显示父子表
+	                    detailView: true,                   //是否显示父子表
+	                    detailFormatter:function(index, row) {
+	                    	var succeedArr = ["上传成功编号:"];
+	                    	var failedArr = ["上传失败编号:"];
+					        if(row.successedSample !== null){
+					        	var _arr = row['successedSample'].split(",")
+					        	$.each(_arr,function(index,value){
+					        		var _span = "<span class='label label-success'>"+value+"</span>"
+					        		succeedArr.push(_span);
+					        	})
+				        	}
+				        	if(row.failedSample !== null){
+				        		var _arr = row['failedSample'].split(",")
+			        			$.each(_arr,function(index,value){
+					        		var _span = "<span class='label label-danger'>"+value+"</span>"
+					        		failedArr.push(_span);
+					        	})
+			        		}
+					        return succeedArr.join(" ")+"<br>"+failedArr.join(" ");
+					    },
 	                    columns: [{
 	                        checkbox: true
 	                    },{
