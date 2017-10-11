@@ -3,7 +3,7 @@ package com.capitalbiotech.drugdeafness
 class Result {
 	//位置	样品编号	样品类型	FAMCt	VICCt	NEDCt	检测结果	备注
 	String sampleNum
-	String location
+	String region
 	String sampleBelong
 	String famCt
 	String vicCt
@@ -19,9 +19,11 @@ class Result {
 	String pdfcomment
 	Date dateCreated
 	Date lastUpdated
+	Location location
 	
     static constraints = {
 		 sampleNum blank: false,nullable: false
+		 region blank: true,nullable: true
 		 location blank: true,nullable: true
 		 sampleBelong blank: true,nullable: true
 		 famCt blank: true,nullable: true
@@ -42,5 +44,5 @@ class Result {
 		comment type:'text'
 	}
 	
-	static belongsTo = [information:Information]
+	static belongsTo = [information:Information,location:Location]
 }

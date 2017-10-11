@@ -31,11 +31,11 @@ class InformationController {
 			params.order = 'desc'
 		}
 		if (!params.sort) {
-			params.sort = 'sampleNum'
+			params.sort = 'dateCreated'
 		}
 
+		//def informationInstanceList = Information.list(params)
 		def informationInstanceList = Information.list(params)
-		
 		def informationInstanceTotal = Information.count()
 		def allInformationInstanceTotal = informationInstanceTotal
 		//render view: 'list', model: [informationInstanceList: informationInstanceList,allInformationInstanceTotal:allInformationInstanceTotal,]
@@ -43,7 +43,9 @@ class InformationController {
 			render ([
 					"total":allInformationInstanceTotal,
 					"rows":
-							informationInstanceList.collect {  informationInstance ->
+							informationInstanceList/*?.sort{ a,b ->
+								return a.sampleNum.compareTo(b.sampleNum)
+							}*/.collect {  informationInstance ->
 								["id":informationInstance.id,
 								"sampleNum":informationInstance.sampleNum,
 								"patientName":informationInstance.patientName,

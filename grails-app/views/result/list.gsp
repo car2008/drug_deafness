@@ -73,15 +73,15 @@
 	                <div class="form-content clearfix" >
 	                	<div class="panel panel-default"> 
 					       <div class="panel-body"> 
-					            <form id="formSearch" class="form-horizontal" >
+					            <form id="formSearch" class="form-horizontal" action="queryResult">
 					               <div class="form-group" style="margin-bottom:0px;">
 						                <label class="control-label col-sm-1">编号</label> 
 						                <div class="col-sm-2"> 
-						                    <input type="text" class="form-control input-sm" id="search_sampleNum"> 
+						                    <input type="text" class="form-control input-sm" id="search_sampleNum" name="search_sampleNum"> 
 						                </div> 
 						                <label class="control-label col-sm-1">姓名</label> 
 						                <div class="col-sm-2"> 
-						                    <input type="text" class="form-control input-sm" id="search_name"> 
+						                    <input type="text" class="form-control input-sm" id="search_name" name="search_name"> 
 						                </div>
 									    <div class="col-sm-3">
 											<label class="radio-inline"><input name="testResult" value="positive" type="radio">阳性</label>

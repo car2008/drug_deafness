@@ -36,7 +36,7 @@ class ResultController {
 			params.order = 'desc'
 		}
 		if (!params.sort) {
-			params.sort = 'sampleNum'
+			params.sort = 'dateCreated'
 		}
 
 		def resultInstanceList = Result.list(params)
@@ -68,6 +68,120 @@ class ResultController {
 				] as JSON)
 		}else{
 			return
+		}
+
+	}
+	
+	def queryResult(){
+		params.max = Math.min(params.max ? params.int('max') : 10, 100)
+		
+		if (!params.offset) {
+			params.offset = 0
+		}
+		if (!params.order) {
+			params.order = 'DESC'
+		}
+		if (!params.sort) {
+			params.sort = 'dateCreated'
+		}
+		if(!params.itemNum){
+			params.itemNum='0'
+		}
+		def beginSearchDate=params.beginSearchDate
+		def endSearchDate=params.endSearchDate
+		def search_sampleNum = params.search_sampleNum.toString()?.trim()
+		def search_name = params.search_name.toString()?.trim()
+		def q4 = params.q4.toString()?.trim()
+		def q5 = params.q5.toString()?.trim()
+		def q6 = params.q6.toString()?.trim()
+		def stringBuf=new StringBuffer()
+		
+		try {
+			def projectInstanceList1=new ArrayList()
+			def resultInstanceList=new ArrayList()
+			def projectInstanceTotalList1=new ArrayList()
+			def projectInstanceTotalList=new ArrayList()
+			def resultInstanceTotal
+			def paramMapList1=new ArrayList()
+			def paramMapList=new ArrayList()
+			Map paramMap1=new HashMap()
+			Map paramMap2=new HashMap()
+			Map paramMap3=new HashMap()
+			
+			stringBuf.append("SELECT DISTINCT result FROM Result result ")
+			if(q6){
+				stringBuf.append("LEFT JOIN result.location location ")
+			}
+			if((beginSearchDate && endSearchDate)||(search_sampleNum||search_name||q4||q5||q6)){
+				stringBuf.append("WHERE ")
+			}
+			if(beginSearchDate && endSearchDate){
+				stringBuf.append("result.dateCreated BETWEEN '"+beginSearchDate+"' AND '"+endSearchDate+"' ")
+			}
+			stringBuf.append(search_sampleNum?"AND sampleNum like '%"+search_sampleNum+"%' ":"")
+			stringBuf.append(search_name?"AND name like '%"+search_name+"%' ":"")
+			stringBuf.append(q4?"AND level like '%"+q4+"%' ":"")
+			stringBuf.append(q5?"AND status like '%"+q5+"%' ":"")
+			if(q6){
+				def location=Location.findByCode(q6)
+				stringBuf.append("AND location = :location ")
+				paramMap1.put("location", location)
+			}
+			
+			def s1=stringBuf.toString()
+			if(s1.contains("WHERE AND")){
+				s1=s1.replaceFirst("AND","")
+			}
+			if(s1.endsWith("WHERE ")){
+				s1=s1.replaceFirst("WHERE","")
+			}
+			stringBuf.append("ORDER BY result.${params.sort} ${params.order}")
+			def s2=stringBuf.toString()
+			if(s2.contains("WHERE AND")){
+				s2=s2.replaceFirst("AND","")
+			}
+			if(paramMap1){
+				projectInstanceTotalList = Result.executeQuery(s1,paramMap1)
+				paramMap1.put("offset",params.offset)
+				paramMap1.put("max",params.max)
+				resultInstanceList = Result.executeQuery(s2,paramMap1)
+			}else{
+				projectInstanceTotalList = Result.executeQuery(s1)
+				paramMap1.put("offset",params.offset)
+				paramMap1.put("max",params.max)
+				resultInstanceList = Result.executeQuery(s2,paramMap1)
+			}
+			resultInstanceTotal = projectInstanceTotalList.size()
+			
+			if(params.json=="json"){
+				render ([
+						"total":resultInstanceTotal,
+						"rows":
+								resultInstanceList.collect {  resultInstance ->
+									["id":resultInstance.id,
+									"sampleNum":resultInstance.information?.sampleNum,
+									"patientName":resultInstance.information?.patientName,
+									"gender":resultInstance.information?.gender,
+									"age":resultInstance.information?.age,
+									"famCt":resultInstance.famCt,
+									"vicCt":resultInstance.vicCt,
+									"nedCt":resultInstance.nedCt,
+									"detectedResult":resultInstance.detectedResult,
+									"resulttitle":resultInstance.resulttitle,
+									"checker":resultInstance.checker,
+									"assessor":resultInstance.assessor,
+									"pdfcomment":resultInstance.pdfcomment,
+									"remark":resultInstance.information?.remark,
+									]
+								}
+					] as JSON)
+			}else{
+				render view: 'list'
+			}
+			
+		} catch (Exception ex) {
+			ex.printStackTrace()
+			redirect(action: params.lastAction, params: [order:params.order,max:params.max,sort:params.sort,offset:params.offset])
 		}
 
 	}
@@ -124,7 +238,12 @@ class ResultController {
 			map.put("dateCreated","2017-9-1");
 			map.put("pdfcomment",params.pdfcomment.toString());
 			map.put("outDir", outDir+"/"+resultInstance.sampleNum+".pdf");
-			outPathList.add(PDFUtil.createPDF(map))
+			outPathList.add(PDFUtil.createPDF(map));
+			resultInstance.resulttitle=params.hospital.toString();
+			resultInstance.checker=params.checker.toString();
+			resultInstance.assessor=params.assessor.toString();
+			resultInstance.pdfcomment=params.pdfcomment.toString();
+			resultInstance.save(flush: true);
 		}
 		def zipName = new Date().format("yyyy-MM-dd-HH-mm-ss")+"-"+UUID.randomUUID()
 		if(PDFUtil.fileToZip(outPathList,outDir,zipName)){
