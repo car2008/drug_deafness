@@ -41,22 +41,32 @@
 	                <ul class="nav navbar-nav navbar-right">
 	                    <sec:ifLoggedIn>
 	                		<drug_deafness:setLoggedInUser var="loggedInUser" />
-	                		<li><a href="#" style="color:#563d7c;">欢迎${loggedInUser?.name}用户</a></li>
+	                		<li class="dropdown">
+	                			<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:#563d7c;">
+	                				欢迎${loggedInUser?.name}用户
+	                				<span class="caret"></span>
+	               				</a>
+								<ul class="dropdown-menu">
+									<li><g:link style="padding:10px 20px;" controller="user" action='edit'><g:message code="edit.my.information.label" /></g:link></li>
+									<li><g:link style="padding:10px 20px;" controller="user" action='password'><g:message code="change.my.password.label" /></g:link></li>
+									<li class="divider"></li>
+									<li>
+										<form method="post" action="${createLink(controller: 'logout', action: 'index')}">
+				                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding:10px 20px;color:#F96A74;">
+				                           		<g:message code="drug_deafness.user.logout.label" />
+				                           </button>
+										</form>
+									</li>
+								</ul>
+					        </li>
 	                	</sec:ifLoggedIn>
-	                    <li>
-							<form method="post" action="${createLink(controller: 'logout', action: 'index')}">
-	                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding:15px;color:#F96A74;">
-	                           		<g:message code="drug_deafness.user.logout.label" />
-	                           </button>
-							</form>
-	                    </li>
 	                </ul>
 	            </div>
 	        </div>
 	    </nav>
 	    <div style="background-color: #684D90;padding:30px 0;margin-bottom:20px;">
 	        <div class="container-custom" style="color:#fff;">
-	            <h1>药物性耳聋数据库-用户及地区管理</h1>
+	            <h1>药物性耳聋数据库-用户管理</h1>
 	        </div>
 	    </div>
 		<div class="container-custom" >

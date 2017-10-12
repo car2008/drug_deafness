@@ -38,15 +38,25 @@
 	                <ul class="nav navbar-nav navbar-right">
 	                    <sec:ifLoggedIn>
 	                		<drug_deafness:setLoggedInUser var="loggedInUser" />
-	                		<li><a href="#" style="color:#563d7c;">欢迎${loggedInUser?.name}用户</a></li>
+	                		<li class="dropdown">
+	                			<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:#563d7c;">
+	                				欢迎${loggedInUser?.name}用户
+	                				<span class="caret"></span>
+                				</a>
+								<ul class="dropdown-menu">
+									<li><g:link style="padding:10px 20px;" controller="user" action='edit'><g:message code="edit.my.information.label" /></g:link></li>
+									<li><g:link style="padding:10px 20px;" controller="user" action='password'><g:message code="change.my.password.label" /></g:link></li>
+									<li class="divider"></li>
+									<li>
+										<form method="post" action="${createLink(controller: 'logout', action: 'index')}">
+				                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding:10px 20px;color:#F96A74;">
+				                           		<g:message code="drug_deafness.user.logout.label" />
+				                           </button>
+										</form>
+									</li>
+								</ul>
+					        </li>
 	                	</sec:ifLoggedIn>
-	                    <li>
-							<form method="post" action="${createLink(controller: 'logout', action: 'index')}">
-	                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding:15px;color:#F96A74;">
-	                           		<g:message code="drug_deafness.user.logout.label" />
-	                           </button>
-							</form>
-                        </li>
 	                </ul>
 	            </div>
 	        </div>
@@ -66,54 +76,54 @@
                         <li><a href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
                         <li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
                         <li><a href="${createLink(controller: 'result', action: 'list')}">导出pdf报告</a></li>
-                        <li><a href="${createLink(controller: 'user', action: 'list')}">用户管理</a></li>
-                        <li><a href="${createLink(controller: 'district', action: 'list')}">地区管理</a></li>
+                        <sec:ifAnyGranted roles="ROLE_ADMIN">
+                        	<li><a href="${createLink(controller: 'user', action: 'list')}">用户管理</a></li>
+                        	<li><a href="${createLink(controller: 'district', action: 'list')}">地区管理</a></li>
+                        </sec:ifAnyGranted>
                     </ul>
 	            </div>
 	            <div class="col-md-10">
-	            	<div class="table-container">
-	            		<div class="clearfix">
-		                    <ul class="nav nav-tabs">
-		                        <li role="presentation"  class="active"><a>信息列表</a></li>
-		                    </ul>
-		                    <div class="specialForm">
-			            		<div class="panel panel-default"> 
-							        <div class="panel-body"> 
-										<form id="formSearch" class="form-horizontal" >
-							                <div class="form-group" style="margin-bottom:0px;">
-								                <label class="control-label" style="float:left;margin-left:15px;">编号</label> 
-								                <div class="col-sm-2"> 
-								                    <input type="text" class="form-control input-sm" id="search_sampleNum"> 
-								                </div> 
-								                <label class="control-label" style="float:left;">姓名</label> 
-								                <div class="col-sm-2"> 
-								                    <input type="text" class="form-control input-sm" id="search_name"> 
-								                </div>
-								                <div style="float:left;">
-													<label class="radio-inline"><input value="true" name="hasResult" type="radio">有</label>
-													<label class="radio-inline"><input value="false" name="hasResult" type="radio">无</label>
+            		<div class="clearfix">
+	                    <ul class="nav nav-tabs">
+	                        <li role="presentation"  class="active"><a>信息列表</a></li>
+	                    </ul>
+	                    <div class="specialForm">
+		            		<div class="panel panel-default"> 
+						        <div class="panel-body"> 
+									<form id="formSearch" class="form-horizontal" >
+						                <div class="form-group" style="margin-bottom:0px;">
+							                <label class="control-label" style="float:left;margin-left:15px;">编号</label> 
+							                <div class="col-sm-2"> 
+							                    <input type="text" class="form-control input-sm" id="search_sampleNum"> 
+							                </div> 
+							                <label class="control-label" style="float:left;">姓名</label> 
+							                <div class="col-sm-2"> 
+							                    <input type="text" class="form-control input-sm" id="search_name"> 
+							                </div>
+							                <div style="float:left;">
+												<label class="radio-inline"><input value="true" name="hasResult" type="radio">有</label>
+												<label class="radio-inline"><input value="false" name="hasResult" type="radio">无</label>
+										    </div>
+										    <sec:ifAnyGranted roles="ROLE_ADMIN">
+											    <label class="control-label col-sm-1">地区</label> 
+											    <div class="col-sm-2">
+							                       	<select class="form-control input-sm" id="area-select">
+										    			<option value="" selected></option>
+										    			<g:each in="${districtInstanceList}" var="districtInstance">
+															<option value="${districtInstance?.code}">${districtInstance?.title}</option>
+														</g:each>
+										    		</select>
 											    </div>
-											    <sec:ifAnyGranted roles="ROLE_ADMIN">
-												    <label class="control-label col-sm-1">地区</label> 
-												    <div class="col-sm-2">
-								                       	<select class="form-control input-sm" id="area-select">
-											    			<option value="" selected></option>
-											    			<g:each in="${districtInstanceList}" var="districtInstance">
-																<option value="${districtInstance?.code}">${districtInstance?.title}</option>
-															</g:each>
-											    		</select>
-												    </div>
-											    </sec:ifAnyGranted> 
-								                <div class="col-sm-1" style="text-align:left;"> 
-								                    <button type="button" id="btn_query" class="btn btn-primary btn-sm">查询</button> 
-								                </div> 
-								            </div> 
-							            </form>
-							       </div> 
-							   	</div>
-			            		<table class="table table-no-bordered" id="table-infoList"></table>
-							</div>
-	            		</div>
+										    </sec:ifAnyGranted> 
+							                <div class="col-sm-1" style="text-align:left;"> 
+							                    <button type="button" id="btn_query" class="btn btn-primary btn-sm">查询</button> 
+							                </div> 
+							            </div> 
+						            </form>
+						       </div> 
+						   	</div>
+		            		<table class="table table-no-bordered" id="table-infoList"></table>
+						</div>
             		</div>
 	            </div>
 	        </div>
