@@ -159,7 +159,7 @@ class InformationController {
 								"failedNum":resultInstance.failedNum,
 								"successedSample":resultInstance.successedSample,
 								"failedSample":resultInstance.failedSample,
-								"startTime":resultInstance.startTime
+								"startTime":resultInstance.startTime.format("yyyy-MM-dd HH:mm:ss")
 								]
 							}
 				] as JSON)

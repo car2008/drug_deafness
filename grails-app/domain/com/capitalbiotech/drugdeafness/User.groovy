@@ -30,6 +30,10 @@ class User implements Serializable {
 	Set<Role> getAuthorities() {
 		UserRole.findAllByUser(this)*.role
 	}
+	
+	String getAuthoritiesString() {
+		getAuthorities()?.collect{it.authority}?.join("|")
+	}
 
 	def beforeInsert() {
 		encodePassword()

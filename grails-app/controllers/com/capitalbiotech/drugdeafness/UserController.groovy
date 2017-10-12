@@ -152,7 +152,7 @@ class UserController {
 				}else if(springSecurityService?.passwordEncoder.isPasswordValid(userInstance.password, newpassword,null)) {
 					 flash.message = 'Please choose a different password from your current one'
 				}else{
-					userInstance.password = springSecurityService.encodePassword(newpassword)
+					userInstance.password = newpassword
 					if(!userInstance.hasErrors() && userInstance.save(flush: true)){
 						flash.message = "Password changed successfully."
 					}
@@ -223,7 +223,12 @@ class UserController {
 					}
 				}
 				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userInstance.username])}"
-				redirect(action:"show",id:userInstance.id)
+				def currentUser = (User)springSecurityService.currentUser
+				if(currentUser.getAuthoritiesString().contains("ROLE_ADMIN")){
+					redirect(action: "list")
+				}else{
+					redirect(action:"show",id:userInstance.id)
+				}
 			}
 			else {
 				render(view: "edit", model: [userInstance: userInstance, authorities: authorities])
