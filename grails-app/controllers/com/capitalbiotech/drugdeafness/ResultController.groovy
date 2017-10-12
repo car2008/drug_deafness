@@ -38,6 +38,11 @@ class ResultController {
 		if (!params.sort) {
 			params.sort = 'dateCreated'
 		}
+		if(!params.district){
+			def currentUser = (User)springSecurityService.currentUser
+			if(!currentUser.getAuthorities().contains(Role.findByAuthority("ROLE_ADMIN")))params.district=currentUser.district.code
+		}
+		
 		def districtInstanceList = District.list()
 		def resultInstanceList
 		def resultInstanceTotal
