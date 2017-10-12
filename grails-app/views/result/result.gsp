@@ -42,15 +42,25 @@
 	                <ul class="nav navbar-nav navbar-right">
 	                    <sec:ifLoggedIn>
 	                		<drug_deafness:setLoggedInUser var="loggedInUser" />
-	                		<li><a href="#" style="color:#563d7c;">欢迎${loggedInUser?.name}用户</a></li>
+	                		<li class="dropdown">
+	                			<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:#563d7c;">
+	                				欢迎${loggedInUser?.name}用户
+	                				<span class="caret"></span>
+                				</a>
+								<ul class="dropdown-menu">
+									<li><g:link style="padding:10px 20px;" controller="user" action='edit'><g:message code="edit.my.information.label" /></g:link></li>
+									<li><g:link style="padding:10px 20px;" controller="user" action='password'><g:message code="change.my.password.label" /></g:link></li>
+									<li class="divider"></li>
+									<li>
+										<form method="post" action="${createLink(controller: 'logout', action: 'index')}">
+				                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding:10px 20px;color:#F96A74;">
+				                           		<g:message code="drug_deafness.user.logout.label" />
+				                           </button>
+										</form>
+									</li>
+								</ul>
+					        </li>
 	                	</sec:ifLoggedIn>
-	                    <li>
-	                         <form method="post" action="${createLink(controller: 'logout', action: 'index')}">
-		                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding:15px;color:#F96A74;">
-		                           		<g:message code="drug_deafness.user.logout.label" />
-		                           </button>
-							</form>
-                        </li>
 	                </ul>
 	            </div>
 	        </div>
@@ -70,8 +80,10 @@
                         <li><a href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
                         <li><a class="current" href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
                         <li><a href="${createLink(controller: 'result', action: 'list')}">导出pdf报告</a></li>
-                        <li><a href="${createLink(controller: 'user', action: 'list')}">用户管理</a></li>
-                        <li><a href="${createLink(controller: 'district', action: 'list')}">地区管理</a></li>
+                        <sec:ifAnyGranted roles="ROLE_ADMIN">
+                        	<li><a href="${createLink(controller: 'user', action: 'list')}">用户管理</a></li>
+                        	<li><a href="${createLink(controller: 'district', action: 'list')}">地区管理</a></li>
+                        </sec:ifAnyGranted>
                     </ul>
 	            </div>
 	            <div class="col-md-10">
