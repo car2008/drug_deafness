@@ -71,7 +71,7 @@ class BootStrap {
         ).save(flush: true)
         UserRole.create(user1, userRole, true)
 		UserRole.create(user1, staffRole, true)
-		UserRole.create(user1, adminRole, true)
+		//UserRole.create(user1, adminRole, true)
     }
 	
 	def createUsersAndRoles(){
