@@ -51,7 +51,7 @@
 				<label class="control-label col-sm-1" for="roles"><g:message code="user.roles.label" default="Roles" /><span class="help-inline">*</span></label>
 				<div class="col-sm-3">
 					<label class="checkbox-inline"> 
-						<input type="checkbox"name="authority" value="ROLE_ADMIN" ${authorities?.contains('ROLE_ADMIN') ? 'checked' : ''}>
+						<input type="checkbox" name="authority" value="ROLE_ADMIN" ${authorities?.contains('ROLE_ADMIN') ? 'checked' : ''}>
 						管理员
 					</label>
 					<br />

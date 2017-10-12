@@ -2,6 +2,8 @@ package com.capitalbiotech.drugdeafness
 
 import grails.plugin.springsecurity.annotation.Secured
 import java.text.SimpleDateFormat
+import grails.plugin.springsecurity.SpringSecurityUtils
+
 @Secured(['ROLE_ADMIN','ROLE_USER'])
 class UserController {
 	def springSecurityService
@@ -96,7 +98,7 @@ class UserController {
 		def districtInstanceList = District.list()
 		def self = true
 		def uid = springSecurityService.currentUser.id
-		if(params.id != null){
+		if(SpringSecurityUtils.ifAnyGranted('ROLE_ADMIN') &&params.id != null){
 			uid = params.id as long
 		}
 		if (uid != springSecurityService.currentUser.id) {
@@ -117,7 +119,7 @@ class UserController {
 	def updatePassword = {
 		def self = true
 		def uid = springSecurityService.currentUser.id
-		if(params.id != null){
+		if(SpringSecurityUtils.ifAnyGranted('ROLE_ADMIN') &&params.id != null){
 			uid = params.id as long
 		}
 		if (uid != springSecurityService.currentUser.id) {
@@ -172,7 +174,7 @@ class UserController {
 	//@Secured(['ROLE_USER'])
 	def update = {
 		def uid = springSecurityService.currentUser.id
-		if(params.id != null){
+		if(SpringSecurityUtils.ifAnyGranted('ROLE_ADMIN') &&params.id != null){
 			uid = params.id as long
 		}
 
@@ -187,7 +189,7 @@ class UserController {
 		}
 
 		if(uid == springSecurityService.currentUser.id){
-			if (!authorities?.contains('ROLE_ADMIN')) {
+			if (SpringSecurityUtils.ifAnyGranted('ROLE_ADMIN') && !authorities?.contains('ROLE_ADMIN')) {
 				flash.error = "ROLE_ADMIN can not be removed by your self."
 				render(view: "edit", model: [userInstance: userInstance, authorities: authorities])
 				return
