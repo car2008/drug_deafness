@@ -10,13 +10,13 @@ class UserController {
 		redirect(action: "list", params: params)
 	}
 
-	@Secured(['ROLE_ADMIN'])
+	//@Secured(['ROLE_ADMIN'])
 	def list = {
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		[userInstanceList: User.list(params), userInstanceTotal: User.count()]
 	}
 
-	@Secured(['ROLE_ADMIN'])
+	//@Secured(['ROLE_ADMIN'])
 	def create = {
 		def districtInstanceList = District.list()
 		def userInstance = new User()
@@ -24,7 +24,7 @@ class UserController {
 		return [userInstance: userInstance,districtInstanceList:districtInstanceList]
 	}
 
-	@Secured(['ROLE_ADMIN'])
+	//@Secured(['ROLE_ADMIN'])
 	def save = {
 		def userInstance = new User(params)
 		
@@ -55,7 +55,7 @@ class UserController {
 		}
 	}
 
-	@Secured(['ROLE_USER'])
+	//@Secured(['ROLE_USER'])
 	def show = {
 		def uid = springSecurityService.currentUser.id
 		if(params.id != null){
@@ -71,7 +71,7 @@ class UserController {
 		}
 	}
 
-	@Secured(['ROLE_USER'])
+	//@Secured(['ROLE_USER'])
 	def password = {
 		def self = true
 		def uid = springSecurityService.currentUser.id
@@ -91,7 +91,7 @@ class UserController {
 		}
 	}
 
-	@Secured(['ROLE_USER'])
+	//@Secured(['ROLE_USER'])
 	def edit = {
 		def districtInstanceList = District.list()
 		def self = true
@@ -113,7 +113,7 @@ class UserController {
 		}
 	}
 
-	@Secured(['ROLE_USER'])
+	//@Secured(['ROLE_USER'])
 	def updatePassword = {
 		def self = true
 		def uid = springSecurityService.currentUser.id
@@ -169,8 +169,7 @@ class UserController {
 		}
 		redirect(action: "password", id: uid)
 	}
-	//@Secured(value = ['ROLE_ADMIN'], httpMethod = 'POST')
-	@Secured(['ROLE_USER'])
+	//@Secured(['ROLE_USER'])
 	def update = {
 		def uid = springSecurityService.currentUser.id
 		if(params.id != null){
@@ -237,7 +236,7 @@ class UserController {
 		}
 	}
 
-	@Secured(['ROLE_ADMIN'])
+	//@Secured(['ROLE_ADMIN'])
 	def delete = {
 		def uid = params.id as long
 		if (uid == springSecurityService.currentUser.id) {
