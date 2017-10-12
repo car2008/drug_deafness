@@ -2,6 +2,8 @@ package com.capitalbiotech.drugdeafness
 
 import grails.plugin.springsecurity.annotation.Secured
 import java.text.SimpleDateFormat
+import grails.plugin.springsecurity.SpringSecurityUtils
+
 @Secured(['ROLE_ADMIN','ROLE_USER'])
 class UserController {
 	def springSecurityService
@@ -96,7 +98,7 @@ class UserController {
 		def districtInstanceList = District.list()
 		def self = true
 		def uid = springSecurityService.currentUser.id
-		if(params.id != null){
+		if(SpringSecurityUtils.ifAnyGranted('ROLE_ADMIN') &&params.id != null){
 			uid = params.id as long
 		}
 		if (uid != springSecurityService.currentUser.id) {
@@ -117,7 +119,7 @@ class UserController {
 	def updatePassword = {
 		def self = true
 		def uid = springSecurityService.currentUser.id
-		if(params.id != null){
+		if(SpringSecurityUtils.ifAnyGranted('ROLE_ADMIN') &&params.id != null){
 			uid = params.id as long
 		}
 		if (uid != springSecurityService.currentUser.id) {
@@ -152,7 +154,7 @@ class UserController {
 				}else if(springSecurityService?.passwordEncoder.isPasswordValid(userInstance.password, newpassword,null)) {
 					 flash.message = 'Please choose a different password from your current one'
 				}else{
-					userInstance.password = springSecurityService.encodePassword(newpassword)
+					userInstance.password = newpassword
 					if(!userInstance.hasErrors() && userInstance.save(flush: true)){
 						flash.message = "Password changed successfully."
 					}
@@ -172,7 +174,7 @@ class UserController {
 	//@Secured(['ROLE_USER'])
 	def update = {
 		def uid = springSecurityService.currentUser.id
-		if(params.id != null){
+		if(SpringSecurityUtils.ifAnyGranted('ROLE_ADMIN') &&params.id != null){
 			uid = params.id as long
 		}
 
@@ -187,7 +189,7 @@ class UserController {
 		}
 
 		if(uid == springSecurityService.currentUser.id){
-			if (!authorities?.contains('ROLE_ADMIN')) {
+			if (SpringSecurityUtils.ifAnyGranted('ROLE_ADMIN') && !authorities?.contains('ROLE_ADMIN')) {
 				flash.error = "ROLE_ADMIN can not be removed by your self."
 				render(view: "edit", model: [userInstance: userInstance, authorities: authorities])
 				return
@@ -223,7 +225,12 @@ class UserController {
 					}
 				}
 				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userInstance.username])}"
-				redirect(action:"show",id:userInstance.id)
+				def currentUser = (User)springSecurityService.currentUser
+				if(currentUser.getAuthoritiesString().contains("ROLE_ADMIN")){
+					redirect(action: "list")
+				}else{
+					redirect(action:"show",id:userInstance.id)
+				}
 			}
 			else {
 				render(view: "edit", model: [userInstance: userInstance, authorities: authorities])

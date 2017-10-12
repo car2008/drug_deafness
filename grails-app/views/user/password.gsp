@@ -95,7 +95,8 @@
 							</sec:ifAnyGranted>
 							<div class="form-group">
 								<label class="control-label col-sm-2" for="oldPassword">
-									原始密码
+										<g:if test="${self}"><g:message code="original.password.label" /></g:if>
+										<g:else><g:message code="admin.password.label" /></g:else>
 								</label>
 								<div class="col-sm-3">
 									<input class="form-control input-sm" type="password" name="oldPassword" id="oldPassword" >
@@ -116,11 +117,12 @@
 									<%--<g:passwordField name="confirmPassword" />--%>
 								</div>
 							</div>
+							<div class="modal-footer" style="width:100%;">
+								<g:actionSubmit class="btn btn-primary" action="updatePassword" value="${message(code: 'default.button.submit.label')}" />
+							</div>
 						</g:form>
 					</div>
-					<div class="modal-footer" style="width:100%;">
-						<g:actionSubmit class="btn btn-primary" action="updatePassword" value="${message(code: 'default.button.submit.label')}" />
-					</div>
+					
 				</div>
 			</div>
 		</div>
