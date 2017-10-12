@@ -67,7 +67,7 @@ class BootStrap {
             username: 'jundong@capitalbiotech.com',
             password: '123456',
             name: 'user',
-			district:District.findByCode("BEI_JING")
+			district:District.findByCode("SHANG_HAI")
         ).save(flush: true)
         UserRole.create(user1, userRole, true)
 		UserRole.create(user1, staffRole, true)
