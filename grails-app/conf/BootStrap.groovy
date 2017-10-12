@@ -25,8 +25,8 @@ class BootStrap {
 		}
 		
 		if (0 == User.count()) {
-			initializeDatabase()
-			//createUsersAndRoles()
+			//initializeDatabase()
+			createUsersAndRoles()
 		}
 		
         updateDatabase()
@@ -92,9 +92,18 @@ class BootStrap {
 		
 		propertiesList = readRawFile("users")
 		propertiesList?.each { properties ->
-			properties['password'] = springSecurityService.encodePassword(properties['password'])
-			
+			//properties['password'] = springSecurityService.encodePassword(properties['password'])
+			def district = properties['district']
+			properties['district'] = null
 			def userInstance = new User(properties)
+			
+			district.split(",").each { districtCode ->
+				def districtInstance = District.findByCode(districtCode)
+				if(districtInstance){
+					userInstance.district=districtInstance
+				}
+			}
+			
 			if (userInstance.hasErrors() || !userInstance.save(flush: true)) {
 				userInstance.errors?.each { error ->
 					log.error error

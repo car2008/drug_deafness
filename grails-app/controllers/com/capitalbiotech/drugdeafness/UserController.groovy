@@ -2,22 +2,21 @@ package com.capitalbiotech.drugdeafness
 
 import grails.plugin.springsecurity.annotation.Secured
 import java.text.SimpleDateFormat
-@Secured(['ROLE_ADMIN'])
+@Secured(['ROLE_ADMIN','ROLE_USER'])
 class UserController {
 	def springSecurityService
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-	
 	def index = {
 		redirect(action: "list", params: params)
 	}
 
-	//@Secured(['ROLE_ADMIN','ROLE_SELLER'])
+	@Secured(['ROLE_ADMIN'])
 	def list = {
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		[userInstanceList: User.list(params), userInstanceTotal: User.count()]
 	}
 
-	//@Secured(['ROLE_ADMIN'])
+	@Secured(['ROLE_ADMIN'])
 	def create = {
 		def districtInstanceList = District.list()
 		def userInstance = new User()
@@ -25,7 +24,7 @@ class UserController {
 		return [userInstance: userInstance,districtInstanceList:districtInstanceList]
 	}
 
-	//@Secured(['ROLE_ADMIN'])
+	@Secured(['ROLE_ADMIN'])
 	def save = {
 		def userInstance = new User(params)
 		
@@ -56,7 +55,7 @@ class UserController {
 		}
 	}
 
-	//@Secured(['ROLE_USER'])
+	@Secured(['ROLE_USER'])
 	def show = {
 		def uid = springSecurityService.currentUser.id
 		if(params.id != null){
@@ -72,7 +71,7 @@ class UserController {
 		}
 	}
 
-	//@Secured(['ROLE_USER'])
+	@Secured(['ROLE_USER'])
 	def password = {
 		def self = true
 		def uid = springSecurityService.currentUser.id
@@ -92,7 +91,7 @@ class UserController {
 		}
 	}
 
-	//@Secured(['ROLE_USER'])
+	@Secured(['ROLE_USER'])
 	def edit = {
 		def districtInstanceList = District.list()
 		def self = true
@@ -114,7 +113,7 @@ class UserController {
 		}
 	}
 
-	//@Secured(['ROLE_USER'])
+	@Secured(['ROLE_USER'])
 	def updatePassword = {
 		def self = true
 		def uid = springSecurityService.currentUser.id
@@ -143,23 +142,19 @@ class UserController {
 		}
 		else{
 			if(params.oldPassword){
-				def oldpassword = springSecurityService.encodePassword(params.oldPassword)
+				def oldpassword = params.oldPassword
 				def savedPassword = userInstance.password
 				if(!self){
 					savedPassword = springSecurityService.currentUser.password
 				}
-				if(oldpassword == savedPassword){
+				if(!springSecurityService?.passwordEncoder.isPasswordValid(savedPassword,oldpassword,null)) {
+					 flash.message = 'Current password is incorrect'
+				}else if(springSecurityService?.passwordEncoder.isPasswordValid(userInstance.password, newpassword,null)) {
+					 flash.message = 'Please choose a different password from your current one'
+				}else{
 					userInstance.password = springSecurityService.encodePassword(newpassword)
 					if(!userInstance.hasErrors() && userInstance.save(flush: true)){
 						flash.message = "Password changed successfully."
-					}
-				}
-				else{
-					if(self){
-						flash.error = "Invalid original password."
-					}
-					else {
-						flash.error = "Invalid administration password."
 					}
 				}
 			}
@@ -174,8 +169,8 @@ class UserController {
 		}
 		redirect(action: "password", id: uid)
 	}
-
-	//@Secured(['ROLE_USER'])
+	//@Secured(value = ['ROLE_ADMIN'], httpMethod = 'POST')
+	@Secured(['ROLE_USER'])
 	def update = {
 		def uid = springSecurityService.currentUser.id
 		if(params.id != null){
@@ -242,7 +237,7 @@ class UserController {
 		}
 	}
 
-	//@Secured(['ROLE_ADMIN'])
+	@Secured(['ROLE_ADMIN'])
 	def delete = {
 		def uid = params.id as long
 		if (uid == springSecurityService.currentUser.id) {

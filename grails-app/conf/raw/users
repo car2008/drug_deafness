@@ -1,7 +1,7 @@
-username	password	name	roles	END
-bioinfo@capitalbiotech.com	123456	管理员	ROLE_USER,ROLE_ADMIN	END
-jundong@capitalbiotech.com	123456	董	ROLE_USER,ROLE_ADMIN	END
-123@capitalbiotech.com	123456	123	ROLE_USER	END
+username	password	name	roles	district	END
+bioinfo@capitalbiotech.com	123456	管理员	ROLE_USER,ROLE_ADMIN	BEI_JING	END
+jundong@capitalbiotech.com	123456	董	ROLE_USER	SHANG_HAI	END
+123@capitalbiotech.com	123456	123	ROLE_USER	BEI_JING	END
 
 
 
