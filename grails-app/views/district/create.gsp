@@ -1,4 +1,4 @@
-<%@ page import="com.capitalbiotech.drugdeafness.User"%>
+<%@ page import="com.capitalbiotech.drugdeafness.District"%>
 <html>
 	<head>
 		<meta charset="utf-8" />
@@ -58,7 +58,7 @@
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1">
 				<p class="bg-info" style="padding:15px;border-radius:5px;">
-					新增用户信息
+					新增地区信息
 				</p>
 				<g:if test="${flash.message}">
 					<div class="alert alert-info">

@@ -1,4 +1,4 @@
-<%@ page import="com.capitalbiotech.drugdeafness.User"%>
+<%@ page import="com.capitalbiotech.drugdeafness.District"%>
 <html>
 	<head>
 		<meta charset="utf-8" />
@@ -65,7 +65,7 @@
 				</g:if>
 				<g:else>
 					<p class="bg-info" style="padding:15px;border-radius:5px;">
-						<g:message code="edit.information.label" />: ${userInstance?.username}
+						<g:message code="edit.information.label" />: ${districtInstance?.title}
 					</p>
 				</g:else>
 				 
@@ -79,22 +79,22 @@
 						${flash.error}
 					</div>
 				</g:if>
-				<g:hasErrors bean="${userInstance}">
+				<g:hasErrors bean="${districtInstance}">
 					<div class="alert alert-error">
-						<g:renderErrors bean="${userInstance}" as="list" />
+						<g:renderErrors bean="${districtInstance}" as="list" />
 					</div>
 				</g:hasErrors>
 				<hr>
 				<g:form class="form-horizontal" method="post">
-					<g:hiddenField name="id" value="${userInstance?.id}" />
-					<g:hiddenField name="version" value="${userInstance?.version}" />
-					<g:render template="form" model="${[userInstance: userInstance]}"/>
+					<g:hiddenField name="id" value="${districtInstance?.id}" />
+					<g:hiddenField name="version" value="${districtInstance?.version}" />
+					<g:render template="form" model="${[districtInstance: districtInstance]}"/>
 					<div class="modal-footer" style="width:100%;">
 						<g:actionSubmit class="btn btn-primary" action="update" value="更新" />
-						<sec:ifAnyGranted roles="ROLE_ADMIN">
+						<%--<sec:ifAnyGranted roles="ROLE_ADMIN">
 							<g:actionSubmit class="btn btn-danger" action="delete" href="#deleteModal" data-toggle="modal" value="删除" />
 						</sec:ifAnyGranted>
-					</div>
+					--%></div>
 				</g:form>
 			</div>
 		</div>
@@ -113,7 +113,7 @@
 			</div>
 			<div class="modal-footer">
 				<g:form action="delete" method="post" style="padding:0; margin:0">
-					<g:hiddenField name="id" value="${userInstance?.id}" />
+					<g:hiddenField name="id" value="${districtInstance?.id}" />
 					<button class="btn" data-dismiss="modal" aria-hidden="true"><g:message code="cancel.label" /></button>
 					<button class="btn btn-danger"><g:message code="confirm.deletion.label" /></button>
 				</g:form>

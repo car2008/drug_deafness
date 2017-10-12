@@ -1,10 +1,10 @@
-<%@ page import="com.capitalbiotech.drugdeafness.User"%>
+<%@ page import="com.capitalbiotech.drugdeafness.District"%>
 <html>
 	<head>
-		<title><g:message code="default.list.label" args="${[message(code: 'user.label')]}" /></title>
+		<title><g:message code="default.list.label" args="${[message(code: 'district.label')]}" /></title>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, district-scalable=no" />
 		<meta name="renderer" content="webkit" />
 		<meta name="author" content="CBT Bioinformatics, CapitalBio Technology" />
 		<link rel="stylesheet" href="${resource(dir:'css/bootstrap/dist/css/', file:'bootstrap.css')}"/>
@@ -40,7 +40,7 @@
 	                    <li>
 							<form method="post" action="${createLink(controller: 'logout', action: 'index')}">
 	                           <button type="submit" class="btn btn-default" style="border:none;width:100%;text-align:left;padding:15px;color:#F96A74;">
-	                           		<g:message code="drug_deafness.user.logout.label" />
+	                           		<g:message code="drug_deafness.district.logout.label" />
 	                           </button>
 							</form>
                         </li>
@@ -61,14 +61,14 @@
 						<li><a href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
 						<li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
 						<li><a href="${createLink(controller: 'result', action: 'list')}">导出pdf报告</a></li>
-						<li><a href="${createLink(controller: 'user', action: 'list')}">用户管理</a></li>
+						<li><a href="${createLink(controller: 'district', action: 'list')}">用户管理</a></li>
 						<li><a class="current" href="${createLink(controller: 'district', action: 'list')}">地区管理</a></li>
 					</ul>
 	            </div>
 	            <div class="col-md-10">
 	            	<div class="form-content">
 	            		<div class="table-toolbar" style="margin-bottom:15px;">
-	            			<g:link class="btn btn-success" controller="user" action="create">
+	            			<g:link class="btn btn-success" controller="district" action="create">
 	            				<i class="fa fa-fw fa-plus"></i>
 	            				新增
 	            			</g:link>
@@ -76,60 +76,39 @@
 	            		<table class="table">
 							<thead>
 								<tr>
-									<th>${message(code: 'user.id.label')}</th>
-									<th>${message(code: 'user.name.label')}</th>
-									<th>${message(code: 'user.username.label')}</th>
-									<th>${message(code: 'user.authority.label')}</th>
-									<th>${message(code: 'user.location.label')}</th>
+									<th>${message(code: 'district.id.label')}</th>
+									<th>${message(code: 'district.code.label')}</th>
+									<th>${message(code: 'district.title.label')}</th>
+									<th>${message(code: 'district.description.label')}</th>
 									<th>操作</th>
 								</tr>
 							</thead>
 							<tbody>
-								<g:each in="${userInstanceList}" var="userInstance">
+								<g:each in="${districtInstanceList}" var="districtInstance">
 									<tr>
 										<td>
-											${userInstance?.id}
+											${districtInstance?.id}
 										</td>
 										<td>
-											${userInstance?.name}
+											${districtInstance?.code}
 										</td>
 										<td>
-											${userInstance?.username}
+											${districtInstance?.title}
 										</td>
 										<td>
-											<g:each in="${userInstance?.getAuthorities()}" var="role" status="i">
-												<g:if test="${i > 0}"><br /></g:if>
-												<g:message code="role.authority.${role.authority}.label" />
-											</g:each>
-										</td>
-										<td>
-											${userInstance?.district?.title}
+											${districtInstance?.description}
 										</td>
 										<td>
 											<sec:ifAnyGranted roles="ROLE_ADMIN">
-												<g:link controller="user" action="edit" id="${userInstance.id}">编辑信息</g:link>
+												<g:link controller="district" action="edit" id="${districtInstance.id}">编辑</g:link>
 											|
-												<g:link controller="user" action="password" id="${userInstance.id}">修改密码</g:link>
+												<g:link controller="district" action="delete" id="${districtInstance.id}">删除</g:link>
 											</sec:ifAnyGranted>
 										</td>
 									</tr>
 								</g:each>
 							</tbody>
 						</table>
-						<%--<div class="clearfix">
-	                		<div style="margin-top:20px;float:left;" >
-		                		显示第 1 到第${params.max}条记录，总共${allInformationInstanceTotal}条记录 每页
-								<select id="pageCount" class="form-control" style="width:auto;padding:0;display:inline-block;">
-									<g:each in="${[10, 20, 50, 100]}" var="option">
-										<option value="${option}" ${params.max == option ? 'selected' : ''}>${option}</option>
-									</g:each>
-								</select>
-								条记录
-	                		</div>
-							<ul class="pagination" style="float:right;">
-		                		<cbt_health:paginate total="${allInformationInstanceTotal}" params="${params}" />
-		                	</ul>
-						</div> --%>
 					</div>
 	            </div>
 		    </div>
