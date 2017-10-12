@@ -80,7 +80,7 @@
 	                <div class="form-content clearfix" >
 	                	<div class="panel panel-default"> 
 					       <div class="panel-body"> 
-					            <form id="formSearch" class="form-horizontal" action="queryResult">
+					            <form id="formSearch" class="form-horizontal">
 					            	<div class="form-group" style="margin-bottom:0px;">
 						                <label class="control-label" style="float:left;margin-left:15px;">编号</label> 
 						                <div class="col-sm-2"> 
@@ -95,15 +95,17 @@
 										    <label class="checkbox-inline"><input value="negative" id="negative" type="checkbox">阴性</label>
 										    <label class="checkbox-inline"><input value="abnormal" id="abnormal" type="checkbox">检测异常</label>
 									 	</div>
-									    <label class="control-label col-sm-1">地区</label> 
-									    <div class="col-sm-2">
-					                       	<select class="form-control input-sm" id="area-select">
-								    			<option value="" selected></option>
-								    			<g:each in="${districtInstanceList}" var="districtInstance">
-													<option value="${districtInstance?.code}">${districtInstance?.title}</option>
-												</g:each>
-								    		</select>
-									    </div>
+									 	<sec:ifAnyGranted roles="ROLE_ADMIN">
+										    <label class="control-label col-sm-1">地区</label> 
+										    <div class="col-sm-2">
+						                       	<select class="form-control input-sm" id="area-select">
+									    			<option value="" selected></option>
+									    			<g:each in="${districtInstanceList}" var="districtInstance">
+														<option value="${districtInstance?.code}">${districtInstance?.title}</option>
+													</g:each>
+									    		</select>
+										    </div>
+									    </sec:ifAnyGranted> 
 						                <div class="col-sm-1" style="text-align:left;"> 
 						                    <button type="button" id="btn_query" class="btn btn-primary btn-sm">查询</button> 
 						                </div>
@@ -370,8 +372,7 @@
 	                    },{
 	                        field: 'district',
 	                        title: '地区',
-	                    }
-	                    ]
+	                    }]
 	                });
 	            };
 	

@@ -80,18 +80,29 @@
 							        <div class="panel-body"> 
 										<form id="formSearch" class="form-horizontal" >
 							                <div class="form-group" style="margin-bottom:0px;">
-								                <label class="control-label col-sm-1">编号</label> 
+								                <label class="control-label" style="float:left;margin-left:15px;">编号</label> 
 								                <div class="col-sm-2"> 
 								                    <input type="text" class="form-control input-sm" id="search_sampleNum"> 
 								                </div> 
-								                <label class="control-label col-sm-1">姓名</label> 
+								                <label class="control-label" style="float:left;">姓名</label> 
 								                <div class="col-sm-2"> 
 								                    <input type="text" class="form-control input-sm" id="search_name"> 
 								                </div>
-								                <div class="col-sm-2">
+								                <div style="float:left;">
 													<label class="radio-inline"><input value="true" name="hasResult" type="radio">有</label>
 													<label class="radio-inline"><input value="false" name="hasResult" type="radio">无</label>
 											    </div>
+											    <sec:ifAnyGranted roles="ROLE_ADMIN">
+												    <label class="control-label col-sm-1">地区</label> 
+												    <div class="col-sm-2">
+								                       	<select class="form-control input-sm" id="area-select">
+											    			<option value="" selected></option>
+											    			<g:each in="${districtInstanceList}" var="districtInstance">
+																<option value="${districtInstance?.code}">${districtInstance?.title}</option>
+															</g:each>
+											    		</select>
+												    </div>
+											    </sec:ifAnyGranted> 
 								                <div class="col-sm-1" style="text-align:left;"> 
 								                    <button type="button" id="btn_query" class="btn btn-primary btn-sm">查询</button> 
 								                </div> 
@@ -211,6 +222,9 @@
 									return '<span class="label label-danger">'+value+'</span>';
 		                        }
 	                        }
+	                    },{
+	                        field: 'district',
+	                        title: '地区',
 	                    }]
 	                });
 	            };

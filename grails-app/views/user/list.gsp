@@ -50,7 +50,7 @@
 	    </nav>
 	    <div style="background-color: #684D90;padding:30px 0;margin-bottom:20px;">
 	        <div class="container-custom" style="color:#fff;">
-	            <h1>药物性耳聋数据库-用户及地区管理</h1>
+	            <h1>药物性耳聋数据库-用户管理</h1>
 	        </div>
 	    </div>
 	    <div class="container-custom" >
@@ -58,55 +58,78 @@
 	            <div class="col-md-2">
 					<ul id="nav-page" class="nav">
 						<li><a href="${createLink(controller: 'information', action: 'list')}">信息列表</a></li>
-						<li><a  href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
+						<li><a href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
 						<li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
 						<li><a href="${createLink(controller: 'result', action: 'list')}">导出pdf报告</a></li>
 						<li><a class="current" href="${createLink(controller: 'user', action: 'list')}">用户管理</a></li>
 					</ul>
 	            </div>
 	            <div class="col-md-10">
-	            	<table class="table nowrap">
-						<thead>
-							<tr>
-								<th>${message(code: 'user.id.label')}</th>
-								<th>${message(code: 'user.name.label')}</th>
-								<th>${message(code: 'user.username.label')}</th>
-								<th>${message(code: 'user.authority.label')}</th>
-								<th>${message(code: 'user.location.label')}</th>
-							</tr>
-						</thead>
-						<tbody>
-							<g:each in="${userInstanceList}" var="userInstance">
+	            	<div class="form-content">
+	            		<div class="table-toolbar" style="margin-bottom:15px;">
+	            			<g:link class="btn btn-success" controller="user" action="create">
+	            				<i class="fa fa-fw fa-plus"></i>
+	            				新增
+	            			</g:link>
+	            		</div>
+	            		<table class="table">
+							<thead>
 								<tr>
-									<td>
-										${userInstance?.id}
-									</td>
-									<td>
-										${userInstance?.name}
-									</td>
-									<td>
-										${userInstance?.username}
-									</td>
-									<td>
-										<g:each in="${userInstance?.getAuthorities()}" var="role" status="i">
-											<g:if test="${i > 0}"><br /></g:if>
-											<g:message code="role.authority.${role.authority}.label" />
-										</g:each>
-									</td>
-									<td>
-										${userInstance?.district?.title}
-									</td>
-									<td>
-										<sec:ifAnyGranted roles="ROLE_ADMIN">
-											<g:link controller="user" action="edit" id="${userInstance.id}"><g:message code="edit.information.label" /></g:link>
-										|
-											<g:link controller="user" action="password" id="${userInstance.id}"><g:message code="change.password.label" /></g:link>
-										</sec:ifAnyGranted>
-									</td>
+									<th>${message(code: 'user.id.label')}</th>
+									<th>${message(code: 'user.name.label')}</th>
+									<th>${message(code: 'user.username.label')}</th>
+									<th>${message(code: 'user.authority.label')}</th>
+									<th>${message(code: 'user.location.label')}</th>
+									<th>操作</th>
 								</tr>
-							</g:each>
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								<g:each in="${userInstanceList}" var="userInstance">
+									<tr>
+										<td>
+											${userInstance?.id}
+										</td>
+										<td>
+											${userInstance?.name}
+										</td>
+										<td>
+											${userInstance?.username}
+										</td>
+										<td>
+											<g:each in="${userInstance?.getAuthorities()}" var="role" status="i">
+												<g:if test="${i > 0}"><br /></g:if>
+												<g:message code="role.authority.${role.authority}.label" />
+											</g:each>
+										</td>
+										<td>
+											${userInstance?.district?.title}
+										</td>
+										<td>
+											<sec:ifAnyGranted roles="ROLE_ADMIN">
+												<g:link controller="user" action="edit" id="${userInstance.id}">编辑信息</g:link>
+											|
+												<g:link controller="user" action="password" id="${userInstance.id}">修改密码</g:link>
+											</sec:ifAnyGranted>
+										</td>
+									</tr>
+								</g:each>
+							</tbody>
+						</table>
+						<%--<div class="clearfix">
+	                		<div style="margin-top:20px;float:left;" >
+		                		显示第 1 到第${params.max}条记录，总共${allInformationInstanceTotal}条记录 每页
+								<select id="pageCount" class="form-control" style="width:auto;padding:0;display:inline-block;">
+									<g:each in="${[10, 20, 50, 100]}" var="option">
+										<option value="${option}" ${params.max == option ? 'selected' : ''}>${option}</option>
+									</g:each>
+								</select>
+								条记录
+	                		</div>
+							<ul class="pagination" style="float:right;">
+		                		<cbt_health:paginate total="${allInformationInstanceTotal}" params="${params}" />
+		                	</ul>
+						</div> --%>
+					</div>
 	            </div>
 		    </div>
 	    </div>
