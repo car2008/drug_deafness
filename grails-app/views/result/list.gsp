@@ -20,6 +20,12 @@
 		<title>
 			<g:message code="drug_deafness.name" />
 		</title>
+		<style>
+	        table td.td_nowrap { 
+	           word-break:keep-all; 
+	           white-space:nowrap; 
+	        }
+		</style>
 	</head>
 	
 	<body>
@@ -75,20 +81,21 @@
 	                	<div class="panel panel-default"> 
 					       <div class="panel-body"> 
 					            <form id="formSearch" class="form-horizontal" action="queryResult">
-					               <div class="form-group" style="margin-bottom:0px;">
-						                <label class="control-label col-sm-1">编号</label> 
+					            	<div class="form-group" style="margin-bottom:0px;">
+						                <label class="control-label" style="float:left;margin-left:15px;">编号</label> 
 						                <div class="col-sm-2"> 
 						                    <input type="text" class="form-control input-sm" id="search_sampleNum" name="search_sampleNum"> 
 						                </div> 
-						                <label class="control-label col-sm-1">姓名</label> 
+						                <label class="control-label" style="float:left;">姓名</label> 
 						                <div class="col-sm-2"> 
 						                    <input type="text" class="form-control input-sm" id="search_name" name="search_name"> 
 						                </div>
-									    <div class="col-sm-3">
+									    <div style="float:left;">
 											<label class="checkbox-inline"><input value="positive" id="positive" type="checkbox">阳性</label>
 										    <label class="checkbox-inline"><input value="negative" id="negative" type="checkbox">阴性</label>
 										    <label class="checkbox-inline"><input value="abnormal" id="abnormal" type="checkbox">检测异常</label>
-									    </div>
+									 	</div>
+									    <label class="control-label col-sm-1">地区</label> 
 									    <div class="col-sm-2">
 					                       	<select class="form-control input-sm" id="area-select">
 								    			<option value="" selected></option>
@@ -99,8 +106,8 @@
 									    </div>
 						                <div class="col-sm-1" style="text-align:left;"> 
 						                    <button type="button" id="btn_query" class="btn btn-primary btn-sm">查询</button> 
-						                </div> 
-						            </div> 
+						                </div>
+						            </div>
 					            </form>
 					       </div> 
 					   	</div>
@@ -117,11 +124,11 @@
 	    </div>
 	    
 	     <div id="editModal" class="modal fade" aria-labelledby="editModalLabel" data-backdrop="static">
-	        <div class="modal-dialog"  style="width:60%;">
+	        <div class="modal-dialog" style="width:60%;">
 	            <div class="modal-content">
 	                <div class="modal-header">
 	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	                    <h4 class="modal-title" id="editModal">Modal title</h4>
+	                    <h4 class="modal-title"><strong>请输入需要修改的信息</strong></h4>
 	                </div>
 	                <div class="modal-body">
 	                    <form id="editForm" class="form-horizontal" method="post">
@@ -148,11 +155,11 @@
 	                                </div>
 	                            </div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label">FAM_Ct</label>
+	                                <label class="col-sm-2 control-label">FAM Ct</label>
 	                                <div class="col-sm-4">
 	                                    <input name="famCt" id="famCt" type="text" class="form-control input-sm">
 	                                </div>
-	                                <label class="col-sm-2 control-label">VIC_Ct</label>
+	                                <label class="col-sm-2 control-label">VIC Ct</label>
 	                                <div class="col-sm-4">
 	                                    <input name="vicCt" id="vicCt" type="text" class="form-control input-sm">
 	                                </div>
@@ -170,21 +177,23 @@
 	                            <div class="form-group">
 	                                <label class="col-sm-2 control-label">报告台头</label>
 	                                <div class="col-sm-4">
-	                                    <input name="resulttitle" id="resulttitle" type="text" class="form-control input-sm">
+	                                    <input name="resulttitle" id="edit-resulttitle" type="text" class="form-control input-sm">
 	                                </div>
 	                                <label class="col-sm-2 control-label">检验员</label>
 	                                <div class="col-sm-4">
-	                                    <input name="checker" id="detectedResult" type="text" class="form-control input-sm">
+	                                    <input name="checker" id="edit-checker" type="text" class="form-control input-sm">
 	                                </div>
 	                            </div>
                                <div class="form-group">
                                		<label class="col-sm-2 control-label">审核员</label>
 	                                <div class="col-sm-4">
-	                                    <input name="detectedResult" id="detectedResult" type="text" class="form-control input-sm">
+	                                    <input name="assessor" id="edit-assessor" type="text" class="form-control input-sm">
 	                                </div>
+                                </div>
+                                <div class="form-group">
 	                                <label class="col-sm-2 control-label">备注</label>
 	                                <div class="col-sm-4">
-	                                    <input name="pdfcomment" id="pdfcomment" type="text" class="form-control input-sm">
+	                                    <textarea name="pdfcomment" id="edit-pdfcomment" class="form-control" rows="4" style="resize:none;margin:0 auto;"></textarea>
 	                                </div>
 	                            </div>
 	                        </div>
@@ -207,7 +216,7 @@
 	            <div class="modal-content">
 	                <div class="modal-header">
 	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    	<h4>请补充报告信息</h4>
+                    	<h4 class="modal-title"><strong></strong>请补充报告信息</h4>
 	                </div>
 	                <div class="modal-body">
 		                <form id="appendForm"  class="form-horizontal" >
@@ -345,6 +354,7 @@
 	                    },{
 	                        field: 'detectedResult',
 	                        title: '检测结果',
+	                        class: 'td_nowrap',
 	                    },{
 	                        field: 'resulttitle',
 	                        title: '医院名称',
@@ -385,23 +395,21 @@
 	        //表格行编辑按钮
 	        $(document).on("click",".td_edit",function(){
 				var arrselections = $table.bootstrapTable('getSelections');
-            	var selectedRows = arrselections[0];
+            	var selectedRow = arrselections[0];
             	
-                $("#editModalLabel").text("编辑");
-                
-                $("#id").val(selectedRows.id);
-                $("#sampleNum").val(selectedRows.sampleNum);
-                $("#patientName").val(selectedRows.patientName);
-                $("#gender").val(selectedRows.gender);
-                $("#age").val(selectedRows.age);
-                $("#famCt").val(selectedRows.famCt);
-                $("#vicCt").val(selectedRows.vicCt);
-                $("#nedCt").val(selectedRows.nedCt);
-                $("#detectedResult").val(selectedRows.detectedResult);
-                $("#resulttitle").val(selectedRows.resulttitle);
-                $("#checker").val(selectedRows.checker);
-                $("#assessor").val(selectedRows.assessor);
-         		$("#pdfcomment").val(selectedRows.pdfcomment);
+                $("#id").val(selectedRow.id);
+                $("#sampleNum").val(selectedRow.sampleNum);
+                $("#patientName").val(selectedRow.patientName);
+                $("#gender").val(selectedRow.gender);
+                $("#age").val(selectedRow.age);
+                $("#famCt").val(selectedRow.famCt);
+                $("#vicCt").val(selectedRow.vicCt);
+                $("#nedCt").val(selectedRow.nedCt);
+                $("#detectedResult").val(selectedRow.detectedResult);
+                $("#edit-resulttitle").val(selectedRow.resulttitle);
+                $("#edit-checker").val(selectedRow.checker);
+                $("#edit-assessor").val(selectedRow.assessor);
+         		$("#edit-pdfcomment").val(selectedRow.pdfcomment);
          		
 				$table.bootstrapTable('uncheckAll');
 				$('#editModal').modal('show');
@@ -439,7 +447,30 @@
                     });
                     return;
                 }
-		        $("#optModal").modal('show');
+                var flag = true;
+                $.each(arrselections,function (index, singleRow) {
+                	if(singleRow.resulttitle !== null && singleRow.checker !== null && singleRow.assessor !== null && singleRow.pdfcomment !== null){
+                		var _input = $("<input name='id'>");
+			            _input.val(singleRow.id);
+			            _input.css("display", "none");
+			            $("#appendForm").append(_input);
+                	}else{
+                		flag = false;
+                		return;
+                	}
+		        })
+		        if(flag){
+		        	$("#appendForm")[0].action = '<g:createLink controller="result" action="generatePdf"/>';
+	        		$("#appendForm")[0].method = "POST";
+			        $("#appendForm")[0].submit();
+		        }else{
+		        	var selectedRows = arrselections[0];
+		        	$("#hospital").val(selectedRows.resulttitle);
+	                $("#checker").val(selectedRows.checker);
+	                $("#assessor").val(selectedRows.assessor);
+	         		$("#pdfcomment").val(selectedRows.pdfcomment);
+		        	$("#optModal").modal('show');
+		        }
 		    })
 		    //生成报告下载按钮
 		    $("#btn_submit").on("click",function(){
@@ -451,7 +482,7 @@
 		            _input.css("display", "none");
 		            $("#appendForm").append(_input);
 		        })
-		       
+		        
             	$("#appendForm")[0].action = '<g:createLink controller="result" action="generatePdf"/>';
         		$("#appendForm")[0].method = "POST";
 		        $("#appendForm")[0].submit();
