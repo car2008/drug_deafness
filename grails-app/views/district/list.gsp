@@ -50,7 +50,7 @@
 	    </nav>
 	    <div style="background-color: #684D90;padding:30px 0;margin-bottom:20px;">
 	        <div class="container-custom" style="color:#fff;">
-	            <h1>药物性耳聋数据库-用户管理</h1>
+	            <h1>药物性耳聋数据库-地区</h1>
 	        </div>
 	    </div>
 	    <div class="container-custom" >
@@ -61,8 +61,8 @@
 						<li><a href="${createLink(controller: 'information', action: 'index')}">信息录入</a></li>
 						<li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
 						<li><a href="${createLink(controller: 'result', action: 'list')}">导出pdf报告</a></li>
-						<li><a class="current" href="${createLink(controller: 'user', action: 'list')}">用户管理</a></li>
-						<li><a href="${createLink(controller: 'district', action: 'list')}">地区管理</a></li>
+						<li><a href="${createLink(controller: 'user', action: 'list')}">用户管理</a></li>
+						<li><a class="current" href="${createLink(controller: 'district', action: 'list')}">地区管理</a></li>
 					</ul>
 	            </div>
 	            <div class="col-md-10">

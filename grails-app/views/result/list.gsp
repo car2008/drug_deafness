@@ -74,6 +74,7 @@
                         <li><a href="${createLink(controller: 'result', action: 'index')}">结果录入</a></li>
                         <li><a class="current" href="${createLink(controller: 'result', action: 'list')}">导出pdf报告</a></li>
                         <li><a href="${createLink(controller: 'user', action: 'list')}">用户管理</a></li>
+                        <li><a href="${createLink(controller: 'district', action: 'list')}">地区管理</a></li>
                     </ul>
 	            </div>
 	            <div class="col-md-10">
