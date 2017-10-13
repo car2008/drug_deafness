@@ -58,7 +58,7 @@ class User implements Serializable {
 		district blank: true,nullable: true
 	}
 	
-	static belongsTo =[District]
+	static belongsTo =[district:District]
 	
 	static mapping = {
 		password column: '`password`'
