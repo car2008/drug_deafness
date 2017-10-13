@@ -244,7 +244,7 @@ class InformationController {
 			}
 		}
 		def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
-		def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_INFORMATION", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime,successedSample:sucessedsb.toString().replaceFirst("\\,", ""),failedSample:failedsb.toString().replaceFirst("\\,", ""),recordLog:failedsb==null?"":"上传失败的编号及原因：数据库已有的编号："+failedsb.toString().replaceFirst("\\,", ""))
+		def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_INFORMATION", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime,successedSample:sucessedsb.toString().replaceFirst("\\,", ""),failedSample:failedsb.toString().replaceFirst("\\,", ""),recordLog:"".equals(failedsb.toString())?"":"上传失败的编号及原因：数据库已有的编号："+failedsb.toString().replaceFirst("\\,", ""))
 		record.save(flush: true)
 		render failedsb.toString().replaceFirst("\\,", "")+"###"+sucessedsb.toString().replaceFirst("\\,", "")
 		//redirect(action: "listRecord",params: [showRecords: "showNewRecords"])
