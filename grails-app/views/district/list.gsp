@@ -113,8 +113,6 @@
 										<td>
 											<sec:ifAnyGranted roles="ROLE_ADMIN">
 												<g:link controller="district" action="edit" id="${districtInstance.id}">编辑</g:link>
-											|
-												<g:link controller="district" action="delete" id="${districtInstance.id}">删除</g:link>
 											</sec:ifAnyGranted>
 										</td>
 									</tr>

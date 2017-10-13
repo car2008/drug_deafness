@@ -14,6 +14,7 @@
 				<label class="control-label col-sm-1" for="username"><g:message code="user.username.label" /><span class="help-inline">*</span></label>
 				<div class="col-sm-3">
 					<g:textField class="form-control input-sm" name="username" value="${userInstance?.username}"  />
+					<label class="control-label">(示例:admin@capitalbiotech.com)</label>
 				</div>
 			</div>
 			<div class="form-group ${hasErrors(bean: userInstance, field: 'name', 'error')}">
