@@ -159,7 +159,8 @@ class InformationController {
 								"failedNum":resultInstance.failedNum,
 								"successedSample":resultInstance.successedSample,
 								"failedSample":resultInstance.failedSample,
-								"startTime":resultInstance.startTime.format("yyyy-MM-dd HH:mm:ss")
+								"startTime":resultInstance.startTime.format("yyyy-MM-dd HH:mm:ss"),
+								"recordLog":resultInstance.recordLog
 								]
 							}
 				] as JSON)
@@ -174,20 +175,23 @@ class InformationController {
 		def informationInstance = new Information(params)
 		informationInstance.district = currentUser.district
 		if(Information.findBySampleNum(params.sampleNum)) {
-			flash.message = "${message(code: 'result.information.found.message', args: [message(code: 'information.label', default: 'informationInstance'), params.sampleNum])}"
-			render view:'index'
-			return
-		}
-		if (!informationInstance.hasErrors() && informationInstance.save(flush: true)) {
 			def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
-			def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_INFORMATION", recordName: informationInstance.sampleNum+"(单个录入)", successNum: 1, failedNum: 0, startTime:startTime, endTime: endTime)
+			def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_INFORMATION", recordName: informationInstance.sampleNum+"(单个录入)", successNum: 0, failedNum: 1, startTime:startTime, endTime: endTime,recordLog: "已有该编号："+params.sampleNum)
 			record.save(flush: true)
-
-			flash.message = "${message(code: 'default.created.message', args: [message(code: 'Information.label', default: 'informationInstance'), ''])}"
-			redirect(action: "listRecord", id: informationInstance.id, params: [showRecords: "showNewRecords"])
-		}else {
-			flash.error = renderErrors(bean: informationInstance, as: "list")
-			redirect(action: "listRecord", id: informationInstance.id, model: [informationInstance: informationInstance])
+			flash.message = "${message(code: 'result.information.found.message', args: [message(code: 'information.label', default: 'informationInstance'), params.sampleNum])}"
+			redirect(action: "listRecord")
+		}else{ 
+			if(!informationInstance.hasErrors() && informationInstance.save(flush: true)) {
+				def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
+				def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_INFORMATION", recordName: informationInstance.sampleNum+"(单个录入)", successNum: 1, failedNum: 0, startTime:startTime, endTime: endTime,recordLog: "上传成功的编号："+params.sampleNum)
+				record.save(flush: true)
+	
+				flash.message = "${message(code: 'default.created.message', args: [message(code: 'Information.label', default: 'informationInstance'), ''])}"
+				redirect(action: "listRecord", id: informationInstance.id, params: [showRecords: "showNewRecords"])
+			}else {
+				flash.error = renderErrors(bean: informationInstance, as: "list")
+				redirect(action: "listRecord", id: informationInstance.id, model: [informationInstance: informationInstance])
+			}
 		}
 	}
 	
@@ -240,7 +244,7 @@ class InformationController {
 			}
 		}
 		def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
-		def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_INFORMATION", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime,successedSample:sucessedsb.toString().replaceFirst("\\,", ""),failedSample:failedsb.toString().replaceFirst("\\,", ""))
+		def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_INFORMATION", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime,successedSample:sucessedsb.toString().replaceFirst("\\,", ""),failedSample:failedsb.toString().replaceFirst("\\,", ""),recordLog:failedsb==null?"":"上传失败的编号及原因：数据库已有的编号："+failedsb.toString().replaceFirst("\\,", ""))
 		record.save(flush: true)
 		render failedsb.toString().replaceFirst("\\,", "")+"###"+sucessedsb.toString().replaceFirst("\\,", "")
 		//redirect(action: "listRecord",params: [showRecords: "showNewRecords"])

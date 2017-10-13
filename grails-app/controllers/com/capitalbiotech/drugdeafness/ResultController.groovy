@@ -244,7 +244,8 @@ class ResultController {
 								"failedNum":resultInstance.failedNum,
 								"successedSample":resultInstance.successedSample,
 								"failedSample":resultInstance.failedSample,
-								"startTime":resultInstance.startTime.format("yyyy-MM-dd HH:mm:ss")
+								"startTime":resultInstance.startTime.format("yyyy-MM-dd HH:mm:ss"),
+								"recordLog":resultInstance.recordLog
 								]
 							}
 				] as JSON)
@@ -275,33 +276,37 @@ class ResultController {
 			informationInstance.result = resultInstance
 			informationInstance.hasResult=true
 			informationInstance.save(flush: true)
+			if (!resultInstance.hasErrors() && resultInstance.save(flush: true)) {
+				def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
+				def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_RESULT", recordName: resultInstance.sampleNum+"(单个录入)", successNum: 1, failedNum: 0, startTime:startTime, endTime: endTime,recordLog: "该编号："+params.sampleNum+"保存成功")
+				record.save(flush: true)
+	
+				flash.message = "${message(code: 'default.created.message', args: [message(code: 'result.label', default: 'resultInstance'), ''])}"
+				redirect(action: "listRecord", id: resultInstance.id,flash:flash, params: [showRecords: "showNewRecords"])
+			}else {
+				flash.error = renderErrors(bean: resultInstance, as: "list")
+				redirect(action: "listRecord", id: resultInstance.id, model: [resultInstance: resultInstance],flash:flash)
+			}
 		}else if(informationInstance && Result.findBySampleNum(params.sampleNum)){
-			flash.message = "${message(code: 'result.information.found.message', args: [message(code: 'result.label', default: 'resultInstance'), params.sampleNum])}"
-			//redirect(action: "index",flash:flash)
+			def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
+			def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_RESULT", recordName: resultInstance.sampleNum+"(单个录入)", successNum: 0, failedNum: 1, startTime:startTime, endTime: endTime,recordLog: "已有该编号："+params.sampleNum)
+			record.save(flush: true)
 			render view:'result'
 			return
 		}else{
-			flash.message = "${message(code: 'result.information.not.found.message', args: [message(code: 'information.label', default: 'informationInstance'), params.sampleNum])}"
-			//redirect(action: "index",flash:flash)
+			def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
+			def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_RESULT", recordName: resultInstance.sampleNum+"(单个录入)", successNum: 0, failedNum: 1, startTime:startTime, endTime: endTime,recordLog: "未找到该编号"+params.sampleNum+"的相关信息")
+			record.save(flush: true)
 			render view:'result'
 			return
-		}
-		if (!resultInstance.hasErrors() && resultInstance.save(flush: true)) {
-			def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
-			def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_RESULT", recordName: resultInstance.sampleNum+"(单个录入)", successNum: 1, failedNum: 0, startTime:startTime, endTime: endTime)
-			record.save(flush: true)
-
-			flash.message = "${message(code: 'default.created.message', args: [message(code: 'result.label', default: 'resultInstance'), ''])}"
-			redirect(action: "listRecord", id: resultInstance.id,flash:flash, params: [showRecords: "showNewRecords"])
-		}else {
-			flash.error = renderErrors(bean: resultInstance, as: "list")
-			redirect(action: "listRecord", id: resultInstance.id, model: [resultInstance: resultInstance],flash:flash)
 		}
 	}
 	
 	def uploadBatch() {
 		StringBuffer failedsb=new StringBuffer()
 		StringBuffer sucessedsb=new StringBuffer()
+		StringBuffer resultExistedsb=new StringBuffer()
+		StringBuffer informationNotExistedsb=new StringBuffer()
 		def nameArray=upload()
 		def currentUser = springSecurityService.currentUser
 		def startTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
@@ -327,9 +332,11 @@ class ResultController {
 				if(Result.findBySampleNum(properties["sampleNum"])){
 					failedNum++
 					failedsb.append(","+properties["sampleNum"])
+					resultExistedsb.append(","+properties["sampleNum"])
 				}else if(!Result.findBySampleNum(properties["sampleNum"]) && !informationInstance){
 					failedNum++
 					failedsb.append(","+properties["sampleNum"])
+					informationNotExistedsb.append(","+properties["sampleNum"])
 				}else if(!Result.findBySampleNum(properties["sampleNum"]) && informationInstance){
 					def resultInstance = new Result(properties)
 					if (resultInstance.hasErrors() || !resultInstance.save(flush: true)) {
@@ -349,7 +356,7 @@ class ResultController {
 				}
 			}
 			def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
-			def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_RESULT", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime,successedSample:sucessedsb.toString().replaceFirst("\\,", ""),failedSample:failedsb.toString().replaceFirst("\\,", ""))
+			def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_RESULT", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime,successedSample:sucessedsb.toString().replaceFirst("\\,", ""),failedSample:failedsb.toString().replaceFirst("\\,", ""),recordLog: failedsb==null?"":"上传失败的：结果编号已存在："+resultExistedsb.toString().replaceFirst("\\,", "")+"；相关信息未录入的："+informationNotExistedsb.toString().replaceFirst("\\,", ""))
 			record.save(flush: true)
 			render failedsb.toString().replaceFirst("\\,", "")+"###"+sucessedsb.toString().replaceFirst("\\,", "")
 			//redirect(action: "listRecord", params: [showRecords: "showNewRecords"])
