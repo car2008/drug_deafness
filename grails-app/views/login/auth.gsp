@@ -49,7 +49,7 @@
 
                                         <div class="form-group m-b-20">
                                             <div class="col-xs-12">
-                                                <input class="form-control" type="email" id="username" name="j_username" required="required" placeholder="${message(code: 'drug_deafness.springSecurity.login.username.label')}">
+                                                <input class="form-control" type="text" id="username" name="j_username" required="required" placeholder="${message(code: 'drug_deafness.springSecurity.login.username.label')}">
                                             </div>
                                         </div>
 
