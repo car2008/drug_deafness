@@ -95,40 +95,47 @@
 					</div>
 				</g:hasErrors>
 				<hr>
-				<g:form class="form-horizontal" method="post">
+				<form class="form-horizontal" id="editForm" method="post" action="${createLink(controller: 'user', action: 'update')}"> 
 					<g:hiddenField name="id" value="${userInstance?.id}" />
 					<g:hiddenField name="version" value="${userInstance?.version}" />
 					<g:render template="form" model="${[userInstance: userInstance]}"/>
-					<div class="modal-footer" style="width:100%;">
-						<g:actionSubmit class="btn btn-primary" action="update" value="更新" />
-						<sec:ifAnyGranted roles="ROLE_ADMIN">
-							<g:actionSubmit class="btn btn-danger" action="delete" href="#deleteModal" data-toggle="modal" value="删除" />
-						</sec:ifAnyGranted>
-					</div>
-				</g:form>
+				</form>
+				<div class="modal-footer" style="width:100%;">
+					<button type="button" class="btn btn-primary" id="updateBtn">更新</button>
+					<sec:ifAnyGranted roles="ROLE_ADMIN">
+						<button id="deleteBtn" class="btn btn-danger" data-target="#deleteModal" data-toggle="modal">删除</button>
+					</sec:ifAnyGranted>
+				</div>
 			</div>
 		</div>
 	</div>
-	<sec:ifAnyGranted roles="ROLE_ADMIN">
-		<!-- Modal -->
-		<div id="deleteModal" class="modal hide fade" tabindex="-1"
-			role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true">×</button>
-				<h3 id="deleteModalLabel"><g:message code="warning.label" /></h3>
-			</div>
-			<div class="modal-body">
-				<p><g:message code="user.deletion.warning"/></p>
-			</div>
-			<div class="modal-footer">
-				<g:form action="delete" method="post" style="padding:0; margin:0">
-					<g:hiddenField name="id" value="${userInstance?.id}" />
-					<button class="btn" data-dismiss="modal" aria-hidden="true"><g:message code="cancel.label" /></button>
-					<button class="btn btn-danger"><g:message code="confirm.deletion.label" /></button>
-				</g:form>
-			</div>
-		</div>
-	</sec:ifAnyGranted>
+	<!-- Modal -->
+	<div class="modal fade" id="deleteModal" aria-labelledby="deleteModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="deleteModalLabel">删除</h4>
+	      </div>
+	      <div class="modal-body">
+				确定要删除该条记录吗？
+	      </div>
+	      <div class="modal-footer">
+	      	<g:form action="delete" method="post" style="padding:0; margin:0">
+				<g:hiddenField name="id" value="${userInstance?.id}" />
+				<button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+				<button class="btn btn-danger">确定</button>
+			</g:form>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<script type="text/javascript">
+		$(function(){
+			$("#updateBtn").on("click",function(){
+				$("#editForm").submit();
+			});
+		})
+	</script>
 </body>
 </html>
