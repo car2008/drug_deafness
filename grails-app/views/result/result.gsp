@@ -23,7 +23,7 @@
 			<g:message code="drug_deafness.name" />
 		</title>
 		<style>
-	        table td.td_nowrap { 
+	        table td{ 
 	           word-break:keep-all; 
 	           white-space:nowrap; 
 	        }
