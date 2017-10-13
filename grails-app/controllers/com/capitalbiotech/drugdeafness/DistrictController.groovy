@@ -71,7 +71,7 @@ class DistrictController {
 			
 			if (!districtInstance.hasErrors() && districtInstance.save(flush: true)) {
 				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'district.label', default: 'District'), districtInstance.title])}"
-				redirect(action:"show",id:districtInstance.id)
+				redirect(action:"list",id:districtInstance.id)
 			}
 			else {
 				render(view: "edit", model: [districtInstance: districtInstance])
