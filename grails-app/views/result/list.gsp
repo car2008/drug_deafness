@@ -252,6 +252,7 @@
 								<label class="col-md-offset-1 col-md-2 control-label">检验员</label>
 							    <div class="col-md-8">
 							    	<input name="checker" id="checker" class="form-control input-sm"></input>
+							    	
 							    </div>
 							</div>
 							<div class="form-group">
@@ -322,7 +323,7 @@
 	                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
 	                    pagination: true,                   //是否显示分页（*）
 	                    sortable: false,                    //是否启用排序
-	                    sortOrder: "asc",                   //排序方式
+	                    sortOrder: "desc",                   //排序方式
 	                    queryParams: oTableInit.queryParams,//传递参数（*）
 	                    sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
 	                    pageNumber:1,                       //初始化加载第一页，默认第一页
@@ -354,23 +355,22 @@
 	                        title: '姓名',
 	                    }, {
 	                        field: 'gender',
-	                        title: '性别'
+	                        title: '性别',
 	                    }, {
 	                        field: 'age',
-	                        title: '年龄'
+	                        title: '年龄',
 	                    }, {
 	                        field: 'famCt',
-	                        title: 'FAM Ct'
+	                        title: 'FAM Ct',
 	                    }, {
 	                        field: 'vicCt',
-	                        title: 'VIC Ct'
+	                        title: 'VIC Ct',
 	                    }, {
 	                        field: 'nedCt',
-	                        title: 'NED Ct'
+	                        title: 'NED Ct',
 	                    },{
 	                        field: 'detectedResult',
 	                        title: '检测结果',
-	                        class: 'td_nowrap',
 	                    },{
 	                        field: 'resulttitle',
 	                        title: '医院名称',
@@ -480,10 +480,17 @@
 			        $("#appendForm")[0].submit();
 		        }else{
 		        	var selectedRows = arrselections[0];
-		        	$("#hospital").val(selectedRows.resulttitle);
-	                $("#checker").val(selectedRows.checker);
-	                $("#assessor").val(selectedRows.assessor);
-	         		$("#pdfcomment").val(selectedRows.pdfcomment);
+		        	/*$.ajax({
+		        		url:"<g:createLink controller="result" action="generatePdf"/>",
+		        		type:"get",
+		        		dataType: "json",
+		        		success:function(dataObj){
+			        		$("#hospital").val(selectedRows.resulttitle);
+			                $("#checker").val(selectedRows.checker);
+			                $("#assessor").val(selectedRows.assessor);
+			         		$("#pdfcomment").val(selectedRows.pdfcomment);
+	        			}
+		        	})*/
 		        	$("#optModal").modal('show');
 		        }
 		    })

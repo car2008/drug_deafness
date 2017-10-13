@@ -108,8 +108,8 @@
 							                    <input type="text" class="form-control input-sm" id="search_name"> 
 							                </div>
 							                <div style="float:left;">
-												<label class="radio-inline"><input value="true" name="hasResult" type="radio">有</label>
-												<label class="radio-inline"><input value="false" name="hasResult" type="radio">无</label>
+												<label class="checkbox-inline"><input value="true" id="hasResult" type="checkbox">有</label>
+												<label class="checkbox-inline"><input value="false" id="noResult" type="checkbox">无</label>
 										    </div>
 										    <sec:ifAnyGranted roles="ROLE_ADMIN">
 											    <label class="control-label col-sm-1">地区</label> 
@@ -153,6 +153,20 @@
 		            return row.id
 		        });
 		    }
+
+			function judgeHasResult(){
+				if($("#hasResult").is(':checked')){
+	               	if($("#noResult").is(':checked')){
+						return "";
+	               	}
+	            	return "true";
+               	}else if($("#noResult").is(':checked')){
+					return "false"
+               	}else{
+					return ""
+               	}
+				//$("#hasResult").is(':checked')?"true":$("#noResult").is(':checked')?"false":""
+			}
 		    
 	        $(function () {
 	            //1.初始化Table
@@ -254,7 +268,7 @@
 	                    offset: params.offset,  //页码
 	                    num:$("#search_sampleNum").val(),
 		                name:$("#search_name").val(),
-		               	hasResult:$("input[name='hasResult']:checked").val(),
+		               	hasResult:judgeHasResult(),
 		               	district:$("#area-select").find("option:selected").val()
 	                };
 	                return temp;
@@ -266,9 +280,7 @@
 	        $("#btn_query").on("click",function(){
             	$table.bootstrapTable('refresh');
             });
-
-
-            
+			
 	    </script>
 	</body>
 </html>
