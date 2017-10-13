@@ -19,6 +19,12 @@
 		<title>
 			<g:message code="drug_deafness.name" />
 		</title>
+		<style>
+	        table td.td_nowrap { 
+	           word-break:keep-all; 
+	           white-space:nowrap; 
+	        }
+		</style>
 	</head>
 	
 	<body>
