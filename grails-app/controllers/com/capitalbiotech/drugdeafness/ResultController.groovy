@@ -156,7 +156,7 @@ class ResultController {
 				"pdfcomment":resultInstance.pdfcomment,
 				] as JSON)
 		}else{
-			return null
+			render null
 		}
 		
 	}
