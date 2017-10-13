@@ -146,7 +146,7 @@ class ResultController {
 
 	}
 	
-	def findLastedRecord(){
+	def findLastedResult(){
 		def resultInstance = Result.executeQuery("SELECT result from Result result where id ORDER BY date_created DESC LIMIT 1")[0]
 		render ([
 			"resulttitle":resultInstance.resulttitle,
