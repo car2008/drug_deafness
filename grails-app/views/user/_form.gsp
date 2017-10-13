@@ -9,8 +9,8 @@
 				<div class="col-sm-3">
 					<g:textField class="form-control input-sm" name="username" type="email" value="${userInstance?.username}"  />
 				</div>
-				<label class="control-label">(示例:admin@capitalbiotech.com)</label>
-			</div>
+				<%--<label class="control-label">(示例:admin@capitalbiotech.com)</label>
+			--%></div>
 			<div class="form-group ${hasErrors(bean: userInstance, field: 'name', 'error')}">
 				<label class="control-label col-sm-1" for="avatar"><g:message code="user.name.label" /><span class="help-inline">*</span></label>
 				<div class="col-sm-3">
