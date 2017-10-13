@@ -69,7 +69,7 @@ class ResultController {
 			if(beginSearchDate && endSearchDate){
 				stringBuf.append("result.dateCreated BETWEEN '"+beginSearchDate+"' AND '"+endSearchDate+"' ")
 			}
-			stringBuf.append(num?"AND sampleNum like '%"+num+"%' ":"")
+			stringBuf.append(num?"AND sample_num like '%"+num+"%' ":"")
 			stringBuf.append(name?"AND result.information.patientName like '%"+name+"%' ":"")
 			stringBuf.append(positive=="true"?"OR detected_result like '%突变型%' ":"")
 			stringBuf.append(negative=="true"?"OR detected_result like '%野生型%' ":"")
@@ -356,7 +356,9 @@ class ResultController {
 				}
 			}
 			def endTime = Utils.parseSimpleDateTime(new Date().format("yyyy-MM-dd HH:mm:ss"))
-			def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_RESULT", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime,successedSample:sucessedsb.toString().replaceFirst("\\,", ""),failedSample:failedsb.toString().replaceFirst("\\,", ""),recordLog: "".equals(failedsb.toString())?"":"上传失败的：结果编号已存在："+resultExistedsb.toString().replaceFirst("\\,", "")+"；相关信息未录入的："+informationNotExistedsb.toString().replaceFirst("\\,", ""))
+			
+			def recordLog = !"".equals(resultExistedsb.toString())&&!"".equals(informationNotExistedsb.toString())?"结果编号已存在："+resultExistedsb.toString().replaceFirst("\\,", "")+"；相关信息未录入的："+informationNotExistedsb.toString().replaceFirst("\\,", ""):!"".equals(resultExistedsb.toString())?"结果编号已存在："+resultExistedsb.toString().replaceFirst("\\,", "")+"；":!"".equals(informationNotExistedsb.toString())?"相关信息未录入的："+informationNotExistedsb.toString().replaceFirst("\\,", ""):""
+			def record = new Record(uploadUser: currentUser, recordCatagrory: "CATAGRORY_RESULT", recordName: nameArray[0]+"(批量录入)", successNum: successNum, failedNum:failedNum, startTime:startTime, endTime: endTime,successedSample:sucessedsb.toString().replaceFirst("\\,", ""),failedSample:failedsb.toString().replaceFirst("\\,", ""),recordLog: recordLog)
 			record.save(flush: true)
 			render failedsb.toString().replaceFirst("\\,", "")+"###"+sucessedsb.toString().replaceFirst("\\,", "")
 			//redirect(action: "listRecord", params: [showRecords: "showNewRecords"])

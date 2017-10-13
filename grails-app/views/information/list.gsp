@@ -254,7 +254,8 @@
 	                    offset: params.offset,  //页码
 	                    num:$("#search_sampleNum").val(),
 		                name:$("#search_name").val(),
-		               	hasResult:$("input[name='hasResult']:checked").val()
+		               	hasResult:$("input[name='hasResult']:checked").val(),
+		               	district:$("#area-select").find("option:selected").val()
 	                };
 	                return temp;
 	            };
