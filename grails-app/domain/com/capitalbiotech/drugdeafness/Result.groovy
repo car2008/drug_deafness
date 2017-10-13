@@ -21,7 +21,7 @@ class Result {
 	Date lastUpdated
 	
     static constraints = {
-		 sampleNum blank: false,nullable: false
+		 sampleNum blank: true,nullable: true
 		 location blank: true,nullable: true
 		 sampleBelong blank: true,nullable: true
 		 famCt blank: true,nullable: true
