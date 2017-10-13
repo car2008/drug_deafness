@@ -480,17 +480,19 @@
 			        $("#appendForm")[0].submit();
 		        }else{
 		        	var selectedRows = arrselections[0];
-		        	/*$.ajax({
-		        		url:"<g:createLink controller="result" action="generatePdf"/>",
+		        	$.ajax({
+		        		url:"<g:createLink controller="result" action="findLastedResult"/>",
 		        		type:"get",
 		        		dataType: "json",
 		        		success:function(dataObj){
-			        		$("#hospital").val(selectedRows.resulttitle);
-			                $("#checker").val(selectedRows.checker);
-			                $("#assessor").val(selectedRows.assessor);
-			         		$("#pdfcomment").val(selectedRows.pdfcomment);
+		        			if(dataObj !== null){
+		        				$("#hospital").val(dataObj.resulttitle);
+				                $("#checker").val(dataObj.checker);
+				                $("#assessor").val(dataObj.assessor);
+				         		$("#pdfcomment").val(dataObj.pdfcomment);
+		        			}
 	        			}
-		        	})*/
+		        	})
 		        	$("#optModal").modal('show');
 		        }
 		    })
