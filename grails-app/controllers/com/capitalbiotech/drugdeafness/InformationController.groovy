@@ -64,8 +64,8 @@ class InformationController {
 			}
 			stringBuf.append(num?"AND sample_num like '%"+num+"%' ":"")
 			stringBuf.append(name?"AND patient_name like '%"+name+"%' ":"")
-			stringBuf.append(hasResult=="true"?"AND hasResult=true ":"")
-			stringBuf.append(hasResult=="false"?"AND hasResult=false ":"")
+			stringBuf.append(hasResult=="true"?"AND has_result=true ":"")
+			stringBuf.append(hasResult=="false"?"AND has_result=false ":"")
 			if(district){
 				def districtInstance=District.findByCode(district)
 				stringBuf.append("AND district = :district ")
