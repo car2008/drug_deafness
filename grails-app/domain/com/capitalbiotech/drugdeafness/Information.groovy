@@ -25,7 +25,7 @@ class Information {
 	boolean hasResult
 	
     static constraints = {
-		sampleNum blank: false, unique: true
+		sampleNum blank: true,nullable: true
 		patientName blank: true,nullable: true
 		gender blank: true,nullable: true
 		age blank: true,nullable: true
