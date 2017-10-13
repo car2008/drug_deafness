@@ -43,6 +43,8 @@ class Information {
 		hasResult blank: true,nullable: true
     }
 	
+	static belongsTo =[district:District]
+	
 	static mapping = {
 		remark type:'text'
 	}
