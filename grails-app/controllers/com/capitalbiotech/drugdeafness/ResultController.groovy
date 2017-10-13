@@ -69,11 +69,11 @@ class ResultController {
 			if(beginSearchDate && endSearchDate){
 				stringBuf.append("result.dateCreated BETWEEN '"+beginSearchDate+"' AND '"+endSearchDate+"' ")
 			}
-			stringBuf.append(num?"AND sample_num like '%"+num+"%' ":"")
+			stringBuf.append(num?"AND result.sampleNum like '%"+num+"%' ":"")
 			stringBuf.append(name?"AND result.information.patientName like '%"+name+"%' ":"")
-			stringBuf.append(positive=="true"?"OR detected_result like '%突变型%' ":"")
-			stringBuf.append(negative=="true"?"OR detected_result like '%野生型%' ":"")
-			stringBuf.append(abnormal=="true"?"OR detected_result like '%重新检测%' ":"")
+			stringBuf.append(positive=="true"?"OR result.detectedResult like '%突变型%' ":"")
+			stringBuf.append(negative=="true"?"OR result.detectedResult like '%野生型%' ":"")
+			stringBuf.append(abnormal=="true"?"OR result.detectedResult like '%重新检测%' ":"")
 			if(district){
 				def districtInstance=District.findByCode(district)
 				stringBuf.append("AND district = :district ")
@@ -81,7 +81,7 @@ class ResultController {
 			}
 			
 			def s1=stringBuf.toString()
-			if(s1.contains("OR detected_result")){
+			if(s1.contains("OR result.detectedResult")){
 				s1=s1.replaceFirst("OR","AND")
 			}
 			if(s1.contains("WHERE AND")){
@@ -92,7 +92,7 @@ class ResultController {
 			}
 			stringBuf.append("ORDER BY result.${params.sort} ${params.order}")
 			def s2=stringBuf.toString()
-			if(s2.contains("OR detected_result")){
+			if(s2.contains("OR result.detectedResult")){
 				s2=s2.replaceFirst("OR","AND")
 			}
 			if(s2.contains("WHERE AND")){

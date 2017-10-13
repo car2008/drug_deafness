@@ -62,10 +62,10 @@ class InformationController {
 			if(beginSearchDate && endSearchDate){
 				stringBuf.append("information.dateCreated BETWEEN '"+beginSearchDate+"' AND '"+endSearchDate+"' ")
 			}
-			stringBuf.append(num?"AND sample_num like '%"+num+"%' ":"")
-			stringBuf.append(name?"AND patient_name like '%"+name+"%' ":"")
-			stringBuf.append(hasResult=="true"?"AND has_result=true ":"")
-			stringBuf.append(hasResult=="false"?"AND has_result=false ":"")
+			stringBuf.append(num?"AND information.sampleNum like '%"+num+"%' ":"")
+			stringBuf.append(name?"AND information.patientName like '%"+name+"%' ":"")
+			stringBuf.append(hasResult=="true"?"AND information.hasResult=true ":"")
+			stringBuf.append(hasResult=="false"?"AND information.hasResult=false ":"")
 			if(district){
 				def districtInstance=District.findByCode(district)
 				stringBuf.append("AND district = :district ")
