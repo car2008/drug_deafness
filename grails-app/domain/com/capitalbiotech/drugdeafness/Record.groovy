@@ -43,6 +43,8 @@ class Record {
 	static mapping = {
 		recordLog type:'text'
 		comment  type:'text'
+		successedSample  type:'text'
+		failedSample  type:'text'
 	}
 	
 }
