@@ -147,13 +147,18 @@ class ResultController {
 	}
 	
 	def findLastedResult(){
-		def resultInstance = Result.executeQuery("SELECT result from Result result ORDER BY date_created DESC")[0]
-		render ([
-			"resulttitle":resultInstance.resulttitle,
-			"checker":resultInstance.checker,
-			"assessor":resultInstance.assessor,
-			"pdfcomment":resultInstance.pdfcomment,
-			] as JSON)
+		def resultInstance = Result.executeQuery("SELECT result from Result result where isnull(result.resulttitle) is false AND isnull(result.pdfcomment) is false AND isnull(result.checker) is false AND isnull(result.assessor) is false ORDER BY id DESC")[0]
+		if(resultInstance){
+			render ([
+				"resulttitle":resultInstance.resulttitle,
+				"checker":resultInstance.checker,
+				"assessor":resultInstance.assessor,
+				"pdfcomment":resultInstance.pdfcomment,
+				] as JSON)
+		}else{
+			return null
+		}
+		
 	}
 	
 	def generatePdf(){
