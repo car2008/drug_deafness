@@ -69,7 +69,7 @@ class ResultController {
 			if(beginSearchDate && endSearchDate){
 				stringBuf.append("result.dateCreated BETWEEN '"+beginSearchDate+"' AND '"+endSearchDate+"' ")
 			}
-			stringBuf.append(num?"AND sampleNum like '%"+num+"%' ":"")
+			stringBuf.append(num?"AND sample_num like '%"+num+"%' ":"")
 			stringBuf.append(name?"AND result.information.patientName like '%"+name+"%' ":"")
 			stringBuf.append(positive=="true"?"OR detected_result like '%突变型%' ":"")
 			stringBuf.append(negative=="true"?"OR detected_result like '%野生型%' ":"")

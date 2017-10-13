@@ -33,38 +33,43 @@ class InformationController {
 		if (!params.sort) {
 			params.sort = 'dateCreated'
 		}
+		if(!params.district){
+			def currentUser = (User)springSecurityService.currentUser
+			if(!currentUser.getAuthorities().contains(Role.findByAuthority("ROLE_ADMIN")))params.district=currentUser.district.code
+		}
 		
+		def districtInstanceList = District.list()
 		def informationInstanceList
 		def informationInstanceTotal
 		def projectInstanceTotalList
-		if(params.num||params.name||params.hasResult){
+		if(params.num||params.name||params.hasResult||params.district){
 			def beginSearchDate=params.beginSearchDate
 			def endSearchDate=params.endSearchDate
 			def num = params.num
 			def name = params.name
 			def hasResult = params.hasResult
-			def q6 = params.q6
+			def district = params.district
 			def stringBuf=new StringBuffer()
 			def paramMap1=[:]
 			
 			stringBuf.append("SELECT DISTINCT information FROM Information information ")
-			if(q6){
+			if(district){
 				stringBuf.append("LEFT JOIN information.district district ")
 			}
-			if((beginSearchDate && endSearchDate)||(num||name||hasResult||q6)){
+			if((beginSearchDate && endSearchDate)||(num||name||hasResult||district)){
 				stringBuf.append("WHERE ")
 			}
 			if(beginSearchDate && endSearchDate){
 				stringBuf.append("information.dateCreated BETWEEN '"+beginSearchDate+"' AND '"+endSearchDate+"' ")
 			}
-			stringBuf.append(num?"AND sampleNum like '%"+num+"%' ":"")
-			stringBuf.append(name?"AND patientName like '%"+name+"%' ":"")
+			stringBuf.append(num?"AND sample_num like '%"+num+"%' ":"")
+			stringBuf.append(name?"AND patient_name like '%"+name+"%' ":"")
 			stringBuf.append(hasResult=="true"?"AND hasResult=true ":"")
 			stringBuf.append(hasResult=="false"?"AND hasResult=false ":"")
-			if(q6){
-				def district=District.findByCode(q6)
+			if(district){
+				def districtInstance=District.findByCode(district)
 				stringBuf.append("AND district = :district ")
-				paramMap1.put("district", district)
+				paramMap1.put("district", districtInstance)
 			}
 			
 			def s1=stringBuf.toString()
@@ -117,12 +122,13 @@ class InformationController {
 								"inspectionTime":informationInstance.inspectionTime,
 								"phoneNum":informationInstance.phoneNum,
 								"remark":informationInstance.remark,
-								"hasResult":informationInstance.hasResult==true?"有":"无"
+								"hasResult":informationInstance.hasResult==true?"有":"无",
+								"district":informationInstance.district.title
 								]
 							}
 				] as JSON)
 		}else{
-			return
+			return [districtInstanceList:districtInstanceList]
 		}
 	}
 	
