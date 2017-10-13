@@ -45,6 +45,7 @@
 	                				<span class="caret"></span>
                 				</a>
 								<ul class="dropdown-menu">
+									<li><g:link style="padding:10px 20px;" controller="information" action='index'>数据库主页面</g:link></li>
 									<li><g:link style="padding:10px 20px;" controller="user" action='edit'><g:message code="edit.my.information.label" /></g:link></li>
 									<li><g:link style="padding:10px 20px;" controller="user" action='password'><g:message code="change.my.password.label" /></g:link></li>
 									<li class="divider"></li>

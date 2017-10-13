@@ -17,25 +17,25 @@
 					<g:textField  class="form-control input-sm" name="name" value="${userInstance?.name}" />
 				</div>
 			</div>
-			<div class="form-group ${hasErrors(bean: userInstance, field: 'district', 'error')}">
-				<label class="control-label col-sm-1"  for="district"><g:message code="district.label" /><span class="help-inline">*</span></label>
-				<div class="col-sm-3">
-					<select class="form-control input-sm" id="district" name="district">
-						<g:each in="${districtInstanceList}" var="districtInstance">
-							<option value="${districtInstance?.id}" ${userInstance?.district?.collect{it.id}?.contains(districtInstance.id) ? 'selected' : ''}  >${districtInstance?.title}</option>
-						</g:each>
-					</select>
-				</div>
-			</div>
-			<g:if test="${params.action=='create'||params.action=='save' }">
-				<div class="form-group ${hasErrors(bean: userInstance, field: 'password', 'error')}">
-					<label class="control-label col-sm-1" for="password"><g:message code="user.password.label" /><span class="help-inline">*</span></label>
+			<sec:ifAnyGranted roles="ROLE_ADMIN">
+				<div class="form-group ${hasErrors(bean: userInstance, field: 'district', 'error')}">
+					<label class="control-label col-sm-1"  for="district"><g:message code="district.label" /><span class="help-inline">*</span></label>
 					<div class="col-sm-3">
-						<g:textField class="form-control input-sm" name="password" value="" />
+						<select class="form-control input-sm" id="district" name="district">
+							<g:each in="${districtInstanceList}" var="districtInstance">
+								<option value="${districtInstance?.id}" ${userInstance?.district?.collect{it.id}?.contains(districtInstance.id) ? 'selected' : ''}  >${districtInstance?.title}</option>
+							</g:each>
+						</select>
 					</div>
 				</div>
-			</g:if>
-			<sec:ifAnyGranted roles="ROLE_ADMIN">
+				<g:if test="${params.action=='create'||params.action=='save' }">
+					<div class="form-group ${hasErrors(bean: userInstance, field: 'password', 'error')}">
+						<label class="control-label col-sm-1" for="password"><g:message code="user.password.label" /><span class="help-inline">*</span></label>
+						<div class="col-sm-3">
+							<g:textField class="form-control input-sm" name="password" value="" />
+						</div>
+					</div>
+				</g:if>
 				<div class="form-group ${hasErrors(bean: userInstance, field: 'enabled', 'error')}">
 					<label class="control-label col-sm-1" for="enabled"><g:message code="user.enabled.label" /><span class="help-inline">*</span></label>
 					<div class="col-sm-3">
