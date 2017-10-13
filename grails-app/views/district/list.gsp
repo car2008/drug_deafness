@@ -124,7 +124,10 @@
 											<sec:ifAnyGranted roles="ROLE_ADMIN">
 												<g:link controller="district" action="edit" id="${districtInstance.id}">编辑</g:link>
 												|
-												<g:link controller="district" action="delete" id="${districtInstance.id}">删除</g:link>
+												<%--<g:link controller="district" href="#deleteModal"  data-target="#deleteModal" data-toggle="modal">删除</g:link>--%>
+												<a href="javascript:;" onclick="deleteDistrict(${districtInstance.id})">
+											    	删除
+											    </a>
 											</sec:ifAnyGranted>
 										</td>
 									</tr>
@@ -135,5 +138,32 @@
 	            </div>
 		    </div>
 	    </div>
+	    <!-- Modal -->
+		<div class="modal fade" id="deleteModal" aria-labelledby="deleteModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="deleteModalLabel">删除</h4>
+		      </div>
+		      <div class="modal-body">
+					确定要删除该条记录吗？
+		      </div>
+		      <div class="modal-footer">
+		      	<g:form action="delete" method="post" style="padding:0; margin:0">
+					<input type="hidden" id="districtId" name="id"/>
+					<button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+					<button class="btn btn-danger">确定</button>
+				</g:form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<script>
+			function deleteDistrict(districtId){
+				document.getElementById('districtId').value=districtId;
+				$('#deleteModal').modal('show');
+			}
+		</script>
 	</body>
 </html>

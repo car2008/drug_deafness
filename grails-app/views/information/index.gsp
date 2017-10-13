@@ -407,6 +407,9 @@
 	                    },{
 	                        field: 'startTime',
 	                        title: '上传日期'
+	                    },{
+	                        field: 'recordLog',
+	                        title: '上传日志'
 	                    }]
 	                });
 	            };
